@@ -1,6 +1,7 @@
 import { DrawerNavigator } from 'react-navigation';
 import CofContainer from '../CofContainer';
 import { ReferencesContainer } from '../References';
+import { CompositionContainer } from '../Composition';
 
 const RootDrawer = DrawerNavigator({
   Home: {
@@ -8,6 +9,9 @@ const RootDrawer = DrawerNavigator({
   },
   References: {
     screen: ReferencesContainer
+  },
+  Compose: {
+    screen: CompositionContainer
   },
 });
 
