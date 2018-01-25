@@ -78,12 +78,15 @@ const cReferences = component({
 })
 
 // text
-const markdownText =
-'#Markdown in react-native is so cool!\n\n' +
-'- You can **emphasize** what you want, or just _suggest it_.\n' +
-'- You can [link websites](https://twitter.com/Charles_Mangwa)\n' +
-'- You can add a Gif: \n\n' +
-'![Some GIF](https://media.giphy.com/media/dkGhBWE3SyzXW/giphy.gif)\n';
+const markdownText = 
+`#Markdown in react-native is so cool!
+
+- You can **emphasize** what you want, or just _suggest it_.
+- You can [link websites](https://twitter.com/Charles_Mangwa)
+- You can add a Gif:
+
+
+![Some GIF](https://media.giphy.com/media/dkGhBWE3SyzXW/giphy.gif)`;
 
 // element
 const eMarkdown = e(Markdown, {}, [markdownText]);
