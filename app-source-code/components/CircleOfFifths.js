@@ -5,7 +5,7 @@ import { ART, Dimensions, StyleSheet, Text as NormText, TouchableWithoutFeedback
 import * as scale from 'd3-scale';
 import * as shape from 'd3-shape';
 import PropTypes from 'prop-types';
-import { changeKey } from './actions/keys';
+import { changeKey } from '../actions/keys';
 
 const {
   Group, Shape, Surface, Transform, Text,
@@ -17,11 +17,16 @@ const d3 = {
 };
 
 const Theme = {
-  colors: [
-    '#ff0000', '#FF4500', '#FFA500', '#f8d568',
-    '#ffff00', '#9ACD32', '#008000', '#0d98ba',
-    '#0000ff', '#8a2be2', '#ee82ee', '#c71585',
-  ],
+  // colors: [
+  //   '#ff0000', '#FF4500', '#FFA500', '#f8d568',
+  //   '#ffff00', '#9ACD32', '#008000', '#0d98ba',
+  //   '#0000ff', '#8a2be2', '#ee82ee', '#c71585',
+  // ],
+	colors: [
+		'#8cff0a', '#ffff00', '#ffc30a', '#fa870a',
+		'#fa500a', '#ff0000', '#8700c3', '#5000c3',
+		'#3200a5', '#0000ff', '#2dc3be', '#19c80a',
+	],
 };
 
 const styles = StyleSheet.create({
