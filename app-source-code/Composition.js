@@ -16,6 +16,22 @@ const eText = function(text, props) {
   return e(Text, props, text);
 };
 
+// Chord-Entry component
+// Text: List of Chords
+// Button: Create New
+// Button: Add Chord
+
+// Choose Chord Component
+// Buttons: 12 Notes
+// Radio: Minor/Major/Diminished/Augmented radio
+// Radio: no/Major/Minor/Diminished 7th radio
+// Text: display chord
+
+// Analysis Component
+// Text: List of chords
+// Results: List of rules broken
+// Button: Analyze
+
 // component
 // accessed by the Main Menu sidebar
 export const CompositionContainer = function () { 
