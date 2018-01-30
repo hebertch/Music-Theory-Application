@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { Platform, StyleSheet, Text, View, } from 'react-native';
+import { Button, Platform, StyleSheet, Text, View, } from 'react-native';
 
 // f(component, props, childElements) => element
 const e = function(component, props, children) {
@@ -15,6 +15,22 @@ const eText = function(text, props) {
   props = props || {};
   return e(Text, props, text);
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 21
+  }
+});
+
+const cChordEntry = component({
+  render: function() {
+    return e(View, {style: styles.container}, [
+              eText('C Am Bdim C'),
+              e(Button, {title: 'New Composition'}),
+              e(Button, {title: 'Add Chord'})
+            ]);
+  }
+});
 
 // Chord-Entry component
 // Text: List of Chords
@@ -35,5 +51,5 @@ const eText = function(text, props) {
 // component
 // accessed by the Main Menu sidebar
 export const CompositionContainer = function () { 
-  return e(View);
+  return e(cChordEntry);
 }
