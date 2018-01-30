@@ -22,20 +22,34 @@ const styles = StyleSheet.create({
   }
 });
 
-const cChordEntry = component({
+const cCompositionEditView = component({
+  getInitialState: function() {
+    return {composition: ['C', 'Am', 'Bdim', 'C'], analysisResults: []};
+  },
+
+  newCompositionPressed: function() {
+    this.setState({composition: []});
+  },
+
+  addChordPressed: function() {
+    this.setState({composition: this.state.composition.concat(['G'])});
+  },
+
+  analyzePressed: function() {
+    this.setState({analysisResults: ['G -> G breaks rule 1', 'G -> C breaks rule 2']});
+  },
+
   render: function() {
     return e(View, {style: styles.container}, [
-              eText('C Am Bdim C'),
-              e(Button, {title: 'New Composition'}),
-              e(Button, {title: 'Add Chord'})
+              eText(this.state.composition),
+              e(Button, {title: 'New Composition', onPress: this.newCompositionPressed}),
+              e(Button, {title: 'Add Chord', onPress: this.addChordPressed}),
+              e(Button, {title: 'Analyze', onPress: this.analyzePressed}),
+              eText('Analysis Results:'),
+              eText(this.state.analysisResults)
             ]);
   }
 });
-
-// Chord-Entry component
-// Text: List of Chords
-// Button: Create New
-// Button: Add Chord
 
 // Choose Chord Component
 // Buttons: 12 Notes
@@ -43,13 +57,8 @@ const cChordEntry = component({
 // Radio: no/Major/Minor/Diminished 7th radio
 // Text: display chord
 
-// Analysis Component
-// Text: List of chords
-// Results: List of rules broken
-// Button: Analyze
-
 // component
 // accessed by the Main Menu sidebar
 export const CompositionContainer = function () { 
-  return e(cChordEntry);
+  return e(cCompositionEditView);
 }
