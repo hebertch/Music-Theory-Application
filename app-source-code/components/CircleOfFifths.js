@@ -4,7 +4,8 @@ import { ART, Dimensions, StyleSheet, Text as NormText, TouchableWithoutFeedback
 import * as scale from 'd3-scale';
 import * as shape from 'd3-shape';
 import PropTypes from 'prop-types';
-import { changeKey } from '../actions/keys';
+import { changeKey, changeScale } from '../actions/keys';
+import { getKeyObject, getParallelKey, getRelativeKey } from '../selectors/keys';
 
 const {
 	Group, Shape, Surface, Transform, Text,
@@ -36,40 +37,40 @@ class CircleOfFifths extends Component {
 			paths: [],
 			data: [
 				{
-					number: 5, name: 'B', quality: 'vii.', mQuality: '',
+					number: 5, displayName: 'B', name: 'b', quality: 'vii.', mQuality: '',
 				},
 				{
-					number: 5, name: 'E', quality: 'iii', mQuality: '',
+					number: 5, displayName: 'E', name: 'e', quality: 'iii', mQuality: '',
 				},
 				{
-					number: 5, name: 'A', quality: 'vi', mQuality: '',
+					number: 5, displayName: 'A', name: 'a', quality: 'vi', mQuality: '',
 				},
 				{
-					number: 5, name: 'D', quality: 'ii', mQuality: 'ii.',
+					number: 5, displayName: 'D', name: 'd', quality: 'ii', mQuality: 'ii.',
 				},
 				{
-					number: 5, name: 'G', quality: 'V7', mQuality: 'V7',
+					number: 5, displayName: 'G', name: 'g', quality: 'V7', mQuality: 'V7',
 				},
 				{
-					number: 5, name: 'C', quality: 'I', mQuality: 'i',
+					number: 5, displayName: 'C', name: 'c', quality: 'I', mQuality: 'i',
 				},
 				{
-					number: 5, name: 'F', quality: 'IV', mQuality: 'iv',
+					number: 5, displayName: 'F', name: 'f', quality: 'IV', mQuality: 'iv',
 				},
 				{
-					number: 5, name: 'Bb', quality: '', mQuality: 'bVII',
+					number: 5, displayName: 'B♭', name: 'bFlat', quality: '', mQuality: 'bVII',
 				},
 				{
-					number: 5, name: 'Eb', quality: '', mQuality: 'bIII',
+					number: 5, displayName: 'E♭', name: 'eFlat', quality: '', mQuality: 'bIII',
 				},
 				{
-					number: 5, name: 'Ab', quality: '', mQuality: 'bVI',
+					number: 5, displayName: 'A♭', name: 'aFlat', quality: '', mQuality: 'bVI',
 				},
 				{
-					number: 5, name: 'Db', quality: '', mQuality: '',
+					number: 5, displayName: 'D♭', name: 'dFlat', quality: '', mQuality: '',
 				},
 				{
-					number: 5, name: 'Gb/F#', quality: '', mQuality: '',
+					number: 5, displayName: 'G♭/F♯', name: 'gFlat', quality: '', mQuality: '',
 				},
 			],
 			currentTouch: {},
@@ -85,9 +86,13 @@ class CircleOfFifths extends Component {
 		this._setUpGestureHandler();
 	}
 
+	componentWillReceiveProps() {
+		console.log(this.props.currentKey, this.props.keyObject, this.props.parallelKey, this.props.relativeKey);
+	}
+
 	_value = item => item.number
 
-	_label = item => item.name
+	_label = item => item.displayName
 
 	_color = index => Theme.colors[index]
 
@@ -157,8 +162,8 @@ class CircleOfFifths extends Component {
 	}
 
 	_onPieItemSelected = (index) => {
-		this.props.changeKey(index);
-		console.log(this.props.currentKey);
+		// TODO need to change displayName
+		this.props.changeKey(this.state.data[index].name);
 		const currentStartAngle = this.state.angles[index].startAngle * (180 / Math.PI);
 		const currentEndAngle = this.state.angles[index].endAngle * (180 / Math.PI);
 		// rotate this note to the top
@@ -311,7 +316,7 @@ class CircleOfFifths extends Component {
 							{
 								this.state.data.map((item, index) => (
 									<Text
-										key={item.name}
+										key={item.displayName}
 										x={this.state.centroids[index][0] * 2}
 										y={this.state.centroids[index][1] * 2}
 										alignment="middle"
@@ -325,21 +330,21 @@ class CircleOfFifths extends Component {
 							{
 								this.state.data.map((item, index) => (
 									<Text
-										key={item.name}
+										key={item.displayName}
 										x={this.state.centroids[index][0] * 1.9}
 										y={this.state.centroids[index][1] * 1.9}
 										alignment="middle"
 										fill={this._color(index)}
 										font='bold 12px "Arial"'
 										transform={new Transform().rotate(-this.state.rotation)}
-									>{item.name}
+									>{item.displayName}
 									</Text>
 								))
 							}
 							{
 								this.state.data.map((item, index) => (
 									<Text
-										key={item.name}
+										key={item.displayName}
 										x={this.state.centroids[index][0]}
 										y={this.state.centroids[index][1]}
 										alignment="middle"
@@ -353,7 +358,7 @@ class CircleOfFifths extends Component {
 							{
 								this.state.data.map((item, index) => (
 									<Text
-										key={item.name}
+										key={item.displayName}
 										x={this.state.centroids[index][0] * 2.5}
 										y={this.state.centroids[index][1] * 2.5}
 										alignment="middle"
@@ -374,7 +379,7 @@ class CircleOfFifths extends Component {
 							const fontWeight = this.state.highlightedIndex === index ? 'bold' : 'normal';
 							return (
 								<TouchableWithoutFeedback
-									key={item.name}
+									key={item.displayName}
 									index={index}
 									onPress={() => this._onPieItemSelected(index)}
 								>
@@ -395,15 +400,25 @@ class CircleOfFifths extends Component {
 
 CircleOfFifths.propTypes = {
 	currentKey: PropTypes.string.isRequired,
+	keyObject: PropTypes.object.isRequired,
+	parallelKey: PropTypes.object.isRequired,
+	relativeKey: PropTypes.object.isRequired,
+	scale: PropTypes.string.isRequired,
 	changeKey: PropTypes.func.isRequired,
+	changeScale: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
 	currentKey: state.keys.currentKey,
+	scale: state.keys.scale,
+	keyObject: getKeyObject(state),
+	parallelKey: getParallelKey(state),
+	relativeKey: getRelativeKey(state),
 });
 
 const mapDispatchToProps = dispatch => ({
 	changeKey: newKey => dispatch(changeKey(newKey)),
+	changeScale: newScale => dispatch(changeScale(newScale)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CircleOfFifths);
