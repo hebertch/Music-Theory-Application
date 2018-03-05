@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { Button, Platform, StyleSheet, Text, View, } from 'react-native';
+import { Button, Platform, StyleSheet, Switch, Text, View, } from 'react-native';
 import { SegmentedControls } from 'react-native-radio-buttons'
 
 // f(component, props, childElements) => element
@@ -23,16 +23,32 @@ const styles = StyleSheet.create({
     }
 });
 
-const chord_quality_options = ['Maj', 'Min', 'Dim', 'Aug'];
-const seventh_quality_options = ['None', 'Maj', 'Min', 'Dim'];
-const root_tone_options = ['A', 'A#/Bb', 'B', 'Bb', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G']
+const chord_quality_options = ['Maj', 'Min', 'Dom', 'Dim'];
+const key_quality_options = ['Maj', 'Min'];
+const root_tone_options = ['A', 'A#/Bb', 'B', 'Bb', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G'];
+
+const step_up = "↑";
+const step_down = "↓";
+const leap_up = "↟";
+const leap_down = "↡";
+const parallel_motion = "≈";
+
+const make_chord = function(root, quality) {
+    return { root: root, quality: quality };
+}
+
+const chordText = function(chord) {
+    return chord.root + chord.quality;
+}
+const compositionText = function(composition_chords, analyze_p, key) {
+    return '';
+}
 
 const cCompositionEditView = component({
     getInitialState: function() {
 	return {composition: [], analysisResults: [],
-		selected_chord_quality: 'Maj',
-	        selected_seventh_quality: 'None',
-		selected_root_tone: 'C'};
+		selected_chord: make_chord('C', 'Maj'),
+		selected_key: make_chord('C', 'Maj')};
     },
 
     newCompositionPressed: function() {
@@ -41,59 +57,62 @@ const cCompositionEditView = component({
 
     addChordPressed: function() {
 	this.setState(function (state) {
-	    return {composition: state.composition.concat([this.chordText()])};
+	    return {composition: state.composition.concat([this.selected_chord])};
 	});
     },
 
-    analyzePressed: function() {
-	this.setState({analysisResults: ['G -> G breaks rule 1', 'G -> C breaks rule 2']});
-    },
-
-    chordQualitySelected: function(option) {
-	this.setState({selected_chord_quality: option});
-    },
-
-    seventhQualitySelected: function(option) {
-	this.setState({selected_seventh_quality: option});
-    },
-
     rootToneSelected: function(option) {
-	this.setState({selected_root_tone: option});
+	this.setState(function (state) {
+	    return {selected_chord: make_chord(option, state.selected_chord.quality)};
+	});
+    },
+    
+    chordQualitySelected: function(option) {
+	this.setState(function (state) {
+	    return {selected_chord: make_chord(state.selected_chord.root, option)};
+	});
     },
 
-    chordText: function() {
-	return this.state.selected_root_tone + this.state.selected_chord_quality +
-	    this.state.selected_seventh_quality;
+    keyRootToneSelected: function(option) {
+	this.setState(function (state) {
+	    return {selected_key: make_chord(option, state.selected_key.quality)};
+	});
+    },
+    
+    keyQualitySelected: function(option) {
+	this.setState(function (state) {
+	    return {selected_key: make_chord(state.selected_key.root, option)};
+	});
     },
 
     render: function() {
 	return e(View, {style: styles.container}, [
-            eText(this.state.composition.join(', ')),
-            e(Button, {title: 'New Composition', onPress: this.newCompositionPressed}),
+	    eText("Key"),
+	    e(SegmentedControls,
+	      {options: root_tone_options,
+	       onSelection: this.keyRootToneSelected,
+	       selectedOption: this.state.selected_key.root}),
+	    e(SegmentedControls,
+	      {options: key_quality_options,
+	       onSelection: this.keyQualitySelected,
+	       selectedOption: this.state.selected_key.quality}),
+
+	    eText("Chord"),
 	    e(SegmentedControls,
 	      {options: root_tone_options,
 	       onSelection: this.rootToneSelected,
-	       selectedOption: this.state.selected_root_tone}),
+	       selectedOption: this.state.selected_chord.root}),
 	    e(SegmentedControls,
 	      {options: chord_quality_options,
 	       onSelection: this.chordQualitySelected,
-	       selectedOption: this.state.selected_chord_quality}),
-	    e(SegmentedControls,
-	      {options: seventh_quality_options,
-	       onSelection: this.seventhQualitySelected,
-	       selectedOption: this.state.selected_seventh_quality}),
-	    e(Text, {}, ['Chord: ' + this.chordText()]),
+	       selectedOption: this.state.selected_chord.quality}),
+	    
             e(Button, {title: 'Add Chord', onPress: this.addChordPressed}),
-            e(Button, {title: 'Analyze', onPress: this.analyzePressed}),
-            eText('Analysis Results:'),
-            eText(this.state.analysisResults)
+            eText(compositionText(this.state.composition, true)),
+	    e(Button, {title: 'New Composition', onPress: this.newCompositionPressed})
         ]);
     }
 });
-
-// Choose Chord Component
-// Buttons: 12 Notes
-// Text: display chord
 
 // component
 // accessed by the Main Menu sidebar
