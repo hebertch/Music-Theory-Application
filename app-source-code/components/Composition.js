@@ -23,31 +23,6 @@ const styles = StyleSheet.create({
     }
 });
 
-const chord_quality_options = [major, minor, dominant, diminished];
-const key_quality_options = [major, minor];
-const root_tone_options = ['A', 'A#/Bb', 'B', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G'];
-const root_tones = [make_tone('a', 0),
-		    make_tone('b', -1),
-		    make_tone('c', 0),
-		    make_tone('d', -1),
-		    make_tone('d', 0),
-		    make_tone('e', 0),
-		    make_tone('f', 0),
-		    make_tone('f', 1),
-		    make_tone('g', 0)]
-
-const make_chord = function(root, quality) {
-    return { root: root, quality: quality };
-}
-
-const chordText = function(chord) {
-    return chord.root + chord.quality;
-}
-const compositionText = function(composition_chords, analyze_p, key) {
-    return '';
-}
-
-
 // The 7 letters in circle of fifths order.
 const root_letters = ['f', 'c', 'g', 'd', 'a', 'e', 'b'];
 
@@ -74,12 +49,11 @@ const leap_down = 3;
 const parallel_motion = 4;
 const tonal_gravity_transition_texts = ["↑", "↓", "↟", "↡", "≈"];
 
+const natural_text = 'NAT';
 const flat_text = 'b';
 const double_flat_text = 'bb';
-const triple_flat_text = 'bbb';
 const sharp_text = '#';
 const double_sharp_text = '##';
-const triple_sharp_text = '###';
 
 const numeral_texts = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
@@ -107,14 +81,12 @@ const tonal_gravity_transition_text = function(transition) {
 
 const accidental_text = function(num_accidentals) {
     switch (num_accidentals) {
-    case -3: return triple_flat_text;
     case -2: return double_flat_text;
     case -1: return flat_text;
     case 1: return sharp_text;
     case 2: return double_sharp_text;
-    case 3: return triple_sharp_text;
     }
-    Console.assert(num_accidentals >= -3 && num_accidentals <= 3, "Too many sharps or flats.")
+    console.assert(num_accidentals >= -2 && num_accidentals <= 2, "Too many sharps or flats.")
     return '';
 }
 
@@ -246,7 +218,7 @@ const grand_cadence = function(key) {
 }
 
 const composition_text = function(composition_chords, key) {
-    // For the web version
+    // For testing
     var text = '';
     var analysis = composition_analysis(composition_chords, key);
 
@@ -264,73 +236,142 @@ const composition_text = function(composition_chords, key) {
     return text;
 }
 
+const key_accidental_options = [flat_text, natural_text, sharp_text];
+const accidental_options = [double_flat_text, flat_text, natural_text, sharp_text, double_sharp_text];
+const accidental_text_to_num_accidentals = function(text) {
+    switch (text) {
+    case double_flat_text: return -2;
+    case flat_text: return -1;
+    case natural_text: return 0;
+    case sharp_text: return 1;
+    case double_sharp_text: return 2;
+    }
+    return 0;
+}
+
+const chord_quality_options = ['Major', 'Minor', 'Diminished', 'Dominant'];
+const key_quality_options = ['Major', 'Minor'];
+const chord_quality_text_to_chord_quality = function(text) {
+    return chord_quality_options.indexOf(text);
+}
+
+const letter_options = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+
 const cCompositionEditView = component({
     // TODO: convert from root_tone_options to make_tone()
     getInitialState: function() {
-	return {composition: [], analysisResults: [],
-		selected_chord: make_chord('C', major),
-		selected_key: make_chord('C', major)};
+	return {composition: [],
+
+		selected_key_letter: 'C',
+		selected_key_accidental: natural_text,
+		selected_key_quality: 'Major',
+
+		selected_chord_letter: 'C',
+		selected_chord_accidental: natural_text,
+		selected_chord_quality: 'Major'
+	       };
     },
 
-    newCompositionPressed: function() {
+    new_composition_pressed: function() {
 	this.setState({composition: []});
     },
 
-    addChordPressed: function() {
+    add_chord_pressed: function() {
 	this.setState(function (state) {
-	    return {composition: state.composition.concat([this.selected_chord])};
+	    return {composition: state.composition.concat([this.selected_chord()])};
 	});
     },
 
-    rootToneSelected: function(option) {
+    // TODO: Refactor chooser menu.
+    selected_key_letter_changed: function(option) {
 	this.setState(function (state) {
-	    return {selected_chord: make_chord(option, state.selected_chord.quality)};
+	    return {selected_key_letter: option};
 	});
     },
-    
-    chordQualitySelected: function(option) {
+    selected_key_accidental_changed: function(option) {
 	this.setState(function (state) {
-	    return {selected_chord: make_chord(state.selected_chord.root, option)};
+	    return {selected_key_accidental: option};
+	});
+    },  
+    selected_key_quality_changed: function(option) {
+	this.setState(function (state) {
+	    return {selected_key_quality: option};
 	});
     },
 
-    keyRootToneSelected: function(option) {
+    selected_chord_letter_changed: function(option) {
 	this.setState(function (state) {
-	    return {selected_key: make_chord(option, state.selected_key.quality)};
+	    return {selected_chord_letter: option};
 	});
     },
-    
-    keyQualitySelected: function(option) {
+    selected_chord_accidental_changed: function(option) {
 	this.setState(function (state) {
-	    return {selected_key: make_chord(state.selected_key.root, option)};
+	    return {selected_chord_accidental: option};
 	});
+    },  
+    selected_chord_quality_changed: function(option) {
+	this.setState(function (state) {
+	    return {selected_chord_quality: option};
+	});
+    },
+
+
+    selected_key_tone: function() {
+	var letter = this.state.selected_key_letter.toLowerCase();
+	var num_accidentals = accidental_text_to_num_accidentals(this.state.selected_key_accidental);
+	return make_tone(letter, num_accidentals);
+    },
+    selected_key: function() {
+	return make_chord(this.selected_key_tone(),
+			  chord_quality_text_to_chord_quality(this.state.selected_key_quality));
+    },
+
+    selected_chord_tone: function() {
+	var letter = this.state.selected_chord_letter.toLowerCase();
+	var num_accidentals = accidental_text_to_num_accidentals(this.state.selected_chord_accidental);
+	return make_tone(letter, num_accidentals);
+    },
+    selected_chord: function() {
+	return make_chord(this.selected_chord_tone(),
+			  chord_quality_text_to_chord_quality(this.state.selected_chord_quality));
     },
 
     render: function() {
 	return e(View, {style: styles.container}, [
 	    eText("Key"),
+
 	    e(SegmentedControls,
-	      {options: root_tone_options,
-	       onSelection: this.keyRootToneSelected,
-	       selectedOption: this.state.selected_key.root}),
+	      {options: letter_options,
+	       onSelection: this.selected_key_letter_changed,
+	       selectedOption: this.state.selected_key_letter}),
+	    e(SegmentedControls,
+	      {options: key_accidental_options,
+	       onSelection: this.selected_key_accidental_changed,
+	       selectedOption: this.state.selected_key_accidental}),
 	    e(SegmentedControls,
 	      {options: key_quality_options,
-	       onSelection: this.keyQualitySelected,
-	       selectedOption: this.state.selected_key.quality}),
+	       onSelection: this.selected_key_quality_changed,
+	       selectedOption: this.state.selected_key_quality}),
 
 	    eText("Chord"),
+
 	    e(SegmentedControls,
-	      {options: root_tone_options,
-	       onSelection: this.rootToneSelected,
-	       selectedOption: this.state.selected_chord.root}),
+	      {options: letter_options,
+	       onSelection: this.selected_chord_letter_changed,
+	       selectedOption: this.state.selected_chord_letter}),
+	    e(SegmentedControls,
+	      {options: accidental_options,
+	       onSelection: this.selected_chord_accidental_changed,
+	       selectedOption: this.state.selected_chord_accidental}),
 	    e(SegmentedControls,
 	      {options: chord_quality_options,
-	       onSelection: this.chordQualitySelected,
-	       selectedOption: this.state.selected_chord.quality}),
+	       onSelection: this.selected_chord_quality_changed,
+	       selectedOption: this.state.selected_chord_quality}),
 	    
-            e(Button, {title: 'Add Chord', onPress: this.addChordPressed}),
-            eText(compositionText(this.state.composition, true)),
-	    e(Button, {title: 'New Composition', onPress: this.newCompositionPressed})
+            e(Button, {title: 'Add Chord', onPress: this.add_chord_pressed}),
+	    eText('Composition'),
+            eText(composition_text(this.state.composition, this.selected_key())),
+	    e(Button, {title: 'New Composition', onPress: this.new_composition_pressed})
         ]);
     }
 });
