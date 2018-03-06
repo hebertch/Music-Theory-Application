@@ -22,6 +22,7 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/CircleOFifths/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
