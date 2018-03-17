@@ -3,13 +3,15 @@ import { View } from 'react-native';
 
 import CofContainer from './CofContainer';
 import Sidebar from './Sidebar';
-import ScaleSwitch from './ScaleSwitch';
+import Toggles from './Toggles';
+import ChordSelection from './ChordSelection';
 
 const CircleOfFifthsScreen = () => (
   <View>
-    <ScaleSwitch />
+    <Toggles />
     <CofContainer />
     <Sidebar />
+    <ChordSelection />
   </View>
 );
 

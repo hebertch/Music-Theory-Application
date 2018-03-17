@@ -9,7 +9,8 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { getKeyObject, fifths } from '../../../selectors/keys';
+import { getKeyObject, fifths, rotation } from '../../../selectors/keys';
+import rotateMappings from '../../../static/rotationMappings';
 import { changeKey } from '../../../actions/keys';
 import _distanceBetweenTwoPoints from '../../../util/geometry';
 import Circle from './Circle';
@@ -19,6 +20,7 @@ const {
   Surface,
   Group,
   Transform,
+  Text,
 } = ART;
 
 // const art = Platform.select({
@@ -65,11 +67,35 @@ class CofContainer extends Component {
     this.state = {
       currentTouch: {},
       lastTouch: {},
-      rotation: 0,
+      // brings c to top
+      rotation: 195,
     };
 
     // set up rotation of circle
     this._setUpGestureHandler();
+    this._lockWheel();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.rotation !== this.state.rotation) {
+      this.setState({ rotation: nextProps.rotation });
+    }
+  }
+
+  _lockWheel() {
+    const rotationCurrent = (this.state.rotation % 360 + 360) % 360;
+    console.log(rotationCurrent);
+    // get closest rotate value
+    let curr = rotateMappings[0];
+    for (let i = 0; i < rotateMappings.length; i++) {
+      if (Math.abs(rotationCurrent - rotateMappings[i]) < Math.abs(rotationCurrent - curr)) {
+        curr = rotateMappings[i];
+      }
+    }
+    const index = rotateMappings.indexOf(curr);
+    const newRoot = this.props.fifths.map(el => el.note)[index];
+    console.log('NEW ROOT', newRoot);
+    this.props.changeKey(newRoot);
   }
 
   _setUpGestureHandler() {
@@ -82,6 +108,9 @@ class CofContainer extends Component {
       onPanResponderGrant: () => {
         this.setState({ lastTouch: {}, currentTouch: {} });
       },
+      onPanResponderRelease: () => {
+        this._lockWheel();
+      },
       onPanResponderMove: (evt, gestureState) => {
         if (gestureState.numberActiveTouches === 1) {
           if (this.state.lastTouch === {}) {
@@ -90,10 +119,9 @@ class CofContainer extends Component {
           } else {
             this.setState({ lastTouch: this.state.currentTouch });
             this.setState({ currentTouch: { X: gestureState.moveX, Y: gestureState.moveY } });
-
             const triangle = {
               // magic numbers
-              radiusPoint: { X: 190, Y: 415 },
+              radiusPoint: { X: 185, Y: 565 },
               lastPoint: this.state.lastTouch,
               currentPoint: this.state.currentTouch,
 
@@ -121,42 +149,42 @@ class CofContainer extends Component {
               && triangle.currentPoint.X > triangle.lastPoint.X
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) < Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation - triangle.theta });
+              this.setState({ rotation: (this.state.rotation - triangle.theta) % 360 });
             } else if (triangle.currentPoint.Y > triangle.radiusPoint.Y
               && triangle.currentPoint.X < triangle.lastPoint.X
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) < Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation + triangle.theta });
+              this.setState({ rotation: (this.state.rotation + triangle.theta) % 360 });
             } else if (triangle.currentPoint.Y < triangle.radiusPoint.Y
               && triangle.currentPoint.X > triangle.lastPoint.X
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) < Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation + triangle.theta });
+              this.setState({ rotation: (this.state.rotation + triangle.theta) % 360 });
             } else if (triangle.currentPoint.Y < triangle.radiusPoint.Y
               && triangle.currentPoint.X < triangle.lastPoint.X
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) < Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation - triangle.theta });
+              this.setState({ rotation: (this.state.rotation - triangle.theta) % 360 });
             } else if (triangle.currentPoint.X < triangle.radiusPoint.X
               && triangle.currentPoint.Y < triangle.lastPoint.Y
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) > Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation + triangle.theta });
+              this.setState({ rotation: (this.state.rotation + triangle.theta) % 360 });
             } else if (triangle.currentPoint.X < triangle.radiusPoint.X
               && triangle.currentPoint.Y > triangle.lastPoint.Y
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) > Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation - triangle.theta });
+              this.setState({ rotation: (this.state.rotation - triangle.theta) % 360 });
             } else if (triangle.currentPoint.X > triangle.radiusPoint.X
               && triangle.currentPoint.Y < triangle.lastPoint.Y
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) > Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation - triangle.theta });
+              this.setState({ rotation: (this.state.rotation - triangle.theta) % 360 });
             } else if (triangle.currentPoint.X > triangle.radiusPoint.X
               && triangle.currentPoint.Y > triangle.lastPoint.Y
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) > Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
             ) {
-              this.setState({ rotation: this.state.rotation + triangle.theta });
+              this.setState({ rotation: (this.state.rotation + triangle.theta) % 360 });
             }
           }
         }
@@ -171,20 +199,31 @@ class CofContainer extends Component {
       <View style={styles.container}>
         <View {...this._panResponder.panHandlers}>
           <Surface width={Dimensions.get('window').width} height={Dimensions.get('window').height}>
+            <Group x={x} y={y}>
+              <Text
+                x={0}
+                y={-y / 2}
+                alignment="middle"
+                fill="#000"
+                font='bold 12px "Arial"'
+              >
+                V
+              </Text>
+            </Group>
             <Group x={x} y={y} transform={new Transform().rotate(this.state.rotation)}>
               <Circle
-                radius={200}
-                innerRadius={30}
+                radius={x}
+                innerRadius={x / 10}
                 colors={colors}
               />
               <Circle
-                radius={165}
-                innerRadius={160}
+                radius={x * (14 / 18)}
+                innerRadius={x * (14 / 18) - 5}
                 colors={new Array(12).fill('#000')}
               />
               <Circle
-                radius={95}
-                innerRadius={90}
+                radius={x / 2}
+                innerRadius={x / 2 - 5}
                 colors={new Array(12).fill('#000')}
               />
               { /* Circular text for current key */}
@@ -207,29 +246,33 @@ class CofContainer extends Component {
                 multiplier={1.25}
               />
               { /* Circular text for parallel notes */}
-              <CircularText
-                data={this.props.fifths.map((el) => {
-                  if (!el.parallel) {
-                    return '';
-                  }
-                  return el.parallel;
-                })}
-                rotation={-this.state.rotation}
-                colors={new Array(12).fill('#000')}
-                multiplier={0.7}
-              />
+              {this.props.showParallel ?
+                <CircularText
+                  data={this.props.fifths.map((el) => {
+                    if (!el.parallel) {
+                      return '';
+                    }
+                    return el.parallel;
+                  })}
+                  rotation={-this.state.rotation}
+                  colors={new Array(12).fill('#000')}
+                  multiplier={0.6}
+                /> : null
+              }
               { /* Circular text for relative notes */}
-              <CircularText
-                data={this.props.fifths.map((el) => {
-                  if (!el.relative) {
-                    return '';
-                  }
-                  return el.relative;
-                })}
-                rotation={-this.state.rotation}
-                colors={new Array(12).fill('#000')}
-                multiplier={1.95}
-              />
+              {this.props.showRelative ?
+                <CircularText
+                  data={this.props.fifths.map((el) => {
+                    if (!el.relative) {
+                      return '';
+                    }
+                    return el.relative;
+                  })}
+                  rotation={-this.state.rotation}
+                  colors={new Array(12).fill('#000')}
+                  multiplier={1.85}
+                /> : null
+              }
             </Group>
           </Surface>
         </View>
@@ -241,12 +284,19 @@ class CofContainer extends Component {
 CofContainer.propTypes = {
   keyObject: PropTypes.arrayOf(PropTypes.object).isRequired,
   fifths: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rotation: PropTypes.object.isRequired,
+  changeKey: PropTypes.func.isRequired,
+  showParallel: PropTypes.bool.isRequired,
+  showRelative: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
-  currentKey: state.keys.currentKey,
   keyObject: getKeyObject(state),
   fifths: fifths(state),
+  rotation: rotation(state),
+  currentKey: state.keys.currentKey,
+  showParallel: state.keys.showParallel,
+  showRelative: state.keys.showRelative,
 });
 
 const mapDispatchToProps = dispatch => ({

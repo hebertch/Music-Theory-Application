@@ -64,7 +64,6 @@ export const getKeyObject = createSelector(
       goldy[rootIndex + i] = Object.assign({}, goldy[rootIndex + i], { parallel: pattern[i] });
     }
 
-    console.log(goldy);
     return goldy;
   },
 );
@@ -78,12 +77,16 @@ export const fifths = createSelector(
     const startIndex = key.findIndex(el => Object.keys(el).includes('quality'));
     const endIndex = startIndex + 12;
     const returnArray = key.filter((el, i) => (i >= startIndex && i < endIndex));
-    // const returnArray = key.filter((el) => {
-    //   const keys = Object.keys(el);
-    //   return (keys.includes('quality') || keys.includes('parallel') || keys.includes('relative'));
-    // });
-    console.log('inSelector', returnArray);
     return returnArray;
   },
 );
 
+export const rotation = createSelector(
+  state => state.keys.currentKey,
+  state => fifths(state),
+  (currentKey, fifthNotes) => {
+    const multiplier = fifthNotes.length - 1 - fifthNotes.findIndex(el => el.quality === 'I' || el.quality === 'i');
+    const angle = (multiplier * 30) + 15;
+    return angle;
+  },
+);
