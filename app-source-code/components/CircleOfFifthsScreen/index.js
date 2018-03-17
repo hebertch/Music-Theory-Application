@@ -7,11 +7,54 @@ import Toggles from './Toggles';
 import ChordSelection from './ChordSelection';
 
 const CircleOfFifthsScreen = () => (
-  <View>
-    <Toggles />
-    <CofContainer />
-    <Sidebar />
-    <ChordSelection />
+  <View
+    style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+    }}
+  >
+    <View
+      style={{
+        flex: 1,
+        flexDirection: 'row',
+      }}
+    >
+      <View
+        style={{
+          flex: 3,
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <Toggles />
+        </View>
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <ChordSelection />
+        </View>
+      </View>
+      <View
+        style={{
+          flex: 1,
+        }}
+      >
+        <Sidebar />
+      </View>
+    </View>
+    <View
+      style={{
+        flex: 1,
+      }}
+    >
+      <CofContainer />
+    </View>
   </View>
 );
 

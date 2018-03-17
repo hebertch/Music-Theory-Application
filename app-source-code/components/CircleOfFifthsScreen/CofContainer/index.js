@@ -119,9 +119,15 @@ class CofContainer extends Component {
           } else {
             this.setState({ lastTouch: this.state.currentTouch });
             this.setState({ currentTouch: { X: gestureState.moveX, Y: gestureState.moveY } });
+            console.log('WINDOW DIMENSIONS');
+            console.log(Dimensions.get('window').width / 2);
+            console.log(Dimensions.get('window').height * (3 / 4));
             const triangle = {
               // magic numbers
-              radiusPoint: { X: 185, Y: 565 },
+              radiusPoint: {
+                X: Dimensions.get('window').width / 2,
+                Y: Dimensions.get('window').height * (3 / 4),
+              },
               lastPoint: this.state.lastTouch,
               currentPoint: this.state.currentTouch,
 
@@ -194,7 +200,8 @@ class CofContainer extends Component {
 
   render() {
     const x = Dimensions.get('window').width / 2;
-    const y = Dimensions.get('window').height / 2;
+    const y = Dimensions.get('window').height / 4;
+    const radius = x * 2 < Dimensions.get('window').height / 2 ? x : y;
     return (
       <View style={styles.container}>
         <View {...this._panResponder.panHandlers}>
@@ -212,18 +219,18 @@ class CofContainer extends Component {
             </Group>
             <Group x={x} y={y} transform={new Transform().rotate(this.state.rotation)}>
               <Circle
-                radius={x}
-                innerRadius={x / 10}
+                radius={radius}
+                innerRadius={radius / 10}
                 colors={colors}
               />
               <Circle
-                radius={x * (14 / 18)}
-                innerRadius={x * (14 / 18) - 5}
+                radius={radius * (14 / 18)}
+                innerRadius={radius * (14 / 18) - 5}
                 colors={new Array(12).fill('#000')}
               />
               <Circle
-                radius={x / 2}
-                innerRadius={x / 2 - 5}
+                radius={radius / 2}
+                innerRadius={radius / 2 - 5}
                 colors={new Array(12).fill('#000')}
               />
               { /* Circular text for current key */}
