@@ -1,18 +1,18 @@
 import { DrawerNavigator } from 'react-navigation';
-import CofContainer from './CofContainer';
+import CircleOfFifthsScreen from './CircleOfFifthsScreen';
 import { ReferencesContainer } from './References';
 import { CompositionContainer } from './Composition';
 
 const RootDrawer = DrawerNavigator({
-	Home: {
-		screen: CofContainer,
-	},
-	References: {
-		screen: ReferencesContainer,
-	},
-	Compose: {
-		screen: CompositionContainer,
-	},
+  Home: {
+    screen: CircleOfFifthsScreen,
+  },
+  References: {
+    screen: ReferencesContainer,
+  },
+  Compose: {
+    screen: CompositionContainer,
+  },
 });
 
 export default RootDrawer;
