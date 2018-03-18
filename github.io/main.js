@@ -24,6 +24,7 @@ const leap_down = 3;
 const parallel_motion = 4;
 const tonal_gravity_transition_texts = ['su', 'sd', 'lu', 'ld', 'pm'];
 
+const natural_text = 'NAT';
 const flat_text = 'b';
 const double_flat_text = 'bb';
 const triple_flat_text = 'bbb';
@@ -64,7 +65,7 @@ const accidental_text = function(num_accidentals) {
     case 2: return double_sharp_text;
     case 3: return triple_sharp_text;
     }
-    Console.assert(num_accidentals >= -3 && num_accidentals <= 3, "Too many sharps or flats.")
+    console.assert(num_accidentals >= -3 && num_accidentals <= 3, "Too many sharps or flats.")
     return '';
 }
 
@@ -214,25 +215,55 @@ const composition_text = function(composition_chords, key) {
     return text;
 }
 
+const double_flat = -2;
+const flat = -1;
+const natural = 0;
+const sharp = 1;
+const double_sharp = 2;
+
+'V7/V7'
+'V7/ii'
+
 function main() {
-    var key = ab_minor;
+    var key = c_major;
     //var composition_chords = grand_cadence(key);
-    var composition_chords = diatonic_chords(key);
+    //var composition_chords = diatonic_chords(key);
+    var composition_chords = [
+	make_chord(make_tone('c', natural), major),
+	make_chord(make_tone('a', natural), minor),
+	make_chord(make_tone('a', flat), dominant),
+	make_chord(make_tone('g', natural), dominant),
+	make_chord(make_tone('c', natural), major),
+    ];
     addElements([
-	e("div", composition_text(composition_chords, key))
+	div(composition_text(composition_chords, key))
     ]);
 }
-
-/*
-function main() {
-	addElements([
-			e("h1", "Home"),
-			e("h2", "Prototypes"),
-			ulist([
-				a("prototypes/compose/index.html", "Compose"),
-				a("prototypes/waves/index.html", "Waves")
-				])
-			]);
-}
-*/
 window.onload = main;
+
+// Diatonic: Black
+// Borrowed: Blue (iv)
+// 2nd Dom: Red (V7/ii)
+// Tritone Sub: Green (TtV7/V7)
+// Other: Yellow
+
+// (C)I (Am)vi (Ab7)bVI7
+// (C)I (Am)vi (Ab7)(bVI7 TtV7/V7) StepDown (G7)V7
+
+// Tritone sub: down one half step (before and/or after) (either dominant/major)
+
+// A StepDown (Ab)(bVI) StepDown (G7)V7
+// Eb StepDown (Ab)(bVI) StepDown (G7)V7
+
+// (Ab7)(bVI7 TtV7/V7) (G7)V7
+// (C)I (D7)(II7 V7/V7)
+
+// db,  ab,  eb,   bb,    f, c, g,  d,  a,   e,   b, f#
+// bII, bVI, bIII, bVII, IV, I, V, ii, vi, iii, vii, #IV
+
+// Dbm (bii)
+
+// Limit: b2 to #4
+// Gb ->
+// F# (#IV)
+// G# ->
