@@ -1,0 +1,18 @@
+- Fix pan responder
+- Checkboxes
+- Chord pop ups
+- Rotate wheel
+- Lock wheel
+- Styling for all screens
+- b2 and #4 double flat fix: #4 shouldn't have a flat
+- parallel key fix
+- Show b2 and #4
+- Get rid of magic numbers like for the middle of the circle
+- Blue -> teal/gray color change
+- One chord is always red
+- Colors consistent with sidebar
+- Show qualities below note list
+- ATTEMPT: White wedge with colored spokes coming out
+- Sidebar should show 7 notes at once
+- Don't go higher than d# minor don't go lower than eb minor
+- Don't go higher than f# maj don't go lower than gb major
