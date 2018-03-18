@@ -57,7 +57,6 @@
             {\Large
                 \NameSigPair{\GroupMemberOne}\par
                 \NameSigPair{\GroupMemberTwo}\par
-                \NameSigPair{\GroupMemberThree}\par
             }
             \vspace{20pt}
         }
@@ -110,7 +109,7 @@ The most basic and core function of this application will be the circle of fifth
 From here the user can select options that would allow them to view parallel and relative keys, or select different keys. 
 
 \par
-To supplement this core functionality we will creating separate ‘pages’ one of which will describe how and why the circle works along with some general “rules of the schedule of tonal gravity” and descriptions of vocabulary used within the tool.
+To supplement this core functionality we will be creating separate ‘pages’ one of which will describe how and why the circle works along with some general “rules of the schedule of tonal gravity” and descriptions of vocabulary used within the tool.
 Another page will allow the user to input ‘compositions’ which the application will then analyze and output information with regards to the users composition.
 For instance it might inform the user if they followed the rules of tonal gravity or possibly recommend how to improve the composition.
 To further supplement the users comprehension of the core tool, we may also add quizzes or interactive media that cements the users understanding of musical theory. 
@@ -125,8 +124,6 @@ It will be released for the iPhone, iPad, and Android tablets and phones.
 It needs to be developed for touch interfaces and limited screen space.
 Users of the apps are expected to use thumb and index fingers.
 It should operate under a variety of resolutions.
-It should be able to access enough flash memory to save and load compositions.
-It should be able to access the audio playback operations in order to play user compositions.
 
 \subsection{Product Functions}
 \par
@@ -160,7 +157,7 @@ There will also be many obstacles in implementing the application including; det
 The related topics that could be included in the application or the application built off of this tool are very numerous so a big constraint for this project will be determining how we design the framework to allow for adaptability.
 \subsection{Assumptions and Dependencies}
 \par
-This SRS assumes that the app can be written for a virtual machine which provides: a touch screen interface, audio playback, visual display, timers, and permanent memory.
+This SRS assumes that the app can be written for a virtual machine which provides: a touch screen interface, visual display, timers, and permanent memory.
 The code written for the virtual machine should be automatically translated to code that executes on the various devices.
 If this is not possible, the development of this app will be limited to the iPhone and iPad devices only.
 
@@ -168,13 +165,12 @@ If this is not possible, the development of this app will be limited to the iPho
 
 \subsection{Interactive Circle Of Fifths: 00}
 \begin{itemize}
-\item User can see correct notes are on the outside of circle
-\item User can change root note of circle
+\item User can see correct notes are on the inside of circle
+\item User can change root note of circle by rotating the circle or using the sidebar
 \item User can see the correct chord quality numberings above notes within selected key
 \item Circle of Fifths sidebar
     \begin{itemize}
         \item User can see the notes of the current key in a sidebar
-        \item User can see that the sidebar reflects the correct chord quality based on the current key
         \item User can visualize the tonal gravity of the current key
     \end{itemize}
 \item Parallel and Relative Keys within Circle of Fifths
@@ -191,7 +187,6 @@ If this is not possible, the development of this app will be limited to the iPho
 \item User has ability to create a few measures of chord progression
 \item User has an easy way of inputting chords whether it be with the circle of fifths or an altered keyboard
 \item User can have the application analyze a composition and determine if they followed the rules of tonal gravity
-\item User has ability to iteratively add parallel and relative keys to the composition analysis
 \end{itemize}
 
 \pagebreak
@@ -199,14 +194,9 @@ If this is not possible, the development of this app will be limited to the iPho
 Reference pages are pages of text and non-interactive visuals describing the various music theory concepts.
 \begin{itemize}
 \item Schedule of Tonal Gravity reference page
-\item Parallel and Relative Keys reference page
-\item Secondary Dominants reference page
-\item Tritone substitution reference page
-\item Diatonic substitution reference page
-\item Diminished substitution reference page
-\item Frequency and Interval reference page 
+\item Perfect Fifth reference page 
 \item Chord reference page
-\item Vocabulary page
+\item Enharmonic Equivalents page
 \end{itemize}
 
 \section{Development Flow}
