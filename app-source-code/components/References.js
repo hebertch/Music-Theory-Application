@@ -1,6 +1,6 @@
 import { default as React, Component } from 'react';
-import { Platform, StyleSheet, Text, View, } from 'react-native';
-import { markdownText } from '../static/markdown.js'
+import { Platform, ScrollView, StyleSheet, Text, View, } from 'react-native';
+import { perfect_fifth_markdown_text, musical_gravity_markdown_text, rules_for_chords_markdown_text, enharmonic_equivalents_markdown_text } from '../static/markdown.js'
 
 // For Left<-->Right page swiping
 import { default as Swiper } from 'react-native-swiper';
@@ -33,6 +33,7 @@ const eReferences =
 // StyleSheet
 const swipeStyles = StyleSheet.create({
     wrapper: {
+	marginTop: 21,
     },
     slide1: {
 	flex: 1,
@@ -66,20 +67,21 @@ const eSwipeView = function(style, text) {
     ]);
 }
 
+const e_md = function(md) {
+    return e(ScrollView, {}, [e(Markdown, {}, [md])]);
+}
+
 // component
 const cReferences = component({
     render: function() {
 	return e(Swiper, {style: swipeStyles.wrapper, showButtons: true}, [
-            eMarkdown,
-            eSwipeView(swipeStyles.slide1, 'Hello Swiper'),
-            eSwipeView(swipeStyles.slide2, 'Beautiful'),
-            eSwipeView(swipeStyles.slide3, 'And simple'),
+            e_md(perfect_fifth_markdown_text),
+	    e_md(musical_gravity_markdown_text),
+	    e_md(rules_for_chords_markdown_text),
+	    e_md(enharmonic_equivalents_markdown_text),
         ]);
     }
 })
-
-// element
-const eMarkdown = e(Markdown, {}, [markdownText]);
 
 // component
 // accessed by the Main Menu sidebar
