@@ -4,7 +4,6 @@ import { perfect_fifth_markdown_text, musical_gravity_markdown_text, rules_for_c
 
 // For Left<-->Right page swiping
 import { default as Swiper } from 'react-native-swiper';
-import { default as Markdown } from 'react-native-simple-markdown';
 
 // f(component, props, childElements) => element
 const e = function(component, props, children) {
@@ -68,7 +67,7 @@ const eSwipeView = function(style, text) {
 }
 
 const e_md = function(md) {
-    return e(ScrollView, {}, [e(Markdown, {}, [md])]);
+    return e(ScrollView, {}, [e(Text, {}, [md])]);
 }
 
 // component

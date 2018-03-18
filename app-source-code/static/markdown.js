@@ -1,14 +1,9 @@
 export const perfect_fifth_markdown_text =
 `#The Perfect Fifth 
 
-In Western music the interval of the Perfect Fifth can can be compared to the Golden Ratio (or golden mean) of mathematics.
-Just as the Golden Ratio is found throughout the natural world, the visual arts, and architecture, the Perfect Fifth is found throughout Western Music.
-Concepts of scales, keys and key signatures, and harmonic functions (movement from one chord to another) are best understood as variations on the pattern of perfect fifths.
+In Western music the interval of the Perfect Fifth can can be compared to the Golden Ratio (or golden mean) of mathematics. Just as the Golden Ratio is found throughout the natural world, the visual arts, and architecture, the Perfect Fifth is found throughout Western Music. Concepts of scales, keys and key signatures, and harmonic functions (movement from one chord to another) are best understood as variations on the pattern of perfect fifths.
 
-The Perfect Fifth is a relationship between two pitches, one lower and one higher, related to each other in a simple 3 to 3 ratio.
-For every two vibrations of the lower pitch, the upper pitch vibrates three times.
-In other words, if you play a perfect fifth with the notes G and D on a violin, every two vibrations of the lower string (G) would occur in the same time frame as three vibrations of the upper string (D).
-This 3/2 relationship is the simplest, and therefore strongest, relationship between two different notes.`;
+The Perfect Fifth is a relationship between two pitches, one lower and one higher, related to each other in a simple 3 to 3 ratio. For every two vibrations of the lower pitch, the upper pitch vibrates three times. In other words, if you play a perfect fifth with the notes G and D on a violin, every two vibrations of the lower string (G) would occur in the same time frame as three vibrations of the upper string (D). This 3/2 relationship is the simplest, and therefore strongest, relationship between two different notes.`;
 
 export const musical_gravity_markdown_text =
 `#Musical Gravity
@@ -23,7 +18,7 @@ D# -> G# -> C# -> F# -> B -> E -> A -> D -> G -> C -> F -> Bb -> Eb -> Ab -> Db 
 export const rules_for_chords_markdown_text =
 `#3 Rules for Chords
 
-1. A chord is a combination of 3 or more notes played simultaneously .
+1. A chord is a combination of 3 or more notes played simultaneously.
 2. A chord is typically built by stacking 3rds above a root note.
 3. Once built, the stack can be inverted.
 
