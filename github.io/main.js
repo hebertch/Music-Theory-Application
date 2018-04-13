@@ -139,13 +139,24 @@ const scale_step_text = function(scale_step) {
 }
 
 const analyzed_chord_table_row = function(analyzed_chord) {
+    var rn = 'TODO';
+    if (analyzed_chord.diatonic_scale_step !== null) {
+	rn = roman_numeral_text(analyzed_chord.diatonic_scale_step, analyzed_chord.chord.quality);
+    } else if (analyzed_chord.borrowed_scale_step  !== null) {
+	rn = roman_numeral_text(analyzed_chord.borrowed_scale_step, analyzed_chord.chord.quality);
+    } else if (analyzed_chord.secondary_dominant_scale_step !== null) {
+	rn = 'V7/' + roman_numeral_text(analyzed_chord.secondary_dominant_scale_step, analyzed_chord.next_chord.quality);
+    } else if (analyzed_chord.tritone_scale_step !== null) {
+	rn = 'TtV7/' + roman_numeral_text(analyzed_chord.tritone_scale_step, analyzed_chord.next_chord.quality);
+    } else {
+    }
     return [
 	chord_text(analyzed_chord.chord),
 	scale_step_text(analyzed_chord.diatonic_scale_step),
 	scale_step_text(analyzed_chord.borrowed_scale_step),
-	'TODO Sec..',
-	'TODO Tri..',
-	'TODO Ana..',
+	scale_step_text(analyzed_chord.secondary_dominant_scale_step),
+	scale_step_text(analyzed_chord.tritone_scale_step),
+	rn,
 	tonal_gravity_transition_text(analyzed_chord.tonal_gravity_transition)
     ];
 }
@@ -153,11 +164,11 @@ const analyzed_chord_table_row = function(analyzed_chord) {
 const composition_analysis_div = function(analysis) {
     var rows = [];
     rows.push(['Chord',
-	       'Diatonic S.S.', 
-	       'Borrowed S.S.',
-	       'Secondary Dominant S.S.',
-	       'Tritone S.S.',
-	       'Analyzed S.S.',
+	       'Diatonic', 
+	       'Borrowed',
+	       'Secondary',
+	       'Tritone',
+	       'Analyzed',
 	       'Transition']);
     for (var i = 0; i < analysis.length; ++i) {
 	var analyzed_chord = analysis[i];
@@ -198,18 +209,42 @@ const composition_analysis = function(composition_chords, key) {
     
     for (var i = 0; i < composition_chords.length; ++i) {
 	var chord = composition_chords[i];
-	var tmp = { chord: chord };
+	var prev_chord = i !== 0 ? composition_chords[i - 1] : null;
+	var next_chord = i !== composition_chords.length-1 ? composition_chords[i + 1] : null;
+	var tmp = { chord: chord, 
+		    diatonic_scale_step: null,
+		    borrowed_scale_step: null,
+		    secondary_dominant_scale_step: null,
+		    tritone_scale_step: null,
+		    next_chord: null,
+		    tonal_gravity_transition: null,
+		  };
 	
 	tmp.diatonic_scale_step = position_chord(chord, chords);
 	tmp.borrowed_scale_step = position_chord(chord, borrowed_chords);
-	
-	var is_first_chord = i === 0;
-	var tg = null;
-	if (!is_first_chord) {
-	    var prev_chord = composition_chords[i - 1];
-	    tg = tonal_gravity_transition(prev_chord.root, chord.root);
+
+	if (chord.quality === dominant && 
+	    next_chord &&
+	    position_chord(next_chord, chords) &&
+	    fifth_position(chord.root) - 1 === fifth_position(next_chord.root)) {
+
+	    tmp.secondary_dominant_scale_step = position_chord(next_chord, chords);
+	    tmp.next_chord = next_chord;
 	}
-	tmp.tonal_gravity_transition = tg;
+
+	if (chord.quality === dominant && 
+	    next_chord &&
+	    (fifth_position(chord.root) + 5 === fifth_position(next_chord.root) ||
+	     fifth_position(chord.root) - 7 === fifth_position(next_chord.root))) {
+	    
+	    tmp.tritone_scale_step = position_chord(next_chord, chords);
+	    tmp.next_chord = next_chord;
+	}
+
+	if (prev_chord) {
+	    tmp.tonal_gravity_transition = tonal_gravity_transition(prev_chord.root, chord.root);
+	}
+
 	analysis.push(tmp);
     }
     return analysis;
@@ -274,13 +309,18 @@ function main() {
     //var composition_chords = diatonic_chords(key);
     var composition_chords = [
 	make_chord(make_tone('c', natural), major),
+	make_chord(make_tone('e', natural), dominant),
 	make_chord(make_tone('a', natural), minor),
+	make_chord(make_tone('e', natural), dominant),
 	make_chord(make_tone('f', natural), minor),
 	make_chord(make_tone('a', flat), dominant),
+	make_chord(make_tone('g', natural), dominant),
+	make_chord(make_tone('g', sharp), dominant),
 	make_chord(make_tone('g', natural), dominant),
 	make_chord(make_tone('c', natural), major),
     ];
     addElements([
+	div('Key: ' + chord_text(key)),
 	composition_analysis_div(composition_analysis(composition_chords, key))
     ]);
 }
@@ -312,7 +352,6 @@ window.onload = main;
 // Gb ->
 // F# (#IV)
 // G# ->
-
 
 // Diatonic Substitutions:
 // Major
