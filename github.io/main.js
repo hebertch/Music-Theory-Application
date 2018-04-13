@@ -53,7 +53,7 @@ const quality_text = function (quality) {
 };
 
 const tonal_gravity_transition_text = function(transition) {
-    return tonal_gravity_transition_texts[transition];
+    return transition ? tonal_gravity_transition_texts[transition] : 'N/A';
 };
 
 const accidental_text = function(num_accidentals) {
@@ -129,6 +129,24 @@ const roman_numeral_text = function(scale_step, quality) {
 	text += ' ' + roman_numeral_diminished_text;
     }
     return text;
+}
+
+const analyzed_chord_table_row = function(analyzed_chord) {
+    return [
+	chord_text(analyzed_chord.chord),
+	analyzed_chord.scale_step + '',
+	tonal_gravity_transition_text(analyzed_chord.tonal_gravity_transition)
+    ];
+}
+
+const composition_analysis_div = function(analysis) {
+    var rows = [];
+    rows.push(['Chord', 'Scale Step', 'Transition']);
+    for (var i = 0; i < analysis.length; ++i) {
+	var analyzed_chord = analysis[i];
+	rows.push(analyzed_chord_table_row(analyzed_chord));
+    }
+    return div(table(rows));
 }
 
 const composition_analysis = function(composition_chords, key) {
@@ -221,11 +239,22 @@ const natural = 0;
 const sharp = 1;
 const double_sharp = 2;
 
-'V7/V7'
-'V7/ii'
+const set_css = function(css) {
+    var style=document.createElement('style');
+    style.type='text/css';
+
+
+    if(style.styleSheet){
+	style.styleSheet.cssText = css;
+    }else{
+	style.appendChild(document.createTextNode(css));
+    }
+    document.getElementsByTagName('head')[0].appendChild(style);
+}
 
 function main() {
     var key = c_major;
+    set_css('table, th, td { border: 1px solid black; }');
     //var composition_chords = grand_cadence(key);
     //var composition_chords = diatonic_chords(key);
     var composition_chords = [
@@ -236,7 +265,7 @@ function main() {
 	make_chord(make_tone('c', natural), major),
     ];
     addElements([
-	div(composition_text(composition_chords, key))
+	composition_analysis_div(composition_analysis(composition_chords, key))
     ]);
 }
 window.onload = main;
@@ -267,3 +296,15 @@ window.onload = main;
 // Gb ->
 // F# (#IV)
 // G# ->
+
+
+// Diatonic Substitutions:
+// Major
+// V, vii (strong)
+// I, vi, iii (weak)
+// IV, vi (weak), ii (strong)
+
+// Minor
+// v, vii7 (weak)
+// i, VI, III (weak)
+// iv, VI, iio (strong)
