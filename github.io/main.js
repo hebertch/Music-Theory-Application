@@ -131,17 +131,34 @@ const roman_numeral_text = function(scale_step, quality) {
     return text;
 }
 
+const scale_step_text = function(scale_step) {
+    if (scale_step != null && scale_step != undefined) {
+	return (scale_step + 1) + '';
+    }
+    return 'N/A';
+}
+
 const analyzed_chord_table_row = function(analyzed_chord) {
     return [
 	chord_text(analyzed_chord.chord),
-	analyzed_chord.scale_step + '',
+	scale_step_text(analyzed_chord.diatonic_scale_step),
+	scale_step_text(analyzed_chord.borrowed_scale_step),
+	'TODO Sec..',
+	'TODO Tri..',
+	'TODO Ana..',
 	tonal_gravity_transition_text(analyzed_chord.tonal_gravity_transition)
     ];
 }
 
 const composition_analysis_div = function(analysis) {
     var rows = [];
-    rows.push(['Chord', 'Scale Step', 'Transition']);
+    rows.push(['Chord',
+	       'Diatonic S.S.', 
+	       'Borrowed S.S.',
+	       'Secondary Dominant S.S.',
+	       'Tritone S.S.',
+	       'Analyzed S.S.',
+	       'Transition']);
     for (var i = 0; i < analysis.length; ++i) {
 	var analyzed_chord = analysis[i];
 	rows.push(analyzed_chord_table_row(analyzed_chord));
@@ -149,25 +166,42 @@ const composition_analysis_div = function(analysis) {
     return div(table(rows));
 }
 
+const position_chord = function(chord, chords) {
+    for (var j = 0; j < chords.length; j++) {
+	if (chords_eql(chord, chords[j])) {
+	    return j;
+	}
+    }
+    return null;
+}
+
+const relative_key = function(key) {
+    var key_pos = fifth_position(key.root),
+	offset = key.quality === major ? 3 : -3,
+	
+	relative_key_quality = key.quality === major ? minor : major,
+	relative_key_pos = key_pos + offset,
+	relative_key_root_tone = root_tone_from_fifth_position(relative_key_pos);
+    return make_chord(relative_key_root_tone, relative_key_quality);
+}
+
+const parallel_key = function(key) {
+    var parallel_key_quality = key.quality === major ? minor : major;
+    return make_chord(key.root, parallel_key_quality);
+}
+
 const composition_analysis = function(composition_chords, key) {
-    // Analysis: [{chord, scale_step, tonal_gravity_transition}]
+    // Analysis: [{chord, diatonic_scale_step, borrowed_scale_step, tonal_gravity_transition}]
     
-    var chords = diatonic_chords(key);
+    var chords = diatonic_chords(key), borrowed_chords = diatonic_chords(parallel_key(key));
     var analysis = [];
     
     for (var i = 0; i < composition_chords.length; ++i) {
 	var chord = composition_chords[i];
 	var tmp = { chord: chord };
 	
-	var scale_step = null;
-	if (key) {
-	    for (var j = 0; j < chords.length; j++) {
-		if (chords_eql(chord, chords[j])) {
-		    scale_step = j;
-		}
-	    }
-	}
-	tmp.scale_step = scale_step;
+	tmp.diatonic_scale_step = position_chord(chord, chords);
+	tmp.borrowed_scale_step = position_chord(chord, borrowed_chords);
 	
 	var is_first_chord = i === 0;
 	var tg = null;
@@ -214,25 +248,6 @@ const grand_cadence = function(key) {
 	   ];
 }
 
-const composition_text = function(composition_chords, key) {
-    // For the web version
-    var text = '';
-    var analysis = composition_analysis(composition_chords, key);
-
-    for (var i = 0; i < analysis.length; ++i) {
-	var tmp = analysis[i];
-	if (tmp.tonal_gravity_transition !== null) {
-	    text += tonal_gravity_transition_text(tmp.tonal_gravity_transition) + ' ';
-	}
-	text += chord_text(tmp.chord);
-	if (tmp.scale_step !== null) {
-	    text += '(' + roman_numeral_text(tmp.scale_step, tmp.chord.quality) + ')';
-	}
-	text += ' ';
-    }
-    return text;
-}
-
 const double_flat = -2;
 const flat = -1;
 const natural = 0;
@@ -260,6 +275,7 @@ function main() {
     var composition_chords = [
 	make_chord(make_tone('c', natural), major),
 	make_chord(make_tone('a', natural), minor),
+	make_chord(make_tone('f', natural), minor),
 	make_chord(make_tone('a', flat), dominant),
 	make_chord(make_tone('g', natural), dominant),
 	make_chord(make_tone('c', natural), major),
