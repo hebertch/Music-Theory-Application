@@ -24,6 +24,30 @@ const leap_down = 3;
 const parallel_motion = 4;
 const tonal_gravity_transition_texts = ['step up', 'step down', 'leap up', 'leap down', 'parallel motion'];
 
+
+// Enum: Substitution types
+const diatonic = 0;
+const borrowed = 1;
+const secondary_dominant = 2;
+const tritone = 3;
+const unknown = 4;
+const substitution_texts = ['Diatonic', 'Borrowed', 'Secondary Dominant', 'Tritone', 'Unknown'];
+
+const make_analysis = function(chord, fifth_position, type, next_chord) {
+    return { chord: chord, fifth_position: fifth_position, type: type, next_chord: next_chord };
+}
+
+// Accidentals
+// Natural is 0
+// -1 for each flat
+// +1 for each sharp
+const double_flat = -2;
+const flat = -1;
+const natural = 0;
+const sharp = 1;
+const double_sharp = 2;
+
+// Accidental Texts
 const natural_text = 'NAT';
 const flat_text = 'b';
 const double_flat_text = 'bb';
@@ -32,31 +56,54 @@ const sharp_text = '#';
 const double_sharp_text = '##';
 const triple_sharp_text = '###';
 
-const numeral_texts = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
+const roman_numeral_texts = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
 const roman_numeral_dominant_text = '7';
 const roman_numeral_diminished_text = 'o';
 const scale_length = 7;
 
+// E.g.: C#, Ab, D, F##
 const make_tone = function(letter, num_accidentals) {
     return { letter: letter,
 	     num_accidentals: num_accidentals,
 	   };
 }
 
+// List of common tones
+const f_flat = make_tone('f', -1);
+const c_flat = make_tone('c', -1);
+const g_flat = make_tone('g', -1);
+const d_flat = make_tone('d', -1);
+const a_flat = make_tone('a', -1);
+const e_flat = make_tone('e', -1);
+const b_flat = make_tone('b', -1);
+const f_natural = make_tone('f', 0);
+const c_natural = make_tone('c', 0);
+const g_natural = make_tone('g', 0);
+const d_natural = make_tone('d', 0);
+const a_natural = make_tone('a', 0);
+const e_natural = make_tone('e', 0);
+const b_natural = make_tone('b', 0);
+const f_sharp = make_tone('f', 1);
+const c_sharp = make_tone('c', 1);
+const g_sharp = make_tone('g', 1);
+const d_sharp = make_tone('d', 1);
+const a_sharp = make_tone('a', 1);
+const e_sharp = make_tone('e', 1);
+const b_sharp = make_tone('b', 1);
+
+// E.g.: C# Major, Ab Minor, D Dominant
 const make_chord = function(root, quality) {
     return { root: root, quality: quality };
 };
 
+// E.g.: major, minor
 const quality_text = function (quality) {
     return quality_texts[quality];
 };
 
-const tonal_gravity_transition_text = function(transition) {
-    return transition !== null ? tonal_gravity_transition_texts[transition] : 'N/A';
-};
-
 const accidental_text = function(num_accidentals) {
+    // Convert number of accidentals to the appropriate text.
     switch (num_accidentals) {
     case -3: return triple_flat_text;
     case -2: return double_flat_text;
@@ -69,11 +116,13 @@ const accidental_text = function(num_accidentals) {
     return '';
 }
 
+// Convert a root tone to text
 const root_text = function (root) {
     return root.letter.toUpperCase() + accidental_text(root.num_accidentals);
 };
 
 const root_tone_from_fifth_position = function(idx) {
+    // Convert an index into the circle of fifths into a tone
     if (idx < 0) { // negative number indicates flat
 	var num_flats = Math.trunc(-idx / (scale_length + 1)) + 1;
 	idx += num_flats * scale_length;
@@ -118,59 +167,7 @@ const chords_eql = function(c1, c2) {
 	c1.quality == c2.quality;
 }
 
-const analyzed_chord_table_row = function(key, analyzed_chord, previous_analyzed_chord) {
-    var chord = analyzed_chord.chord;
-    var next_chord = analyzed_chord.next_chord;
-    var fifth_position = analyzed_chord.fifth_position;
-    var type = analyzed_chord.type;
-    var substitution_text = '--', analyzed_text = major_relative_roman_numeral_text(key, chord);
-    var transition_text =
-	previous_analyzed_chord ? 
-	tonal_gravity_transition_text(tonal_gravity_transition(previous_analyzed_chord.fifth_position, fifth_position)) :
-	'';
-    switch (type) {
-    case "diatonic": break;
-    case "secondary_dominant":
-	substitution_text = 'V7/' + major_relative_roman_numeral_text(key, next_chord);
-	break;
-    case "borrowed": break;
-    case "tritone":
-	var chord2 = make_chord(root_tone_from_fifth_position(fifth_position),
-				chord.quality);
-	substitution_text = 'TtV7/' + major_relative_roman_numeral_text(key, next_chord);
-	analyzed_text = major_relative_roman_numeral_text(key, chord2);
-	break;	
-    }
-    
-    return [
-	chord_text(chord),
-	major_relative_roman_numeral_text(key, chord),
-	(type || "unknown"),
-	substitution_text,
-	analyzed_text,
-	fifth_position + '',
-	transition_text
-    ];
-}
-
-const composition_analysis_div = function(key, analysis) {
-    var rows = [];
-    rows.push(['Chord',
-	       'Roman Numeral',
-	       'Type',
-	       'Substitution',
-	       'Function(s)',
-	       'Fifth Position',
-	       'Tonal Gravity Motion',
-	      ]);
-    for (var i = 0; i < analysis.length; ++i) {
-	var analyzed_chord = analysis[i];
-	var previous_analyzed_chord = i > 0 ? analysis[i - 1] : null;
-	rows.push(analyzed_chord_table_row(key, analyzed_chord, previous_analyzed_chord));
-    }
-    return div(table(rows));
-}
-
+// Find position of element in list using ===
 const position = function(element, list) {
     for (var i = 0; i < list.length; ++i) {
 	if (element === list[i])
@@ -179,6 +176,7 @@ const position = function(element, list) {
     return null;
 };
 
+// Find index of chord in chords
 const position_chord = function(chord, chords) {
     for (var j = 0; j < chords.length; j++) {
 	if (chords_eql(chord, chords[j])) {
@@ -188,6 +186,7 @@ const position_chord = function(chord, chords) {
     return null;
 };
 
+// E.g. C <-> Am
 const relative_key = function(key) {
     var key_pos = fifth_position(key.root),
 	offset = key.quality === major ? 3 : -3,
@@ -198,23 +197,25 @@ const relative_key = function(key) {
     return make_chord(relative_key_root_tone, relative_key_quality);
 };
 
+// E.g. C <-> Cm
 const parallel_key = function(key) {
     var parallel_key_quality = key.quality === major ? minor : major;
     return make_chord(key.root, parallel_key_quality);
 };
 
-const analyze_chord = function(chord, next_chord, key_chords, parallel_key_chords) {
+const composition_chord_analysis = function(chord, next_chord, key_chords, parallel_key_chords) {
+    // Analyze a chord as part of a composition_analysis
     if (position_chord(chord, key_chords) !== null)
-	return { chord: chord, type: "diatonic", fifth_position: fifth_position(chord.root) };
+	return make_analysis(chord, fifth_position(chord.root), diatonic, next_chord);
     if (position_chord(chord, parallel_key_chords))
-	return { chord: chord, type: "borrowed", fifth_position: fifth_position(chord.root) };
+	return make_analysis(chord, fifth_position(chord.root), borrowed, next_chord);
 
     if (chord.quality === dominant && 
 	next_chord &&
 	position_chord(next_chord, key_chords) &&
 	fifth_position(chord.root) - 1 === fifth_position(next_chord.root)) {
 
-	return { chord: chord, next_chord: next_chord, type: "secondary_dominant", fifth_position: fifth_position(chord.root) };
+	return make_analysis(chord, fifth_position(chord.root), secondary_dominant, next_chord);
     }
 
     if (chord.quality === dominant && 
@@ -222,26 +223,27 @@ const analyze_chord = function(chord, next_chord, key_chords, parallel_key_chord
 	(fifth_position(chord.root) + 5 === fifth_position(next_chord.root) ||
 	 fifth_position(chord.root) - 7 === fifth_position(next_chord.root))) {
 
-	return { chord: chord, next_chord: next_chord, type: "tritone", fifth_position: fifth_position(next_chord.root) + 1 };
+	return make_analysis(chord, fifth_position(next_chord.root) + 1, tritone, next_chord);
     }
 
-    return { chord: chord, next_chord: next_chord, type: null, fifth_position: fifth_position(chord.root) };
+    return make_analysis(chord, fifth_position(chord.root), unknown, next_chord);
 };
 
 const composition_analysis = function(composition_chords, key) {
-    var key_chords = diatonic_chords(key), parallel_key_chords = diatonic_chords(parallel_key(key));
+    // Analyse the composition_chords
+    var key_chords = key_diatonic_chords(key), parallel_key_chords = key_diatonic_chords(parallel_key(key));
     var analysis = [];
     
     for (var i = 0; i < composition_chords.length; ++i) {
 	var chord = composition_chords[i];
 	var next_chord = i !== composition_chords.length-1 ? composition_chords[i + 1] : null;
-	var tmp = analyze_chord(chord, next_chord, key_chords, parallel_key_chords);
+	var tmp = composition_chord_analysis(chord, next_chord, key_chords, parallel_key_chords);
 	analysis.push(tmp);
     }
     return analysis;
 };
 
-const diatonic_chord = function(key, scale_step) {
+const key_diatonic_chord = function(key, scale_step) {
     // scale_step: 1-7
     var p = fifth_position(key.root);
     scale_step = (scale_step - 1) % 7;
@@ -253,18 +255,36 @@ const diatonic_chord = function(key, scale_step) {
     return make_chord(tone, quality);
 };
 
-const diatonic_chords = function(key) {
+
+const key_diatonic_chord_progression = function(key) {
     // all of the diatonic chords in key
+    // I ii iii IV V7 vi viio (major)
+    // i iio III iv v VI VII (minor)
     var chords = [];
     for (var i = 1; i < 8; i++) {
-	chords.push(diatonic_chord(key, i));
+	chords.push(key_diatonic_chord(key, i));
+    }
+    // Also Add the non-dominant V
+    key_diatonic_chord(key, );
+    return chords;
+};
+
+const key_diatonic_chords = function(key) {
+    // all of the diatonic chords in key + V in the major key
+    // I ii iii IV V7 vi viio V (major)
+    // i iio III iv v VI VII (minor)
+    var chords = key_diatonic_chord_progression(key);
+    // Also Add the non-dominant V for the major key.
+    if (key.quality === major) {
+	var chord = key_diatonic_chord(key, 5);
+	chords.push(make_chord(chord.root, major));
     }
     return chords;
 };
 
 const major_scale_letters = function(root) {
     // all of the letters in the major scale for root
-    var chords = diatonic_chords(make_chord(root, major));
+    var chords = key_diatonic_chords(make_chord(root, major));
     var letters = [];
     for (var i = 0; i < chords.length; ++i) {
 	letters.push(chords[i].root.letter);
@@ -273,10 +293,13 @@ const major_scale_letters = function(root) {
 }
 
 const major_relative_roman_numeral_text = function(key, chord) {
+    // Return the roman numeral text for the chord relative to the major key
+    // I ii iii ... (major)
+    // i iio bIII ... (parallel minor)
     var scale_idx = position(chord.root.letter, major_scale_letters(key.root));
-    var major_chords = diatonic_chords(key);
+    var major_chords = key_diatonic_chords(make_chord(key.root, major));
     var major_chord_num_accidentals = major_chords[scale_idx].root.num_accidentals;
-    var text = numeral_texts[scale_idx];
+    var text = roman_numeral_texts[scale_idx];
 
     if (chord.quality === major ||
 	chord.quality === dominant) {
@@ -300,46 +323,20 @@ const major_relative_roman_numeral_text = function(key, chord) {
     return text;
 }
 
-const f_flat = make_tone('f', -1);
-const c_flat = make_tone('c', -1);
-const g_flat = make_tone('g', -1);
-const d_flat = make_tone('d', -1);
-const a_flat = make_tone('a', -1);
-const e_flat = make_tone('e', -1);
-const b_flat = make_tone('b', -1);
-const f_natural = make_tone('f', 0);
-const c_natural = make_tone('c', 0);
-const g_natural = make_tone('g', 0);
-const d_natural = make_tone('d', 0);
-const a_natural = make_tone('a', 0);
-const e_natural = make_tone('e', 0);
-const b_natural = make_tone('b', 0);
-const f_sharp = make_tone('f', 1);
-const c_sharp = make_tone('c', 1);
-const g_sharp = make_tone('g', 1);
-const d_sharp = make_tone('d', 1);
-const a_sharp = make_tone('a', 1);
-const e_sharp = make_tone('e', 1);
-const b_sharp = make_tone('b', 1);
-
 const c_major = make_chord(c_natural, major);
 const a_flat_minor = make_chord(a_flat, minor);
 
 const grand_cadence = function(key) {
-    return [diatonic_chord(key, 1),
-	    diatonic_chord(key, 4),
-	    diatonic_chord(key, 1),
-	    diatonic_chord(key, 5),
-	    diatonic_chord(key, 1)
+    return [key_diatonic_chord(key, 1),
+	    key_diatonic_chord(key, 4),
+	    key_diatonic_chord(key, 1),
+	    key_diatonic_chord(key, 5),
+	    key_diatonic_chord(key, 1)
 	   ];
 }
 
-const double_flat = -2;
-const flat = -1;
-const natural = 0;
-const sharp = 1;
-const double_sharp = 2;
 
+// DOM Stuff -------
 const set_css = function(css) {
     var style=document.createElement('style');
     style.type='text/css';
@@ -352,18 +349,71 @@ const set_css = function(css) {
     document.getElementsByTagName('head')[0].appendChild(style);
 }
 
-// TODO: V should be diatonic as well
+
+const composition_chord_analysis_table_row = function(key, chord_analysis, previous_chord_analysis) {
+    var chord = chord_analysis.chord;
+    var next_chord = chord_analysis.next_chord;
+    var fifth_position = chord_analysis.fifth_position;
+    var type = chord_analysis.type;
+    var substitution_text = '--', analyzed_text = major_relative_roman_numeral_text(key, chord);
+    var transition_text =
+	previous_chord_analysis ? 
+	tonal_gravity_transition_texts[tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_position)] :
+	'';
+    switch (type) {
+    case diatonic: break;
+    case secondary_dominant:
+	substitution_text = 'V7/' + major_relative_roman_numeral_text(key, next_chord);
+	break;
+    case borrowed: break;
+    case tritone:
+	var chord2 = make_chord(root_tone_from_fifth_position(fifth_position),
+				chord.quality);
+	substitution_text = 'TtV7/' + major_relative_roman_numeral_text(key, next_chord);
+	analyzed_text = major_relative_roman_numeral_text(key, chord2);
+	break;	
+    }
+    
+    return [
+	chord_text(chord),
+	major_relative_roman_numeral_text(key, chord),
+	substitution_texts[type],
+	substitution_text,
+	analyzed_text,
+	fifth_position + '',
+	transition_text
+    ];
+}
+
+const composition_analysis_div = function(key, analysis) {
+    var rows = [];
+    rows.push(['Chord',
+	       'Roman Numeral',
+	       'Type',
+	       'Substitution',
+	       'Function(s)',
+	       'Fifth Position',
+	       'Tonal Gravity Motion',
+	      ]);
+    for (var i = 0; i < analysis.length; ++i) {
+	var chord_analysis = analysis[i];
+	var previous_chord_analysis = i > 0 ? analysis[i - 1] : null;
+	rows.push(composition_chord_analysis_table_row(key, chord_analysis, previous_chord_analysis));
+    }
+    return div(table(rows));
+}
+
 
 function main() {
     var key = c_major;
     set_css('table, th, td { border: 1px solid black; }');
     //var composition_chords = grand_cadence(key);
-    //var composition_chords = diatonic_chords(key);
+    //var composition_chords = key_diatonic_chord_progression(key);
     var composition_chords = [
 	make_chord(c_natural, major),
-	//make_chord(a_flat, major),
-	//make_chord(g_natural, dominant),
-	//make_chord(a_flat, dominant),
+	make_chord(a_flat, dominant),
+	make_chord(g_natural, dominant),
+	make_chord(a_flat, dominant),
 	make_chord(g_natural, major),
 	make_chord(c_natural, major),
     ];
@@ -373,41 +423,3 @@ function main() {
     ]);
 }
 window.onload = main;
-
-// Diatonic: Black
-// Borrowed: Blue (iv)
-// 2nd Dom: Red (V7/ii)
-// Tritone Sub: Green (TtV7/V7)
-// Other: Yellow
-
-// (C)I (Am)vi (Ab7)bVI7
-// (C)I (Am)vi (Ab7)(bVI7 TtV7/V7) StepDown (G7)V7
-
-// Tritone sub: down one half step (before and/or after) (either dominant/major)
-
-// A StepDown (Ab)(bVI) StepDown (G7)V7
-// Eb StepDown (Ab)(bVI) StepDown (G7)V7
-
-// (Ab7)(bVI7 TtV7/V7) (G7)V7
-// (C)I (D7)(II7 V7/V7)
-
-// db,  ab,  eb,   bb,    f, c, g,  d,  a,   e,   b, f#
-// bII, bVI, bIII, bVII, IV, I, V, ii, vi, iii, vii, #IV
-
-// Dbm (bii)
-
-// Limit: b2 to #4
-// Gb ->
-// F# (#IV)
-// G# ->
-
-// Diatonic Substitutions:
-// Major
-// V, vii (strong)
-// I, vi, iii (weak)
-// IV, vi (weak), ii (strong)
-
-// Minor
-// v, vii7 (weak)
-// i, VI, III (weak)
-// iv, VI, iio (strong)
