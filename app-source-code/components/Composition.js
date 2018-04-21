@@ -6,12 +6,15 @@ import { SegmentedControls } from 'react-native-radio-buttons'
 // The 7 letters in circle of fifths order.
 const root_letters = ['f', 'c', 'g', 'd', 'a', 'e', 'b'];
 
+const roman_numeral_dominant_text = '⁷';
+const roman_numeral_diminished_text = '°';
+
 // Enum: Qualities
 const major = 0;
 const minor = 1;
 const diminished = 2;
 const dominant = 3;
-const quality_texts = ["", "m", "dim", "dom"];
+const quality_texts = ["", "m", roman_numeral_diminished_text, roman_numeral_dominant_text];
 
 // Qualities of chords ordered by scale steps
 const major_qualities = [major, minor, minor, major, dominant, minor, diminished];
@@ -53,18 +56,18 @@ const sharp = 1;
 const double_sharp = 2;
 
 // Accidental Texts
-const natural_text = 'NAT';
-const flat_text = 'b';
-const double_flat_text = 'bb';
-const triple_flat_text = 'bbb';
-const sharp_text = '#';
-const double_sharp_text = '##';
-const triple_sharp_text = '###';
+const natural_text = '♮';
+const flat_text = '♭';
+const double_flat_text = '♭♭';
+//const double_flat_text = '𝄫';
+const triple_flat_text = '♭♭♭';
+const sharp_text = '♯';
+//const double_sharp_text = '𝄪';
+const double_sharp_text = '♯♯';
+const triple_sharp_text = '♯♯♯';
 
 const roman_numeral_texts = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
-const roman_numeral_dominant_text = '7';
-const roman_numeral_diminished_text = 'o';
 const scale_length = 7;
 
 // E.g.: C#, Ab, D, F##
@@ -341,48 +344,55 @@ const grand_cadence = function(key) {
 }
 /// End Analysis Algorithm
 
-const composition_text = function(composition_chords, key) {
+const e_composition_chord = function(chord_analysis, previous_chord_analysis, key) {
+    var next_chord = chord_analysis.next_chord;
+    var fifth_position = chord_analysis.fifth_position;
+    var chord = chord_analysis.chord;
+    var transition_text =
+	previous_chord_analysis ? 
+	tonal_gravity_transition_texts[tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_position)] :
+	'';
+    var substitution_text = '';
+    var color = 'red';
+
+    switch (chord_analysis.type) {
+    case diatonic: break;
+    case secondary_dominant:
+	substitution_text = 'V' + roman_numeral_dominant_text + '/' + major_relative_roman_numeral_text(key, next_chord);
+	break;
+    case borrowed: break;
+    case tritone:
+	var chord2 = make_chord(root_tone_from_fifth_position(fifth_position),
+				chord.quality);
+	substitution_text = 'TtV' + roman_numeral_dominant_text + '/' + major_relative_roman_numeral_text(key, next_chord);
+	break;	
+    }
+    if (substitution_text.length > 0) {
+	substitution_text = '(' + substitution_text + ')';
+    }
+
+    // TODO: if it is a diatonic chord, use the appropriate rainbow color
+
+    return e(View, {style: {flexDirection: 'row'}}, [
+	eText(transition_text + ' '),
+	eText(chord_text(chord_analysis.chord) + ' ' +
+	      major_relative_roman_numeral_text(key, chord_analysis.chord) + ' ',
+	      {style: {color: color}}),
+	eText(substitution_text)
+    ]);
+}
+
+const e_composition = function(composition_chords, key) {
     // For testing
-    var text = '';
     var analysis = composition_analysis(composition_chords, key);
+    var chord_es = [];
 
     for (var i = 0; i < analysis.length; ++i) {
 	var chord_analysis = analysis[i];
-	var next_chord = chord_analysis.next_chord;
-	var fifth_position = chord_analysis.fifth_position;
-	var chord = chord_analysis.chord;
 	var previous_chord_analysis = i > 0 ? analysis[i - 1] : null;
-	var transition_text =
-	    previous_chord_analysis ? 
-	    tonal_gravity_transition_texts[tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_position)] :
-	    '';
-	var substitution_text = '';
-
-	switch (chord_analysis.type) {
-	case diatonic: break;
-	case secondary_dominant:
-	    substitution_text = 'V7/' + major_relative_roman_numeral_text(key, next_chord);
-	    break;
-	case borrowed: break;
-	case tritone:
-	    var chord2 = make_chord(root_tone_from_fifth_position(fifth_position),
-				    chord.quality);
-	    substitution_text = 'TtV7/' + major_relative_roman_numeral_text(key, next_chord);
-	    break;	
-	}
-	if (substitution_text.length > 0) {
-	    substitution_text = '(' + substitution_text + ')';
-	}
-
-	text +=
-	    transition_text + ' ' +
-	    chord_text(chord_analysis.chord) + ' ' +
-	    major_relative_roman_numeral_text(key, chord_analysis.chord) + ' ' +
-	    substitution_text;
-	
-	text += ' ';
+	chord_es.push(e_composition_chord(chord_analysis, previous_chord_analysis, key));
     }
-    return text;
+    return e(View, {style: {flexDirection: 'row', flexWrap: 'wrap'}}, chord_es);
 }
 
 // f(component, props, childElements) => element
@@ -420,13 +430,13 @@ const accidental_text_to_num_accidentals = function(text) {
     return 0;
 }
 
-const chord_quality_options = ['Major', 'Minor', 'Diminished', 'Dominant'];
+const chord_quality_options = ['Major', 'Minor', roman_numeral_diminished_text, roman_numeral_dominant_text];
 const key_quality_options = ['Major', 'Minor'];
 const chord_quality_text_to_chord_quality = function(text) {
     return chord_quality_options.indexOf(text);
 }
 
-const letter_options = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+const letter_options = ['B', 'E', 'A', 'D', 'G', 'C', 'F'];
 
 const cCompositionEditView = component({
     // TODO: convert from root_tone_options to make_tone()
@@ -541,7 +551,7 @@ const cCompositionEditView = component({
 	    
             e(Button, {title: 'Add Chord', onPress: this.add_chord_pressed}),
 	    eText('Composition'),
-            eText(composition_text(this.state.composition, this.selected_key())),
+            e_composition(this.state.composition, this.selected_key()),
 	    e(Button, {title: 'New Composition', onPress: this.new_composition_pressed})
         ]);
     }
