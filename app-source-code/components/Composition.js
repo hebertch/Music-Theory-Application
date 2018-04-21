@@ -2,6 +2,8 @@ import { default as React, Component } from 'react';
 import { Button, Platform, StyleSheet, Switch, Text, View, } from 'react-native';
 import { SegmentedControls } from 'react-native-radio-buttons'
 
+import colors from '../static/colors';
+
 /// Analysis Algorithm
 // The 7 letters in circle of fifths order.
 const root_letters = ['f', 'c', 'g', 'd', 'a', 'e', 'b'];
@@ -290,6 +292,16 @@ const key_diatonic_chords = function(key) {
     return chords;
 };
 
+const key_diatonic_chord_scale_idx = function(key, chord) {
+    var chords = key_diatonic_chords(key);
+    var idx = position_chord(chord, chords);
+    if (idx !== null) {
+	if (idx === 8) return 4;
+	return idx;
+    }
+    return null;
+}
+
 const major_scale_letters = function(root) {
     // all of the letters in the major scale for root
     var chords = key_diatonic_chords(make_chord(root, major));
@@ -342,43 +354,76 @@ const grand_cadence = function(key) {
 	    key_diatonic_chord(key, 1)
 	   ];
 }
+
+const chord_analysis_substitution_text = function(key, chord_analysis) {
+    var substitution_text = '';
+    var type = chord_analysis.type;
+    var chord = chord_analysis.chord;
+    var next_chord = chord_analysis.next_chord;
+    var fifth_pos = chord_analysis.fifth_position;
+    
+    switch (type) {
+    case diatonic: break;
+    case borrowed: break;
+    case secondary_dominant:
+	// E.g. V7/V7
+	substitution_text =
+	    'V' + roman_numeral_dominant_text + '/' +
+	    major_relative_roman_numeral_text(key, next_chord);
+	break;
+    case tritone:
+	// E.g. TtV7/V7
+	var chord2 = make_chord(root_tone_from_fifth_position(fifth_pos), chord.quality);
+	substitution_text =
+	    'TtV' + roman_numeral_dominant_text + '/' +
+	    major_relative_roman_numeral_text(key, next_chord);
+	break;	
+    }
+    return substitution_text;
+}
+
 /// End Analysis Algorithm
+
+const fifth_position_color_idx = function(fifth_pos, key) {
+    var key_fifth_pos = fifth_position(key.root);
+    var color_idx = key_fifth_pos - fifth_pos + (key.quality === major ? -4 : -7);
+    color_idx = (color_idx + 144) % 12;
+    return color_idx;
+}
 
 const e_composition_chord = function(chord_analysis, previous_chord_analysis, key) {
     var next_chord = chord_analysis.next_chord;
-    var fifth_position = chord_analysis.fifth_position;
+    var fifth_pos = chord_analysis.fifth_position;
     var chord = chord_analysis.chord;
-    var transition_text =
+    var transition = 
 	previous_chord_analysis ? 
-	tonal_gravity_transition_texts[tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_position)] :
+	tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_pos) : 
+	null;
+    var transition_text =
+	transition !== null ? 
+	tonal_gravity_transition_texts[transition] :
 	'';
-    var substitution_text = '';
-    var color = 'red';
+    var substitution_text = chord_analysis_substitution_text(key, chord_analysis);
+    var is_diatonic_or_substitute = chord_analysis.type !== unknown;
 
-    switch (chord_analysis.type) {
-    case diatonic: break;
-    case secondary_dominant:
-	substitution_text = 'V' + roman_numeral_dominant_text + '/' + major_relative_roman_numeral_text(key, next_chord);
-	break;
-    case borrowed: break;
-    case tritone:
-	var chord2 = make_chord(root_tone_from_fifth_position(fifth_position),
-				chord.quality);
-	substitution_text = 'TtV' + roman_numeral_dominant_text + '/' + major_relative_roman_numeral_text(key, next_chord);
-	break;	
-    }
+    var color = is_diatonic_or_substitute ?
+	colors[fifth_position_color_idx(fifth_pos, key)] :
+	'white';
+
     if (substitution_text.length > 0) {
 	substitution_text = '(' + substitution_text + ')';
     }
 
-    // TODO: if it is a diatonic chord, use the appropriate rainbow color
-
     return e(View, {style: {flexDirection: 'row'}}, [
-	eText(transition_text + ' '),
+	eText(transition_text + ' ',
+	      {style: {color: (transition === leap_down ? 'red' : 'black')}}),
 	eText(chord_text(chord_analysis.chord) + ' ' +
 	      major_relative_roman_numeral_text(key, chord_analysis.chord) + ' ',
-	      {style: {color: color}}),
-	eText(substitution_text)
+	      {style: {color: color,
+		       backgroundColor: '#2a2a2a'}}),
+	eText(substitution_text,
+	      {style: {color: color,
+		       backgroundColor: '#2a2a2a'}})
     ]);
 }
 
@@ -413,7 +458,7 @@ const eText = function(text, props) {
 
 const styles = StyleSheet.create({
     container: {
-	marginTop: 21
+	marginTop: 21,
     }
 });
 
@@ -519,7 +564,7 @@ const cCompositionEditView = component({
 
     render: function() {
 	return e(View, {style: styles.container}, [
-	    eText("Key"),
+	    eText("Key", {style: {alignSelf: 'center'}}),
 
 	    e(SegmentedControls,
 	      {options: letter_options,
@@ -534,7 +579,7 @@ const cCompositionEditView = component({
 	       onSelection: this.selected_key_quality_changed,
 	       selectedOption: this.state.selected_key_quality}),
 
-	    eText("Chord"),
+	    eText("Chord", {style: {alignSelf: 'center', paddingTop: 20}}),
 
 	    e(SegmentedControls,
 	      {options: letter_options,
@@ -549,10 +594,10 @@ const cCompositionEditView = component({
 	       onSelection: this.selected_chord_quality_changed,
 	       selectedOption: this.state.selected_chord_quality}),
 	    
+	    e(Button, {title: 'New Composition', onPress: this.new_composition_pressed}),
             e(Button, {title: 'Add Chord', onPress: this.add_chord_pressed}),
-	    eText('Composition'),
-            e_composition(this.state.composition, this.selected_key()),
-	    e(Button, {title: 'New Composition', onPress: this.new_composition_pressed})
+	    eText('Composition', {style: {alignSelf: 'center'}}),
+            e_composition(this.state.composition, this.selected_key())
         ]);
     }
 });
