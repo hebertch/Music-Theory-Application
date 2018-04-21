@@ -217,7 +217,7 @@ const composition_chord_analysis = function(chord, next_chord, key_chords, paral
     // Analyze a chord as part of a composition_analysis
     if (position_chord(chord, key_chords) !== null)
 	return make_analysis(chord, fifth_position(chord.root), diatonic, next_chord);
-    if (position_chord(chord, parallel_key_chords))
+    if (position_chord(chord, parallel_key_chords) !== null)
 	return make_analysis(chord, fifth_position(chord.root), borrowed, next_chord);
 
     if (chord.quality === dominant && 
