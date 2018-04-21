@@ -360,6 +360,7 @@ const composition_chord_analysis_table_row = function(key, chord_analysis, previ
 	previous_chord_analysis ? 
 	tonal_gravity_transition_texts[tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_position)] :
 	'';
+
     switch (type) {
     case diatonic: break;
     case secondary_dominant:
