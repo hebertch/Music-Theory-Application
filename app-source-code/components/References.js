@@ -73,7 +73,7 @@ const e_md = function(md) {
 // component
 const cReferences = component({
     render: function() {
-	return e(Swiper, {style: swipeStyles.wrapper, showButtons: true}, [
+	return e(Swiper, {style: swipeStyles.wrapper, showButtons: true, index: this.props.index }, [
             e_md(perfect_fifth_markdown_text),
 	    e_md(musical_gravity_markdown_text),
 	    e_md(rules_for_chords_markdown_text),
@@ -86,5 +86,13 @@ const cReferences = component({
 // accessed by the Main Menu sidebar
 export const ReferencesContainer = function () { 
     //return e(View, {}, eReferences);
-    return e(cReferences);
+    return e(cReferences, {index: 0});
+}
+
+export const PerfectFifthContainer = function () {
+    return e(cReferences, {index: 0});
+}
+
+export const MusicalGravityContainer = function () {
+    return e(cReferences, {index: 1});
 }
