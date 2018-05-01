@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     marginTop: 35,
+    marginBottom: 30,
     padding: 10,
   },
   title: {
@@ -17,6 +18,9 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: 14,
+    lineHeight: 30,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
 });
 
