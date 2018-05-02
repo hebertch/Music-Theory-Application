@@ -48,3 +48,47 @@ export const PerfectFifthReferenceContainer = () => (
   <References index={1} />
 );
 
+export const MusicalGravityReferenceContainer = () => (
+  <References index={2} />
+);
+
+export const HarmonicFunctionReferenceContainer = () => (
+  <References index={3} />
+);
+
+export const KeySignaturesReferenceContainer = () => (
+  <References index={4} />
+);
+
+export const DiatonicReferenceContainer = () => (
+  <References index={5} />
+);
+
+export const TonalGravityReferenceContainer = () => (
+  <References index={6} />
+);
+
+export const ParallelAndBorrowedReferenceContainer = () => (
+  <References index={7} />
+);
+
+export const EnharmonicEquivalentsReferenceContainer = () => (
+  <References index={8} />
+);
+
+export const ScaleDegreeReferenceContainer = () => (
+  <References index={9} />
+);
+
+export const DominantChordsReferenceContainer = () => (
+  <References index={10} />
+);
+
+export const SecondaryDominantsReferenceContainer = () => (
+  <References index={11} />
+);
+
+export const DiatonicSubstitutesReferenceContainer = () => (
+  <References index={12} />
+);
+
