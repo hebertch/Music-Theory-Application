@@ -31,6 +31,7 @@ const Sidebar = (props) => {
         top: windowHeight / 20,
         backgroundColor: 'whitesmoke',
       }}
+      contentOffset={{ x: 0, y: 45 * startIndex }}
     >
       {tonalGravity.filter((el, i) => (i < startIndex)).map(el => TouchableNote(el.note, props.changeKey))}
       <View style={{ backgroundColor: '#2a2a2a' }}>

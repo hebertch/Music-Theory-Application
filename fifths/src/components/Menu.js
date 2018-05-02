@@ -1,6 +1,6 @@
 import { DrawerNavigator } from 'react-navigation';
 import CircleOfFifthsScreen from './CircleOfFifthsScreen';
-import { ReferencesContainer, CircleOfFifthsReferenceContainer } from './References';
+import { ReferencesContainer, CircleOfFifthsReferenceContainer, PerfectFifthReferenceContainer } from './References';
 import CompositionContainer from './Composition';
 
 const RootDrawer = DrawerNavigator({
@@ -15,6 +15,9 @@ const RootDrawer = DrawerNavigator({
   },
   "    Circle of Fifths": {
     screen: CircleOfFifthsReferenceContainer,
+  },
+  "    The Perfect Fifth": {
+    screen: PerfectFifthReferenceContainer,
   },
 });
 
