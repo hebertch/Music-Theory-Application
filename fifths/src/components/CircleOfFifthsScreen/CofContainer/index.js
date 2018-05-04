@@ -178,12 +178,12 @@ class CofContainer extends Component {
               />
               <Circle
                 radius={radius * (14 / 18)}
-                innerRadius={radius * (14 / 18) - 2}
+                innerRadius={radius * (14 / 18) - .25}
                 colors={new Array(12).fill('#2a2a2a')}
               />
               <Circle
                 radius={radius / 2}
-                innerRadius={radius / 2 - 2}
+                innerRadius={radius / 2 - .25}
                 colors={new Array(12).fill('#2a2a2a')}
               />
               { /* Circular text for current key */}
@@ -194,14 +194,14 @@ class CofContainer extends Component {
                 }
                 rotation={-this.state.rotation}
                 colors={new Array(12).fill('#2a2a2a')}
-                multiplier={1.35}
+                multiplier={1.32}
               />
               { /* Circular text for all notes */}
               <CircularText
                 data={this.props.fifths}
                 rotation={-this.state.rotation}
                 colors={new Array(12).fill('#2a2a2a')}
-                multiplier={1.16}
+                multiplier={1.12}
               />
               { /* Circular text for parallel notes */}
               {this.props.showParallel ?

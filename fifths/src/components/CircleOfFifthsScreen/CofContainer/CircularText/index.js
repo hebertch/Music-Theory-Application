@@ -13,8 +13,8 @@ const CircularText = props => (
       props.data.map((item, index) =>
         (<Text
           key={index}
-          x={props.centroids[index][0] * props.multiplier}
-          y={props.centroids[index][1] * props.multiplier}
+          x={(props.centroids[index][0] + 2.5) * props.multiplier}
+          y={(props.centroids[index][1] + 5) * props.multiplier}
           alignment="middle"
           fill={props.colors[index]}
           outline="#000"
