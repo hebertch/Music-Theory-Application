@@ -1,5 +1,5 @@
 import { default as React, Component } from 'react';
-import { Button, Platform, StyleSheet, Switch, Text, View, } from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet, Switch, Text, View, } from 'react-native';
 import { SegmentedControls } from 'react-native-radio-buttons'
 import component from 'create-react-class';
 
@@ -559,44 +559,46 @@ const cCompositionEditView = component({
 	return make_chord(this.selected_chord_tone(),
 			  chord_quality_text_to_chord_quality(this.state.selected_chord_quality));
     },
-
+    
     render: function() {
-	return e(View, {style: styles.container}, [
-	    eText("Key", {style: {alignSelf: 'center'}}),
+	return e(ScrollView, {contentContainerStyle: {flexGrow: 1}}, [
+	    e(View, {style: styles.container}, [
+		eText("Compose", {style: {fontSize: 28, fontWeight: 'bold', textAlign: 'center'}}),
+		eText("Key", {style: {alignSelf: 'center'}}),
 
-	    e(SegmentedControls,
-	      {options: letter_options,
-	       onSelection: this.selected_key_letter_changed,
-	       selectedOption: this.state.selected_key_letter}),
-	    e(SegmentedControls,
-	      {options: key_accidental_options,
-	       onSelection: this.selected_key_accidental_changed,
-	       selectedOption: this.state.selected_key_accidental}),
-	    e(SegmentedControls,
-	      {options: key_quality_options,
-	       onSelection: this.selected_key_quality_changed,
-	       selectedOption: this.state.selected_key_quality}),
+		e(SegmentedControls,
+		  {options: letter_options,
+		   onSelection: this.selected_key_letter_changed,
+		   selectedOption: this.state.selected_key_letter}),
+		e(SegmentedControls,
+		  {options: key_accidental_options,
+		   onSelection: this.selected_key_accidental_changed,
+		   selectedOption: this.state.selected_key_accidental}),
+		e(SegmentedControls,
+		  {options: key_quality_options,
+		   onSelection: this.selected_key_quality_changed,
+		   selectedOption: this.state.selected_key_quality}),
 
-	    eText("Chord", {style: {alignSelf: 'center', paddingTop: 20}}),
+		eText("Chord", {style: {alignSelf: 'center', paddingTop: 20}}),
 
-	    e(SegmentedControls,
-	      {options: letter_options,
-	       onSelection: this.selected_chord_letter_changed,
-	       selectedOption: this.state.selected_chord_letter}),
-	    e(SegmentedControls,
-	      {options: accidental_options,
-	       onSelection: this.selected_chord_accidental_changed,
-	       selectedOption: this.state.selected_chord_accidental}),
-	    e(SegmentedControls,
-	      {options: chord_quality_options,
-	       onSelection: this.selected_chord_quality_changed,
-	       selectedOption: this.state.selected_chord_quality}),
-	    
-	    e(Button, {title: 'New Composition', onPress: this.new_composition_pressed}),
-            e(Button, {title: 'Add Chord', onPress: this.add_chord_pressed}),
-	    eText('Composition', {style: {alignSelf: 'center'}}),
-            e_composition(this.state.composition, this.selected_key())
-        ]);
+		e(SegmentedControls,
+		  {options: letter_options,
+		   onSelection: this.selected_chord_letter_changed,
+		   selectedOption: this.state.selected_chord_letter}),
+		e(SegmentedControls,
+		  {options: accidental_options,
+		   onSelection: this.selected_chord_accidental_changed,
+		   selectedOption: this.state.selected_chord_accidental}),
+		e(SegmentedControls,
+		  {options: chord_quality_options,
+		   onSelection: this.selected_chord_quality_changed,
+		   selectedOption: this.state.selected_chord_quality}),
+		
+		e(Button, {title: 'New Composition', onPress: this.new_composition_pressed}),
+		e(Button, {title: 'Add Chord', onPress: this.add_chord_pressed}),
+		eText('Composition', {style: {alignSelf: 'center'}}),
+		e_composition(this.state.composition, this.selected_key())
+	    ])]);
     }
 });
 
