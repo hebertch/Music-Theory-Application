@@ -10,32 +10,41 @@ export default class DiatonicSubstitutesReference extends Component {
         <View style={{ flex:1 }}>
           { /* Title */ }
           <Text style={styles.title}>
-          
+            Diatonic Substitutes          
+          </Text>
+          <Text style={styles.paragraph}> Diatonic Substitutes are chords within a given key that sound similar enough to each other to be able to function in the same way. They can be subjectively categorized as Strong and weak based on how effectively they can perform the function of the chord they are substituting. They are typically used as follows:
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{flex:1}}>
+              <Text style={styles.paragraph}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  In Major Keys
+                </Text>
+              </Text>
+              <FlatList
+                data={['7 = 5 (Strong)', '3 = 5 (weak) or 1 (weak)', '6 = 1 (weak) or 4 (weak)', '2 = 4 (Strong)', '5 = 7 (Strong) or 3 (weak)', '1= 3 (weak) or 6 (weak)', '4 = 2 (Strong) or 6 (weak)']}
+                renderItem={({item}) => <Text>{item}</Text>}
+              />
+            </View>
+            <View style={{flex:1}}>
+              <Text style={styles.paragraph}>
+                <Text style={{ fontWeight: 'bold' }}>
+                  In minor Keys
+                </Text>
+              </Text>
+               <FlatList
+                data={['2 = 4 (Strong)', '5 = b7 (weak)', '1 = b3 (weak) or b6 (weak)', '4 = 2 (Strong)', 'b7 = 2 (Strong)', 'b3 = 1 (weak)', 'b6 = 1 (weak) or 4 (weak)']}
+                renderItem={({item}) => <Text>{item}</Text>}
+              />
+            </View>
+          </View>          
+          <Text style={styles.paragraph}> Using these substitutions is a way to bring more variety into chord progressions while still obeying the principles of functional harmony. For example, instead of a 2-5-1 progression, a 2-7-1 progression could be used to function the same way but give the music a different flavor. This is because the 7 chord can function the same way as the 5 chord and lead the ear to the 1 chord.
           </Text>
           <Text style={styles.paragraph}>
-            
-          </Text>
-          <ScrollView style={styles.horizontalScroll} horizontal>
-            <Text>
-            
-            </Text>
-          </ ScrollView>
-          <Text style={styles.paragraph}>
-            
-          </Text>
-          {/* Image */ }
-
-          <Text style={styles.paragraph}>
-            
             <Text style={{ fontStyle: 'italic' }}>
-              
+              Diatonic Substitutes are deceptively complex - that is, they seem pretty simple but once they are regularly employed it can be difficult, if not impossible to decisively analyze a given harmonic progression. If not used discerningly, they can significantly weaken the sense of musical gravity, even when following all the ‘“rules.” As with all music, the best thing to do is to experiment and listen to the results rather than relying on purely theoretical information.  
             </Text>
           </Text>
-          { /* List Example */ }
-          <FlatList
-            data={[{key: 'a'}, {key: 'b'}]}
-            renderItem={({item}) => <Text>{item.key}</Text>}
-          />
         </View>
       </ ScrollView>
     );
