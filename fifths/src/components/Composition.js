@@ -13,10 +13,10 @@ const roman_numeral_dominant_text = '⁷';
 const roman_numeral_diminished_text = '°';
 
 // Enum: Qualities
-const major = 0;
-const minor = 1;
-const diminished = 2;
-const dominant = 3;
+export const major = 0;
+export const minor = 1;
+export const diminished = 2;
+export const dominant = 3;
 const quality_texts = ["", "m", roman_numeral_diminished_text, roman_numeral_dominant_text];
 
 // Qualities of chords ordered by scale steps
@@ -28,23 +28,23 @@ const major_scale_offsets = [0, 2, 4, -1, 1, 3, 5];
 const minor_scale_offsets = [0, 2, -3, -1, 1, -4, -2];
 
 // Enum: Tonal Gravity Transitions
-const step_up = 0;
-const step_down = 1;
-const leap_up = 2;
-const leap_down = 3;
-const parallel_motion = 4;
+export const step_up = 0;
+export const step_down = 1;
+export const leap_up = 2;
+export const leap_down = 3;
+export const parallel_motion = 4;
 const tonal_gravity_transition_texts = ["↑", "↓", "↟", "↡", "≈"];
 
 
 // Enum: Substitution types
-const diatonic = 0;
-const borrowed = 1;
-const secondary_dominant = 2;
-const tritone = 3;
-const unknown = 4;
+export const diatonic = 0;
+export const borrowed = 1;
+export const secondary_dominant = 2;
+export const tritone = 3;
+export const unknown = 4;
 const substitution_texts = ['Diatonic', 'Borrowed', 'Secondary Dominant', 'Tritone', 'Unknown'];
 
-const make_analysis = function(chord, fifth_position, type, next_chord) {
+export const make_analysis = function(chord, fifth_position, type, next_chord) {
     return { chord: chord, fifth_position: fifth_position, type: type, next_chord: next_chord };
 }
 
@@ -52,11 +52,11 @@ const make_analysis = function(chord, fifth_position, type, next_chord) {
 // Natural is 0
 // -1 for each flat
 // +1 for each sharp
-const double_flat = -2;
-const flat = -1;
-const natural = 0;
-const sharp = 1;
-const double_sharp = 2;
+export const double_flat = -2;
+export const flat = -1;
+export const natural = 0;
+export const sharp = 1;
+export const double_sharp = 2;
 
 // Accidental Texts
 const natural_text = '♮';
@@ -74,37 +74,37 @@ const roman_numeral_texts = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 const scale_length = 7;
 
 // E.g.: C#, Ab, D, F##
-const make_tone = function(letter, num_accidentals) {
+export const make_tone = function(letter, num_accidentals) {
     return { letter: letter,
 	     num_accidentals: num_accidentals,
 	   };
 }
 
 // List of common tones
-const f_flat = make_tone('f', -1);
-const c_flat = make_tone('c', -1);
-const g_flat = make_tone('g', -1);
-const d_flat = make_tone('d', -1);
-const a_flat = make_tone('a', -1);
-const e_flat = make_tone('e', -1);
-const b_flat = make_tone('b', -1);
-const f_natural = make_tone('f', 0);
-const c_natural = make_tone('c', 0);
-const g_natural = make_tone('g', 0);
-const d_natural = make_tone('d', 0);
-const a_natural = make_tone('a', 0);
-const e_natural = make_tone('e', 0);
-const b_natural = make_tone('b', 0);
-const f_sharp = make_tone('f', 1);
-const c_sharp = make_tone('c', 1);
-const g_sharp = make_tone('g', 1);
-const d_sharp = make_tone('d', 1);
-const a_sharp = make_tone('a', 1);
-const e_sharp = make_tone('e', 1);
-const b_sharp = make_tone('b', 1);
+export const f_flat = make_tone('f', -1);
+export const c_flat = make_tone('c', -1);
+export const g_flat = make_tone('g', -1);
+export const d_flat = make_tone('d', -1);
+export const a_flat = make_tone('a', -1);
+export const e_flat = make_tone('e', -1);
+export const b_flat = make_tone('b', -1);
+export const f_natural = make_tone('f', 0);
+export const c_natural = make_tone('c', 0);
+export const g_natural = make_tone('g', 0);
+export const d_natural = make_tone('d', 0);
+export const a_natural = make_tone('a', 0);
+export const e_natural = make_tone('e', 0);
+export const b_natural = make_tone('b', 0);
+export const f_sharp = make_tone('f', 1);
+export const c_sharp = make_tone('c', 1);
+export const g_sharp = make_tone('g', 1);
+export const d_sharp = make_tone('d', 1);
+export const a_sharp = make_tone('a', 1);
+export const e_sharp = make_tone('e', 1);
+export const b_sharp = make_tone('b', 1);
 
 // E.g.: C# Major, Ab Minor, D Dominant
-const make_chord = function(root, quality) {
+export const make_chord = function(root, quality) {
     return { root: root, quality: quality };
 };
 
@@ -132,7 +132,7 @@ const root_text = function (root) {
     return root.letter.toUpperCase() + accidental_text(root.num_accidentals);
 };
 
-const root_tone_from_fifth_position = function(idx) {
+export const root_tone_from_fifth_position = function(idx) {
     // Convert an index into the circle of fifths into a tone
     if (idx < 0) { // negative number indicates flat
 	var num_flats = Math.trunc(-idx / (scale_length + 1)) + 1;
@@ -142,13 +142,13 @@ const root_tone_from_fifth_position = function(idx) {
     return make_tone(root_letters[idx % 7], Math.trunc(idx / scale_length));
 };
 
-const fifth_position = function (r) {
+export const fifth_position = function (r) {
     // Convert a tone into an index into the circle of fifths.
     // ..., eb=-2, bb = -1, f = 0, c = 1, g = 2, ...
     return root_letters.indexOf(r.letter) + r.num_accidentals * scale_length;
 };
 
-const tonal_gravity_transition = function(fifth_pos1, fifth_pos2) {
+export const tonal_gravity_transition = function(fifth_pos1, fifth_pos2) {
     // one of [lu, ld, su, sd, pm]
     // Calculate the transition from r1 to r2
     var f1 = fifth_pos1, f2 = fifth_pos2;
@@ -198,7 +198,7 @@ const position_chord = function(chord, chords) {
 };
 
 // E.g. C <-> Am
-const relative_key = function(key) {
+export const relative_key = function(key) {
     var key_pos = fifth_position(key.root),
 	offset = key.quality === major ? 3 : -3,
 	
@@ -209,7 +209,7 @@ const relative_key = function(key) {
 };
 
 // E.g. C <-> Cm
-const parallel_key = function(key) {
+export const parallel_key = function(key) {
     var parallel_key_quality = key.quality === major ? minor : major;
     return make_chord(key.root, parallel_key_quality);
 };
@@ -240,7 +240,7 @@ const composition_chord_analysis = function(chord, next_chord, key_chords, paral
     return make_analysis(chord, fifth_position(chord.root), unknown, next_chord);
 };
 
-const composition_analysis = function(composition_chords, key) {
+export const composition_analysis = function(composition_chords, key) {
     // Analyse the composition_chords
     var key_chords = key_diatonic_chords(key), parallel_key_chords = key_diatonic_chords(parallel_key(key));
     var analysis = [];
@@ -254,7 +254,7 @@ const composition_analysis = function(composition_chords, key) {
     return analysis;
 };
 
-const key_diatonic_chord = function(key, scale_step) {
+export const key_diatonic_chord = function(key, scale_step) {
     // scale_step: 1-7
     var p = fifth_position(key.root);
     scale_step = (scale_step - 1) % 7;
@@ -267,7 +267,7 @@ const key_diatonic_chord = function(key, scale_step) {
 };
 
 
-const key_diatonic_chord_progression = function(key) {
+export const key_diatonic_chord_progression = function(key) {
     // all of the diatonic chords in key
     // I ii iii IV V7 vi viio (major)
     // i iio III iv v VI VII (minor)
@@ -280,7 +280,7 @@ const key_diatonic_chord_progression = function(key) {
     return chords;
 };
 
-const key_diatonic_chords = function(key) {
+export const key_diatonic_chords = function(key) {
     // all of the diatonic chords in key + V in the major key
     // I ii iii IV V7 vi viio V (major)
     // i iio III iv v VI VII (minor)
@@ -293,7 +293,7 @@ const key_diatonic_chords = function(key) {
     return chords;
 };
 
-const key_diatonic_chord_scale_idx = function(key, chord) {
+export const key_diatonic_chord_scale_idx = function(key, chord) {
     var chords = key_diatonic_chords(key);
     var idx = position_chord(chord, chords);
     if (idx !== null) {
@@ -313,7 +313,7 @@ const major_scale_letters = function(root) {
     return letters;
 }
 
-const major_relative_roman_numeral_text = function(key, chord) {
+export const major_relative_roman_numeral_text = function(key, chord) {
     // Return the roman numeral text for the chord relative to the major key
     // I ii iii ... (major)
     // i iio bIII ... (parallel minor)
@@ -356,7 +356,7 @@ const grand_cadence = function(key) {
 	   ];
 }
 
-const chord_analysis_substitution_text = function(key, chord_analysis) {
+export const chord_analysis_substitution_text = function(key, chord_analysis) {
     var substitution_text = '';
     var type = chord_analysis.type;
     var chord = chord_analysis.chord;
