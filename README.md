@@ -1,8 +1,31 @@
 # Music-Theory-Application
 Senior Capstone
 
-[github.io](https://kazuriah.github.io/Music-Theory-Application/)
+## IMPORTANT: CODE DOCUMENTATION FOR GRADING
+The code is self-documenting and/or commented. Please view the following files/folders for grading purposes.
 
+- [src](fifths/src) : The source code
+	- [src/components](fifths/src/components): Code for the app pages and menu.
+		- [src/components/Menu.js](src/components/Menu.js): Code for the Sidebar Menu available from all screens.
+			- Links to Circle of Fifths Page
+			- Links to Composition Page
+			- Links to individual Reference pages
+		- [src/components/References](src/components/References): Code for the instructional Reference pages.
+			- [src/components/References/index.js](src/components/References/index.js): 
+			Allows for swiping left/right to navigate between reference pages.
+			Code for organizing the reference pages for the table of contents (Part of the Sidebar Menu).
+			- One file per reference page.
+		- [src/components/CircleOfFifthsScreen](src/components/CircleOfFifthsScreen): Code for the interactive Circle of Fifths Page.
+		- [src/components/Composition.js](src/components/Composition.js): Code for the composition page.		
+	- [src/static](fifths/src/static): Files containing constants that may be shared/referenced by a number of components.
+	- [src/selectors/keys.js](fifths/src/selectors/keys.js): Converts between keys and rotation angles for the Circle of Fifths Page.
+	- [src/reducers](fifths/src/reducers): TODO: Aidan.
+- [tests](fifths/__tests__) : Test cases for the algorithms.
+
+## Music Theory Terms Quick Reference:
+- Tone: A-G with any number of # (sharps) or b (flats)
+- TODO (For Behn)
+	
 ## Links of Interest to the Grader:
 - 12/01/17 [Design Doc](Documents/design)
 - 11/13/17 [Tech Reviews](Documents/tech-review)
