@@ -10,32 +10,18 @@ export default class EnharmonicEquivalentsReference extends Component {
         <View style={{ flex:1 }}>
           { /* Title */ }
           <Text style={styles.title}>
-          
+            Enharmonic Equivalents          
+          </Text>
+          <Text style={styles.paragraph}> Enharmonic equivalents are notes that are spelled differently but sound the same. For example, there is only one note between E and D. It is lower than E, and it is higher than D. Thus it can be spelled as (or written, or called) either Eb or D#, and regardless of how it is spelled it sounds the same. Eb and D# are thus enharmonic equivalents. The most common enharmonic equivalents are: 
+          </Text>
+          <Text style={styles.paragraph}>F#=Gb  C#=Db  G#=Ab  D#=Eb  A#=Bb  E#=F  B#=C</Text>
+          <Text style={styles.paragraph}>Less common enharmonic equivalents are:</Text>
+          <Text style={styles.paragraph}>
+            E#=F B#=C
           </Text>
           <Text style={styles.paragraph}>
-            
+            Fb=E Cb=B
           </Text>
-          <ScrollView style={styles.horizontalScroll} horizontal>
-            <Text>
-            
-            </Text>
-          </ ScrollView>
-          <Text style={styles.paragraph}>
-            
-          </Text>
-          {/* Image */ }
-
-          <Text style={styles.paragraph}>
-            
-            <Text style={{ fontStyle: 'italic' }}>
-              
-            </Text>
-          </Text>
-          { /* List Example */ }
-          <FlatList
-            data={[{key: 'a'}, {key: 'b'}]}
-            renderItem={({item}) => <Text>{item.key}</Text>}
-          />
         </View>
       </ ScrollView>
     );

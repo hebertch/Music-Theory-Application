@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "sdkVersion": "25.0.0",
     "slug": "fifths",
+    "orientation": "portrait",
     "ios": {
       "bundleIdentifier": "com.tritone.perfectfifth"
     },

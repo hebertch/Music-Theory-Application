@@ -10,6 +10,7 @@ export default class ParallelAndBorrowedReference extends Component {
         <View style={{ flex:1 }}>
           { /* Title */ }
           <Text style={styles.title}>
+            Parallel Keys & Borrowed Chords
           </Text>
           <Text style={styles.paragraph}> Parallel keys share a common center of gravity but include different notes. They always come as a pair, with one Major key and one minor key. For example, C Major is the parallel key of C minor. In both keys, C is the center of gravity, but each key contains a different set of notes. In C Major the notes are BEADGCF, while in C minor the notes are DGCFBbEbAb.
           </Text>
@@ -25,20 +26,19 @@ export default class ParallelAndBorrowedReference extends Component {
                 </Text>
               </Text>
               <FlatList
-                data={['7 - Bdim', '3 - Emin', '6 - Amin', '2 - Dmin\t<--', '5 - G7', '1 - CMaj', '4 - FMaj']}
+                data={['7 - Bdim', '3 - Emin', '6 - Amin', '2 - Dmin <--', '5 - G7    <--', '1 - CMaj <--', '4 - FMaj <--']}
                 renderItem={({item}) => <Text>{item}</Text>}
               />
             </View>
             <View
-              style={{marginTop: 50}}
+              style={{marginTop: 51}}
             >
               <Text style={styles.paragraph}>
-                <Text style={{ fontWeight: 'bold' }}>
-                  C minor
+                <Text style={{ fontWeight: 'bold' }}>    C minor
                 </Text>
               </Text>
                <FlatList
-                data={['-->\t2 - Ddim', '5 - G7*', '1 - Cmin', '4 - Fmin', 'b7 - BbMaj', 'b3 - EbMaj', 'b6 - AbMaj']}
+                data={['--> 2 - Ddim', '--> 5 - G7*', '--> 1 - Cmin', '--> 4 - Fmin', '    b7 - BbMaj', '    b3 - EbMaj', '    b6 - AbMaj']}
                 renderItem={({item}) => <Text>{item}</Text>}
               />
             </View>
