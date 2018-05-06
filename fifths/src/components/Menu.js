@@ -1,4 +1,6 @@
-import { DrawerNavigator } from 'react-navigation';
+import React from 'react';
+import { Text } from 'react-native';
+import { DrawerNavigator, StackNavigator } from 'react-navigation';
 import CircleOfFifthsScreen from './CircleOfFifthsScreen';
 import { 
   ReferencesContainer, CircleOfFifthsReferenceContainer, PerfectFifthReferenceContainer,
@@ -6,12 +8,22 @@ MusicalGravityReferenceContainer, HarmonicFunctionReferenceContainer, KeySignatu
 } from './References';
 import CompositionContainer from './Composition';
 
+const ComposeStack = StackNavigator({
+  Compose: {
+      screen: CompositionContainer,
+      navigationOptions: ({ navigation }) => ({
+	  title: 'Compose',  // Title to appear in status bar
+	  headerLeft: <Text onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
+      })
+  }
+});
+
 const RootDrawer = DrawerNavigator({
   Home: {
     screen: CircleOfFifthsScreen,
   },
   Compose: {
-    screen: CompositionContainer,
+    screen: ComposeStack,
   },
   References: {
     screen: ReferencesContainer,
