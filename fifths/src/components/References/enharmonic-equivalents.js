@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Image, ScrollView, View, Text } from 'react-nativ
 
 import styles from './styles';
 
+// Requirement 03: Enharmonic Equivalents Reference page
 export default class EnharmonicEquivalentsReference extends Component {
   render() {
     return (

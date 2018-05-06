@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Image, ScrollView, View, Text } from 'react-nativ
 
 import styles from './styles';
 
+// Requirement 02: Perfect Fifth reference page
 export default class PerfectFifthReference extends Component {
   render() {
     return (

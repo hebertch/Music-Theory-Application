@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Image, ScrollView, View, Text } from 'react-nativ
 
 import styles from './styles';
 
+// Requirement 02: Chords Reference Page
 export default class DominantChordsReference extends Component {
   render() {
     return (

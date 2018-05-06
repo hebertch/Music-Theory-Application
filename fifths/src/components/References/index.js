@@ -2,6 +2,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 
+// Requirement 03: Reference Pages
+// import reference pages from src/components/References/*.js
+// See pages for text marked up with JSX (HTML-like)
 import CircleOfFifthsReference from './circle-of-fifths';
 import PerfectFifthReference from './perfect-fifth';
 import MusicalGravityReference from './musical-gravity';
@@ -17,6 +20,8 @@ import SecondaryDominantsReference from './secondary-dominants';
 import DiatonicSubstitutesReference from './diatonic-substitutes';
 import TritoneSubstitutesReference from './tritone-substitutes';
 
+// Combine references into a React Element that you can swipe left/right through.
+// Displays dots at the bottom showing progress.
 const References = (props) => (
   <Swiper showButtons={true} index={props.index} >
     <CircleOfFifthsReference />
@@ -36,8 +41,9 @@ const References = (props) => (
   </ Swiper>
 );
 
-// component
+// components
 // accessed by the Main Menu sidebar
+// index={num} jumps to the appropriate page when the page is opened from the sidebar.
 export const ReferencesContainer = () => (
   <References index={0} />
 );

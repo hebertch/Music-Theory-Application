@@ -113,6 +113,7 @@ const quality_text = function (quality) {
     return quality_texts[quality];
 };
 
+// Convert number of accidentals to text: e.g. -1 is b (flat), +2 is ## (double sharp).
 const accidental_text = function(num_accidentals) {
     // Convert number of accidentals to the appropriate text.
     switch (num_accidentals) {
@@ -125,6 +126,19 @@ const accidental_text = function(num_accidentals) {
     }
     console.assert(num_accidentals >= -3 && num_accidentals <= 3, "Too many sharps or flats.")
     return '';
+}
+// Convert back from text to number of accidentals
+const accidental_text_to_num_accidentals = function(text) {
+    // Assume that triple_flat_text/triple_sharp_text will not be converted from text,
+    // since they are not options for accidentals.
+    switch (text) {
+    case double_flat_text: return -2;
+    case flat_text: return -1;
+    case natural_text: return 0;
+    case sharp_text: return 1;
+    case double_sharp_text: return 2;
+    }
+    return 0;
 }
 
 // Convert a root tone to text
@@ -167,6 +181,7 @@ export const tonal_gravity_transition = function(fifth_pos1, fifth_pos2) {
     return leap_up;
 };
 
+// Convert a chord to its textual name.
 const chord_text = function(chord) {
     return root_text(chord.root) + quality_text(chord.quality);
 };
@@ -197,6 +212,7 @@ const position_chord = function(chord, chords) {
     return null;
 };
 
+// Return the relative major/minor key of key
 // E.g. C <-> Am
 export const relative_key = function(key) {
     var key_pos = fifth_position(key.root),
@@ -208,6 +224,7 @@ export const relative_key = function(key) {
     return make_chord(relative_key_root_tone, relative_key_quality);
 };
 
+// Return the parallel major/minor key of key
 // E.g. C <-> Cm
 export const parallel_key = function(key) {
     var parallel_key_quality = key.quality === major ? minor : major;
@@ -216,11 +233,16 @@ export const parallel_key = function(key) {
 
 const composition_chord_analysis = function(chord, next_chord, key_chords, parallel_key_chords) {
     // Analyze a chord as part of a composition_analysis
+
+    // Analyze diatonic chords
     if (position_chord(chord, key_chords) !== null)
 	return make_analysis(chord, fifth_position(chord.root), diatonic, next_chord);
+
+    // Analyze borrowed chords
     if (position_chord(chord, parallel_key_chords) !== null)
 	return make_analysis(chord, fifth_position(chord.root), borrowed, next_chord);
 
+    // Analyze secondary dominants
     if (chord.quality === dominant && 
 	next_chord &&
 	position_chord(next_chord, key_chords) &&
@@ -229,6 +251,7 @@ const composition_chord_analysis = function(chord, next_chord, key_chords, paral
 	return make_analysis(chord, fifth_position(chord.root), secondary_dominant, next_chord);
     }
 
+    // Analyze tritone substitutes
     if (chord.quality === dominant && 
 	next_chord &&
 	(fifth_position(chord.root) + 5 === fifth_position(next_chord.root) ||
@@ -237,9 +260,13 @@ const composition_chord_analysis = function(chord, next_chord, key_chords, paral
 	return make_analysis(chord, fifth_position(next_chord.root) + 1, tritone, next_chord);
     }
 
+    // NOTE: Do not try to analyze diatonic substitutes
+
+    // Unknown substitution
     return make_analysis(chord, fifth_position(chord.root), unknown, next_chord);
 };
 
+// Perform a full analysis of chords in a composition, in the given key.
 export const composition_analysis = function(composition_chords, key) {
     // Analyse the composition_chords
     var key_chords = key_diatonic_chords(key), parallel_key_chords = key_diatonic_chords(parallel_key(key));
@@ -254,6 +281,10 @@ export const composition_analysis = function(composition_chords, key) {
     return analysis;
 };
 
+// Return the diatonic chord in key given the scale degree scale_step.
+// e.g.
+//   key_diatonic_chord(C Major, 1) => C Major
+//   key_diatonic_chord(C Major, 2) => D Minor
 export const key_diatonic_chord = function(key, scale_step) {
     // scale_step: 1-7
     var p = fifth_position(key.root);
@@ -265,7 +296,6 @@ export const key_diatonic_chord = function(key, scale_step) {
     var tone = root_tone_from_fifth_position(p2);
     return make_chord(tone, quality);
 };
-
 
 export const key_diatonic_chord_progression = function(key) {
     // all of the diatonic chords in key
@@ -293,6 +323,7 @@ export const key_diatonic_chords = function(key) {
     return chords;
 };
 
+// If the chord is a diatonic chord in the given key, return its scale_idx [0-7].
 export const key_diatonic_chord_scale_idx = function(key, chord) {
     var chords = key_diatonic_chords(key);
     var idx = position_chord(chord, chords);
@@ -317,16 +348,24 @@ export const major_relative_roman_numeral_text = function(key, chord) {
     // Return the roman numeral text for the chord relative to the major key
     // I ii iii ... (major)
     // i iio bIII ... (parallel minor)
+
+    // Find the associated major chord and create text relative to that.
+    // e.g. key=C major, chord=Eb Major
+    //   major chord: iii or E minor
+    //   chord = bIII, since we are flat relative to the iii chord.
+
     var scale_idx = position(chord.root.letter, major_scale_letters(key.root));
     var major_chords = key_diatonic_chords(make_chord(key.root, major));
     var major_chord_num_accidentals = major_chords[scale_idx].root.num_accidentals;
     var text = roman_numeral_texts[scale_idx];
 
+    // Capitalize if Major or dominant, lowercase if minor or diminished.
     if (chord.quality === major ||
 	chord.quality === dominant) {
 	text = text.toUpperCase();
     }
 
+    // Prepend accidental text.
     switch (major_chord_num_accidentals - chord.root.num_accidentals) {
     case 1: text = flat_text + text; break;
     case 2: text = double_flat_text + text; break;
@@ -336,6 +375,7 @@ export const major_relative_roman_numeral_text = function(key, chord) {
     case -3: text = triple_sharp_text + text; break;
     }
 
+    // add 7 if dominant, o if diminished
     if (chord.quality === dominant) {
 	text = text + roman_numeral_dominant_text;
     } else if (chord.quality === diminished) {
@@ -356,6 +396,7 @@ const grand_cadence = function(key) {
 	   ];
 }
 
+// Return parenthetical text of a substitution for a given chord_analysis.
 export const chord_analysis_substitution_text = function(key, chord_analysis) {
     var substitution_text = '';
     var type = chord_analysis.type;
@@ -364,7 +405,7 @@ export const chord_analysis_substitution_text = function(key, chord_analysis) {
     var fifth_pos = chord_analysis.fifth_position;
     
     switch (type) {
-    case diatonic: break;
+    case diatonic: break; // No substitution text for diatonic, borrowed, or unknown chords.
     case borrowed: break;
     case secondary_dominant:
 	// E.g. V7/V7
@@ -385,6 +426,7 @@ export const chord_analysis_substitution_text = function(key, chord_analysis) {
 
 /// End Analysis Algorithm
 
+// Match diatonic colors with the circle of fifths page.
 const fifth_position_color_idx = function(fifth_pos, key) {
     var key_fifth_pos = fifth_position(key.root);
     var color_idx = key_fifth_pos - fifth_pos + (key.quality === major ? -4 : -7);
@@ -392,29 +434,41 @@ const fifth_position_color_idx = function(fifth_pos, key) {
     return color_idx;
 }
 
+// Requirement 02: Analyze tonal gravity
+// Returns a React Native element containing the chord and its analyis.
 const e_composition_chord = function(chord_analysis, previous_chord_analysis, key) {
     var next_chord = chord_analysis.next_chord;
+
+    // Use the analyzed/functional fifth position
     var fifth_pos = chord_analysis.fifth_position;
     var chord = chord_analysis.chord;
+
+    // Perform tonal gravity analysis between previous chord and current chord.
     var transition = 
 	previous_chord_analysis ? 
 	tonal_gravity_transition(previous_chord_analysis.fifth_position, fifth_pos) : 
 	null;
+    
     var transition_text =
 	transition !== null ? 
 	tonal_gravity_transition_texts[transition] :
 	'';
+    
     var substitution_text = chord_analysis_substitution_text(key, chord_analysis);
     var is_diatonic_or_substitute = chord_analysis.type !== unknown;
 
+    // Use the rainbow colors from the CoF page if it has a diatonic function
+    // Otherwise use white.
     var color = is_diatonic_or_substitute ?
 	colors[fifth_position_color_idx(fifth_pos, key)] :
 	'white';
 
+    // Add parentheses to the substitution text.
     if (substitution_text.length > 0) {
 	substitution_text = '(' + substitution_text + ')';
     }
 
+    // Display the chords
     return e(View, {style: {flexDirection: 'row'}}, [
 	eText(transition_text + ' ',
 	      {style: {color: (transition === leap_down ? 'red' : 'black')}}),
@@ -428,20 +482,24 @@ const e_composition_chord = function(chord_analysis, previous_chord_analysis, ke
     ]);
 }
 
+// Requirement 01: "User can have the application analyze a composition and determine if it follows the rules of tonal gravity"
+// Return a React Native element rendering the entire composition.
 const e_composition = function(composition_chords, key) {
-    // For testing
     var analysis = composition_analysis(composition_chords, key);
     var chord_es = [];
 
     for (var i = 0; i < analysis.length; ++i) {
 	var chord_analysis = analysis[i];
 	var previous_chord_analysis = i > 0 ? analysis[i - 1] : null;
+
+	
 	chord_es.push(e_composition_chord(chord_analysis, previous_chord_analysis, key));
     }
     return e(View, {style: {flexDirection: 'row', flexWrap: 'wrap'}}, chord_es);
 }
 
 // f(component, props, childElements) => element
+// Create a React element.
 const e = function(component, props, children) {
     props = props || {};
     children = children || [];
@@ -449,40 +507,34 @@ const e = function(component, props, children) {
 };
 
 // f(text, props) => element
+// Create React Text Element.
 const eText = function(text, props) {
     props = props || {};
     return e(Text, props, text);
 };
 
+// React Stylesheet.
 const styles = StyleSheet.create({
     container: {
 	    marginTop: 40,
     }
 });
 
+// Options for the Radio Buttons
 const key_accidental_options = [flat_text, natural_text, sharp_text];
 const accidental_options = [double_flat_text, flat_text, natural_text, sharp_text, double_sharp_text];
-const accidental_text_to_num_accidentals = function(text) {
-    switch (text) {
-    case double_flat_text: return -2;
-    case flat_text: return -1;
-    case natural_text: return 0;
-    case sharp_text: return 1;
-    case double_sharp_text: return 2;
-    }
-    return 0;
-}
-
 const chord_quality_options = ['Major', 'Minor', roman_numeral_diminished_text, roman_numeral_dominant_text];
 const key_quality_options = ['Major', 'Minor'];
+const letter_options = ['B', 'E', 'A', 'D', 'G', 'C', 'F'];
+
+// Convert from the chord quality text to the chord quality enum.
 const chord_quality_text_to_chord_quality = function(text) {
     return chord_quality_options.indexOf(text);
 }
 
-const letter_options = ['B', 'E', 'A', 'D', 'G', 'C', 'F'];
-
+// React Component that creates the Composition edit/display/analyze view.
 const cCompositionEditView = component({
-    // TODO: convert from root_tone_options to make_tone()
+    // Sets the initial state of the radio buttons.
     getInitialState: function() {
 	return {composition: [],
 
@@ -496,17 +548,20 @@ const cCompositionEditView = component({
 	       };
     },
 
+    // Delete the old composition
     new_composition_pressed: function() {
 	this.setState({composition: []});
     },
 
+    // Requirement 01: "User has the ability to create a few measures of a chord progression"
     add_chord_pressed: function() {
 	this.setState(function (state) {
 	    return {composition: state.composition.concat([this.selected_chord()])};
 	});
     },
 
-    // TODO: Refactor chooser menu.
+    // Update the state of the component when the user changes an option
+    // Key option changed:
     selected_key_letter_changed: function(option) {
 	this.setState(function (state) {
 	    return {selected_key_letter: option};
@@ -523,6 +578,7 @@ const cCompositionEditView = component({
 	});
     },
 
+    // Chord option changed:
     selected_chord_letter_changed: function(option) {
 	this.setState(function (state) {
 	    return {selected_chord_letter: option};
@@ -539,30 +595,35 @@ const cCompositionEditView = component({
 	});
     },
 
-
+    // Converts the user-inputted key selection into a tone that can be used for analysis
     selected_key_tone: function() {
 	var letter = this.state.selected_key_letter.toLowerCase();
 	var num_accidentals = accidental_text_to_num_accidentals(this.state.selected_key_accidental);
 	return make_tone(letter, num_accidentals);
     },
+    // Converts the user-inputted key selection into a key that can be used for analysis
     selected_key: function() {
 	return make_chord(this.selected_key_tone(),
 			  chord_quality_text_to_chord_quality(this.state.selected_key_quality));
     },
 
+    // Converts the user-inputted chord selection into a tone that can be used for analysis
     selected_chord_tone: function() {
 	var letter = this.state.selected_chord_letter.toLowerCase();
 	var num_accidentals = accidental_text_to_num_accidentals(this.state.selected_chord_accidental);
 	return make_tone(letter, num_accidentals);
     },
+    // Converts the user-inputted chord selection into a chord that can be used for analysis
     selected_chord: function() {
 	return make_chord(this.selected_chord_tone(),
 			  chord_quality_text_to_chord_quality(this.state.selected_chord_quality));
     },
     
     render: function() {
+	// Place composition inside a scroll view
 	return e(ScrollView, {contentContainerStyle: {flexGrow: 1}}, [
 	    e(View, {style: styles.container}, [
+		// React Elements for Key Radio buttons
 		eText("Key", {style: {alignSelf: 'center'}}),
 
 		e(SegmentedControls,
@@ -578,6 +639,8 @@ const cCompositionEditView = component({
 		   onSelection: this.selected_key_quality_changed,
 		   selectedOption: this.state.selected_key_quality}),
 
+		// Requirement 01: "User has an easy way of inputting chords..."
+		// React Elements for chord Radio buttons
 		eText("Chord", {style: {alignSelf: 'center', paddingTop: 20}}),
 
 		e(SegmentedControls,
@@ -592,9 +655,12 @@ const cCompositionEditView = component({
 		  {options: chord_quality_options,
 		   onSelection: this.selected_chord_quality_changed,
 		   selectedOption: this.state.selected_chord_quality}),
-		
+
+		// React Element button for Clearing the existing composition
 		e(Button, {title: 'New Composition', onPress: this.new_composition_pressed}),
+		// React Element button for adding the existing chord
 		e(Button, {title: 'Add Chord', onPress: this.add_chord_pressed}),
+		// React Elements for displaying the composition and its analysis
 		eText('Composition', {style: {alignSelf: 'center'}}),
 		e_composition(this.state.composition, this.selected_key())
 	    ])]);
