@@ -15,6 +15,7 @@ import ScaleDegreeReference from './scale-degree';
 import DominantChordsReference from './dominant-chords';
 import SecondaryDominantsReference from './secondary-dominants';
 import DiatonicSubstitutesReference from './diatonic-substitutes';
+import TritoneSubstitutesReference from './tritone-substitutes';
 
 const References = (props) => (
   <Swiper showButtons={true} index={props.index} >
@@ -30,6 +31,7 @@ const References = (props) => (
     <ScaleDegreeReference />
     <DominantChordsReference />
     <SecondaryDominantsReference />
+    <TritoneSubstitutesReference />
     <DiatonicSubstitutesReference />
   </ Swiper>
 );
@@ -88,7 +90,11 @@ export const SecondaryDominantsReferenceContainer = () => (
   <References index={11} />
 );
 
-export const DiatonicSubstitutesReferenceContainer = () => (
+export const TritoneSubstitutesReferenceContainer = () => (
   <References index={12} />
+);
+
+export const DiatonicSubstitutesReferenceContainer = () => (
+  <References index={13} />
 );
 
