@@ -3,6 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 10,
   },
 });
 
@@ -41,24 +42,21 @@ class Toggles extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <CheckBox
-          label="Show Parallel"
-          labelBefore
-          onChange={checked => this.props.toggleParallel(checked.checked)}
-          checked={this.props.showParallel}
-        />
-        <CheckBox
-          label="Show Relative"
-          labelBefore
-          onChange={checked => this.props.toggleRelative(checked.checked)}
-          checked={this.props.showRelative}
-        />
-        <CheckBox
-          label={majorMinorLabel(this.props.currentScale)}
-          labelBefore
-          onChange={checked => this.toggle(checked.checked)}
-          checked={this.state.isMajor}
-        />
+        <TouchableOpacity onPress={() => this.props.toggleParallel(!this.props.showParallel)}>
+          <View>
+            <Text style={{ padding: 10 }}>{this.props.showParallel ? 'Hide Parallel' : 'Show Parallel'}</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.toggleRelative(!this.props.showRelative)}>
+          <View>
+            <Text style={{ padding: 10 }}>{this.props.showRelative ? 'Hide Relative' : 'Show Relative'}</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => this.toggle(!this.state.isMajor)}>
+          <View>
+            <Text style={{ padding: 10 }}>{this.props.currentScale === 'maj' ? 'Change to minor' : 'Change to Major'}</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   }

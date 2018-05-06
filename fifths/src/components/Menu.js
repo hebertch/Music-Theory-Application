@@ -13,7 +13,7 @@ const CircleOfFifthsStack = StackNavigator({
       screen: CircleOfFifthsScreen,
       navigationOptions: ({ navigation }) => ({
 	  title: 'Home',  // Title to appear in status bar
-	  headerLeft: <Text onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
+	  headerLeft: <Text style={{ marginLeft: 5 }} onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
       })
   }
 });
@@ -23,7 +23,7 @@ const ComposeStack = StackNavigator({
       screen: CompositionContainer,
       navigationOptions: ({ navigation }) => ({
 	  title: 'Compose',  // Title to appear in status bar
-	  headerLeft: <Text onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
+	  headerLeft: <Text style={{ marginLeft: 5 }} onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
       })
   }
 });
@@ -34,7 +34,7 @@ const reference_stack = function(screen_name, container) {
 	screen: container,
 	navigationOptions: ({ navigation }) => ({
 	    title: 'References',
-	    headerLeft: <Text onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
+	    headerLeft: <Text style={{ marginLeft: 5 }} onPress={ () => navigation.navigate('DrawerOpen') }>Menu</Text>
 	})
     };
     return StackNavigator(params);

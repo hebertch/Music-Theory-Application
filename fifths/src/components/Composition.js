@@ -456,7 +456,7 @@ const eText = function(text, props) {
 
 const styles = StyleSheet.create({
     container: {
-	    marginTop: 40,
+	    marginTop: 20,
     }
 });
 
