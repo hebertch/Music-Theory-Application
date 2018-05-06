@@ -563,7 +563,6 @@ const cCompositionEditView = component({
     render: function() {
 	return e(ScrollView, {contentContainerStyle: {flexGrow: 1}}, [
 	    e(View, {style: styles.container}, [
-		eText("Compose", {style: {fontSize: 28, fontWeight: 'bold', textAlign: 'center'}}),
 		eText("Key", {style: {alignSelf: 'center'}}),
 
 		e(SegmentedControls,
