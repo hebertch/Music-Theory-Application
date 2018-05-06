@@ -16,7 +16,7 @@ const CircleOfFifthsScreen = () => (
   >
     <View
       style={{
-        flex: 1,
+        flex: .8,
         flexDirection: 'row',
       }}
     >

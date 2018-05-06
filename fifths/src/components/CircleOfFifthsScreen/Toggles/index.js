@@ -44,17 +44,17 @@ class Toggles extends Component {
       <View style={styles.container}>
         <TouchableOpacity onPress={() => this.props.toggleParallel(!this.props.showParallel)}>
           <View>
-            <Text style={{ padding: 10 }}>{this.props.showParallel ? 'Hide Parallel' : 'Show Parallel'}</Text>
+            <Text style={{ fontSize: 14, padding: 8 }}>{this.props.showParallel ? 'Hide Parallel' : 'Show Parallel'}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.props.toggleRelative(!this.props.showRelative)}>
           <View>
-            <Text style={{ padding: 10 }}>{this.props.showRelative ? 'Hide Relative' : 'Show Relative'}</Text>
+            <Text style={{ fontSize: 14, padding: 8 }}>{this.props.showRelative ? 'Hide Relative' : 'Show Relative'}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.toggle(!this.state.isMajor)}>
           <View>
-            <Text style={{ padding: 10 }}>{this.props.currentScale === 'maj' ? 'Change to minor' : 'Change to Major'}</Text>
+            <Text style={{ fontSize: 14, padding: 8 }}>{this.props.currentScale === 'maj' ? 'Change to minor' : 'Change to Major'}</Text>
           </View>
         </TouchableOpacity>
       </View>
