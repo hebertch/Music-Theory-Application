@@ -22,8 +22,8 @@ export default class DiatonicSubstitutesReference extends Component {
                 </Text>
               </Text>
               <FlatList
-                data={['7 = 5 (Strong)', '3 = 5 (weak) or 1 (weak)', '6 = 1 (weak) or 4 (weak)', '2 = 4 (Strong)', '5 = 7 (Strong) or 3 (weak)', '1= 3 (weak) or 6 (weak)', '4 = 2 (Strong) or 6 (weak)']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '7 = 5 (Strong)' }, { key: '3 = 5 (weak) or 1 (weak)' }, { key: '6 = 1 (weak) or 4 (weak)' }, { key: '2 = 4 (Strong)' }, { key: '5 = 7 (Strong) or 3 (weak)' }, { key: '1= 3 (weak) or 6 (weak)' }, { key: '4 = 2 (Strong) or 6 (weak)' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
             <View style={{flex:1}}>
@@ -33,8 +33,8 @@ export default class DiatonicSubstitutesReference extends Component {
                 </Text>
               </Text>
                <FlatList
-                data={['2 = 4 (Strong)', '5 = b7 (weak)', '1 = b3 (weak) or b6 (weak)', '4 = 2 (Strong)', 'b7 = 2 (Strong)', 'b3 = 1 (weak)', 'b6 = 1 (weak) or 4 (weak)']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '2 = 4 (Strong)' }, { key: '5 = b7 (weak)' }, { key: '1 = b3 (weak) or b6 (weak)' }, { key: '4 = 2 (Strong)' }, { key: 'b7 = 2 (Strong)' }, { key: 'b3 = 1 (weak)' }, { key: 'b6 = 1 (weak) or 4 (weak)' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
           </View>          

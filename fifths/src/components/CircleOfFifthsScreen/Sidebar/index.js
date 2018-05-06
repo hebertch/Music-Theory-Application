@@ -28,7 +28,6 @@ const Sidebar = (props) => {
       contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
       style={
       {
-        top: windowHeight / 20,
         backgroundColor: 'whitesmoke',
       }}
       contentOffset={{ x: 0, y: 45 * startIndex }}

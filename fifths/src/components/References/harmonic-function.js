@@ -22,8 +22,8 @@ export default class HarmonicFunctionReference extends Component {
             In short form, these two principles are:
           </Text>
           <FlatList
-            data={['1. Movement “down" by step only', '2. Avoid consecutive “up" movement']}
-            renderItem={({item}) => <Text>{item}</Text>}
+            data={[{ key: '1. Movement “down" by step only' }, { key: '2. Avoid consecutive “up" movement' }]}
+            renderItem={({item}) => <Text>{item.key}</Text>}
           />
         </View>
       </ ScrollView>
