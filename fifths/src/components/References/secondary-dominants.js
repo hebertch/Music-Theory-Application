@@ -20,8 +20,8 @@ export default class SecondaryDominantsReference  extends Component {
             Another good way to start conceptualizing and using Secondary Dominant chords is to relate them to their diatonic counterparts. An example is shown below in the key of C Major:  
           </Text>
           <FlatList
-            data={['7  Bdim = B7 (the “5 of 3”)', '3  Emin = E7 (the “5 of 6”)', '6  Amin = A7 (the “5 of 2”)', '2  Dmin = D7 (the “5 of 5”)', '5  G7 is the Primary Dominant (the ”5 of 1” or simply “the 5 chord”)', '1  CMaj = C7 (the “5 of 4”)']}
-            renderItem={({item}) => <Text>{item}</Text>}
+            data={[{ key: '7  Bdim = B7 (the “5 of 3”)' }, { key: '3  Emin = E7 (the “5 of 6”)' }, { key: '6  Amin = A7 (the “5 of 2”)' }, { key: '2  Dmin = D7 (the “5 of 5”)' }, { key: '5  G7 is the Primary Dominant (the ”5 of 1” or simply “the 5 chord”)' }, { key: '1  CMaj = C7 (the “5 of 4”)' }]}
+            renderItem={({item}) => <Text>{item.key}</Text>}
           />
           <Text style={styles.paragraph}> The function of the 2 chord (in this case Dmin) is to move to the 5 chord (G7). The Secondary Dominant D7 (the “5 of 5”) will also move to the 5 chord, and is therefore a good substitution for the 2 chord. So the following chord progression  
           </Text>

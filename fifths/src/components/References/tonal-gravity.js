@@ -25,8 +25,8 @@ export default class TonalGravityReference extends Component {
                 </Text>
               </Text>
               <FlatList
-                data={['7 - Bdim', '3 - Emin', '6 - Amin', '2 - Dmin', '5 - G7', '1 - CMaj', '4 - FMaj']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '7 - Bdim' }, { key: '3 - Emin' }, { key: '6 - Amin' }, { key: '2 - Dmin' }, { key: '5 - G7' }, { key: '1 - CMaj' }, { key: '4 - FMaj' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
             <View style={{flex:1}}>
@@ -36,8 +36,8 @@ export default class TonalGravityReference extends Component {
                 </Text>
               </Text>
                <FlatList
-                data={['2 - Ddim', '5 - G7*', '1 - Cmin', '4 - Fmin', 'b7 - BbMaj', 'b3 - EbMaj', 'b6 - AbMaj']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '2 - Ddim' }, { key: '5 - G7*' }, { key: '1 - Cmin' }, { key: '4 - Fmin' }, { key: 'b7 - BbMaj' }, { key: 'b3 - EbMaj' }, { key: 'b6 - AbMaj' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
           </View>
@@ -53,8 +53,8 @@ export default class TonalGravityReference extends Component {
                 </Text>
               </Text>
               <FlatList
-                data={['7 - dim', '3 - min', '6 - min', '2 - min', '5 - 7', '1 - Maj', '4 - Maj']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '7 - dim' }, { key: '3 - min' }, { key: '6 - min' }, { key: '2 - min' }, { key: '5 - 7' }, { key: '1 - Maj' }, { key: '4 - Maj' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
             <View style={{flex:1}}>
@@ -64,8 +64,8 @@ export default class TonalGravityReference extends Component {
                 </Text>
               </Text>
                <FlatList
-                data={['2 - dim', '5 - 7*', '1 - min', '4 - min', 'b7 - Maj', 'b3 - Maj', 'b6 - Maj']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '2 - dim' }, { key: '5 - 7*' }, { key: '1 - min' }, { key: '4 - min' }, { key: 'b7 - Maj' }, { key: 'b3 - Maj' }, { key: 'b6 - Maj' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
               
             </View>

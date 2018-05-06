@@ -26,8 +26,8 @@ export default class ParallelAndBorrowedReference extends Component {
                 </Text>
               </Text>
               <FlatList
-                data={['7 - Bdim', '3 - Emin', '6 - Amin', '2 - Dmin <--', '5 - G7    <--', '1 - CMaj <--', '4 - FMaj <--']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '7 - Bdim' }, { key: '3 - Emin' }, { key: '6 - Amin' }, { key: '2 - Dmin <--' }, { key: '5 - G7    <--' }, { key: '1 - CMaj <--' }, { key: '4 - FMaj <--' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
             <View
@@ -38,8 +38,8 @@ export default class ParallelAndBorrowedReference extends Component {
                 </Text>
               </Text>
                <FlatList
-                data={['--> 2 - Ddim', '--> 5 - G7*', '--> 1 - Cmin', '--> 4 - Fmin', '    b7 - BbMaj', '    b3 - EbMaj', '    b6 - AbMaj']}
-                renderItem={({item}) => <Text>{item}</Text>}
+                data={[{ key: '--> 2 - Ddim' }, { key: '--> 5 - G7*' }, { key: '--> 1 - Cmin' }, { key: '--> 4 - Fmin' }, { key: '    b7 - BbMaj' }, { key: '    b3 - EbMaj' }, { key: '    b6 - AbMaj' }]}
+                renderItem={({item}) => <Text>{item.key}</Text>}
               />
             </View>
           </View>
