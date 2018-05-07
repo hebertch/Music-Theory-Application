@@ -1,3 +1,5 @@
+// possible actions that will update the redux state
+
 export const KEY_CHANGE = 'KEY_CHANGE';
 export const SCALE_CHANGE = 'SCALE_CHANGE';
 export const TOGGLE_PARALLEL = 'TOGGLE_PARALLEL';

@@ -9,6 +9,7 @@ import { getKeyObject } from '../../../selectors/keys';
 
 const windowHeight = Dimensions.get('window').height;
 
+// returns a touchable component
 const TouchableNote = (note, changeKeyFunc, color) => (
   <TouchableWithoutFeedback key={note} onPress={() => changeKeyFunc(note)}>
     <View style={{ padding: 15 }}>
@@ -32,11 +33,20 @@ const Sidebar = (props) => {
       }}
       contentOffset={{ x: 0, y: 45 * startIndex }}
     >
-      {tonalGravity.filter((el, i) => (i < startIndex)).map(el => TouchableNote(el.note, props.changeKey))}
+      {
+        // set up first part of non-scale notes
+        tonalGravity.filter((el, i) => (i < startIndex)).map(el => TouchableNote(el.note, props.changeKey))
+      }
       <View style={{ backgroundColor: '#2a2a2a' }}>
-        {tonalGravity.filter((el, i) => (i >= startIndex && i <= endIndex)).map((el, i) => TouchableNote(el.note, props.changeKey, colors[i + 1]))}
+        {
+          // set up current scale notes with different styling
+          tonalGravity.filter((el, i) => (i >= startIndex && i <= endIndex)).map((el, i) => TouchableNote(el.note, props.changeKey, colors[i + 1]))
+        }
       </View>
-      {tonalGravity.filter((el, i) => (i > endIndex)).map(el => TouchableNote(el.note, props.changeKey))}
+      {
+        // set up second part of non-scale notes
+        tonalGravity.filter((el, i) => (i > endIndex)).map(el => TouchableNote(el.note, props.changeKey))
+      }
     </ScrollView>
   );
 };

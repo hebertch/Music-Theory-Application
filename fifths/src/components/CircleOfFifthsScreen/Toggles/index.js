@@ -13,19 +13,10 @@ import { changeScale, toggleParallel, toggleRelative } from '../../../actions/ke
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     alignItems: 'center',
     marginTop: 10,
   },
 });
-
-const majorMinorLabel = scale => (
-  <Text>
-    <Text style={scale === 'maj' ? { color: 'red' } : {}}>Major</Text>
-     /
-    <Text style={scale === 'min' ? { color: 'red' } : {}}>Minor</Text>
-  </Text>
-);
 
 class Toggles extends Component {
   constructor(props) {
@@ -33,8 +24,10 @@ class Toggles extends Component {
     this.state = { isMajor: true };
   }
 
+  // toggles between major and minor
   toggle = (value) => {
     const newScale = this.props.currentScale === 'maj' ? 'min' : 'maj';
+    // dispatch action to redux so that newScale is in redux state
     this.props.changeScale(newScale);
     this.setState({ isMajor: value });
   };

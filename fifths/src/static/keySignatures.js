@@ -1,3 +1,5 @@
+// some static music theory data
+
 export const majorQualities = ['vii°', 'iii', 'vi', 'ii', 'V7', 'I', 'IV'];
 export const minorQualities = ['ii°', 'V7', 'i', 'iv', '♭VII', '♭III', '♭VI', '♭ii', '♯IV', 'vii', 'iii', 'vi'];
 

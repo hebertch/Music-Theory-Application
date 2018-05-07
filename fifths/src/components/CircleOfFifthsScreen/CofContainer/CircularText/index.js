@@ -10,6 +10,8 @@ const {
 const CircularText = props => (
   <Group>
     {
+      // use array of notes or qualities and render them around the circle
+      // we use redux's centroids which were set earlier to place the text
       props.data.map((item, index) =>
         (<Text
           key={index}
@@ -37,6 +39,8 @@ CircularText.propTypes = {
   multiplier: PropTypes.number.isRequired,
 };
 
+// retrieves the centroids from the redux state
+// makes them accessable in the component's props
 const mapStateToProps = state => ({
   centroids: state.art.centroids,
 });

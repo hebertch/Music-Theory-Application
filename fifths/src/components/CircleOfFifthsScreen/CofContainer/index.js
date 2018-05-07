@@ -26,7 +26,6 @@ const {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: 'whitesmoke',
     marginTop: 21,
     alignItems: 'center',
   },
@@ -41,30 +40,36 @@ class CofContainer extends Component {
       rotation: 165,
     };
 
-    // set up rotation of circle
+    // allow user to rotate circle with gesture
     this._setUpGestureHandler();
   }
 
   componentWillReceiveProps(nextProps) {
+    // update rotation when the redux state is updated
     if (nextProps.rotation !== this.state.rotation) {
       this.setState({ rotation: nextProps.rotation });
     }
   }
 
+  // changes wheel rotation when the user releases their finger after rotating
+  // done by changing the current key
   _lockWheel() {
     const rotationCurrent = (this.state.rotation % 360 + 360) % 360;
-    // get closest rotate value
+    // get closest rotate value from the static mappings file
     let curr = rotateMappings[0];
     for (let i = 0; i < rotateMappings.length; i++) {
       if (Math.abs(rotationCurrent - rotateMappings[i]) < Math.abs(rotationCurrent - curr)) {
         curr = rotateMappings[i];
       }
     }
+    // get index of closest value
     const index = rotateMappings.indexOf(curr);
+    // use that index to get the note which will be the new root
     const newRoot = this.props.fifths[index];
     this.props.changeKey(newRoot);
   }
 
+  // sets up logic for circle rotation
   _setUpGestureHandler() {
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
@@ -87,7 +92,6 @@ class CofContainer extends Component {
             this.setState({ lastTouch: this.state.currentTouch });
             this.setState({ currentTouch: { X: gestureState.moveX, Y: gestureState.moveY } });
             const triangle = {
-              // magic numbers
               radiusPoint: {
                 X: Dimensions.get('window').width / 2,
                 Y: Dimensions.get('window').height * (3 / 4),
@@ -113,8 +117,7 @@ class CofContainer extends Component {
             triangle.theta =
               Math.acos((-(triangle.a ** 2) + (triangle.b ** 2) + (triangle.c ** 2)) / (2 * triangle.b * triangle.c)) * (180 / Math.PI);
 
-            // TODO fix the if statements below;
-            // gross if statements for actual rotation
+            // gross if statements for rotating
             if (triangle.currentPoint.Y > triangle.radiusPoint.Y
               && triangle.currentPoint.X > triangle.lastPoint.X
               && Math.abs(triangle.currentPoint.Y - triangle.lastPoint.Y) < Math.abs(triangle.currentPoint.X - triangle.lastPoint.X)
@@ -166,21 +169,25 @@ class CofContainer extends Component {
     const x = Dimensions.get('window').width / 2;
     const y = Dimensions.get('window').height / 4;
     const radius = x * 2 < Dimensions.get('window').height / 2 ? x : y;
+
     return (
       <View style={styles.container}>
         <View {...this._panResponder.panHandlers}>
           <Surface width={Dimensions.get('window').width} height={Dimensions.get('window').height}>
             <Group x={x} y={y} transform={new Transform().rotate(this.state.rotation)}>
+              { /* full circle of colored wedges */ }
               <Circle
                 radius={radius}
                 innerRadius={radius / 10}
                 colors={colors}
               />
+              { /* outer black ring */ }
               <Circle
                 radius={radius * (14 / 18)}
                 innerRadius={radius * (14 / 18) - .25}
                 colors={new Array(12).fill('#2a2a2a')}
               />
+              { /* inner black ring */ }
               <Circle
                 radius={radius / 2}
                 innerRadius={radius / 2 - .25}

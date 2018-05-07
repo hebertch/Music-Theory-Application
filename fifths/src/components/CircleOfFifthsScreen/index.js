@@ -6,6 +6,9 @@ import Sidebar from './Sidebar';
 import Toggles from './Toggles';
 import ChordSelection from './ChordSelection';
 
+// This component contains the entire circle of fifths screen
+// flex and flexDirection are set up so that screen fits on all 
+// screen sizes using fractions
 const CircleOfFifthsScreen = () => (
   <View
     style={{

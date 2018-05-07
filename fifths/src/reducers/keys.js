@@ -7,6 +7,7 @@ const reducer = (state = {
   showRelative: false,
 }, action) => {
   switch (action.type) {
+    // updates state with new key value
     case KEY_CHANGE: {
       //map key to an acceptable one if it's above F# or below Gb
       let key = action.newKey;
@@ -64,12 +65,15 @@ const reducer = (state = {
       }
       return Object.assign({}, state, { currentKey: key });
     }
+    // updates state with new scale value
     case SCALE_CHANGE: {
       return Object.assign({}, state, { scale: action.scale });
     }
+    // toggles parallel value in state
     case TOGGLE_PARALLEL: {
       return Object.assign({}, state, { showParallel: action.shouldShow });
     }
+    // toggles relative value in state
     case TOGGLE_RELATIVE: {
       return Object.assign({}, state, { showRelative: action.shouldShow });
     }

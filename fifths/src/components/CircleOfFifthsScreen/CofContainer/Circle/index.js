@@ -22,7 +22,6 @@ class Circle extends Component {
     this.state = {
       paths: [],
       data: (new Array(12)).fill({ number: 1 }),
-      rotation: 0,
       centroids: [],
       angles: [],
     };
@@ -30,20 +29,22 @@ class Circle extends Component {
 
   componentWillMount() {
     this._createChart(this.props.radius);
-    // this._setUpGestureHandler();
   }
 
+  // create colored circle with different colored wedges
   _createChart(radius) {
+    // arcs are used to create paths which will be the wedges
     const arcs = d3.shape.pie()
       .value(item => item.number)(this.state.data);
-
     const lines = [];
     const centers = [];
 
+    // keep track of this array in the component's state
     this.setState({
       angles: arcs.map(a => ({ startAngle: a.startAngle, endAngle: a.endAngle })),
     });
 
+    // get paths for wedges
     for (let i = 0; i < arcs.length; i++) {
       const path = d3.shape.arc()
         .outerRadius(radius) // Radius of the pie
@@ -51,6 +52,8 @@ class Circle extends Component {
         .innerRadius(this.props.innerRadius)(arcs[i]);
 
 
+      // get wedge centers for centroids
+      // centroids will allow us to position text around the circle
       const center = d3.shape.arc()
         .outerRadius(radius) // Radius of the pie
         .padAngle(0.05) // Angle between sections
@@ -61,43 +64,16 @@ class Circle extends Component {
       centers.push(center);
     }
 
+    // set component state and redux state
     this.setState({ paths: lines });
-
     this.props.setCentroids(centers);
-
-    // put C to top
-    const cIndex = 5;
-    const currentStartAngle = arcs[cIndex].startAngle * (180 / Math.PI);
-    const currentEndAngle = arcs[cIndex].endAngle * (180 / Math.PI);
-    // rotate this note to the top
-    this.setState({
-      rotation: (360 - Math.abs(currentStartAngle) - Math.abs(currentEndAngle - currentStartAngle) / 2),
-    });
-  }
-
-  _lockWheel = () => {
-    let min = 10;
-    let index;
-    this.state.angles.forEach((item, i) => {
-      if (Math.abs(item.startAngle + this.state.rotation) % 2 * Math.PI < min) {
-        min = Math.abs(item.startAngle);
-        index = i;
-      }
-    });
-    const currentStartAngle = Math.abs(this.state.rotation + this.state.angles[index].startAngle)
-    * (180 / Math.PI);
-    const currentEndAngle = Math.abs(this.state.rotation + this.state.angles[index].endAngle)
-    * (180 / Math.PI);
-    // rotate this note to the top
-    this.setState({
-      rotation: (360 - Math.abs(currentStartAngle) - Math.abs(currentEndAngle - currentStartAngle) / 2),
-    });
   }
 
   render() {
     return (
       <Group>
         {
+          // draw paths using ART
           this.state.paths.map((item, index) =>
             (
               <Shape
@@ -113,10 +89,15 @@ class Circle extends Component {
   }
 }
 
+// this function will dispatch the setCentroids action to the art redux reducer
+// the reducer will then make centroids accessable in the redux state
+// the below line makes the function accessable in the component's props
 const mapDispatchToProps = dispatch => ({
   setCentroids: centroids => dispatch(setCentroids(centroids)),
 });
 
+// retrieves the centroids from the redux state
+// makes them accessable in the component's props
 const mapStateToProps = state => ({
   centroids: state.art.centroids,
 });

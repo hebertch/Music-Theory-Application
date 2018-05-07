@@ -21,6 +21,7 @@ class ChordSelection extends Component {
     };
   }
 
+  // handles setting which chord is shown in the chord modal
   setChord = (note, quality) => {
     const chord = [note];
     const noFlatOrSharpQuality = quality.replace(/[♭|♯]/g, '');
@@ -28,23 +29,24 @@ class ChordSelection extends Component {
     let third;
     let fifth;
     let seventh;
+
     if (noFlatOrSharpQuality.includes('°')) {
       // handle diminished chord
       wordQuality = 'Diminished';
       third = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 3) % 12];
       fifth = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 6) % 12];
     } else if (/^[A-Z]+$/g.test(noFlatOrSharpQuality)) {
-      // handle major
+      // handle major chord
       wordQuality = 'Major';
       third = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 8) % 12];
       fifth = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 11) % 12];
     } else if (/^[a-z]+$/g.test(noFlatOrSharpQuality)) {
-      // handle minor
+      // handle minor chord
       wordQuality = 'Minor';
       third = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 3) % 12];
       fifth = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 11) % 12];
     } else {
-      // handle dominant
+      // handle dominant chord
       wordQuality = 'Dominant';
       third = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 8) % 12];
       fifth = this.props.fifths[(this.props.fifths.findIndex(el => el === note) + 11) % 12];
@@ -56,6 +58,7 @@ class ChordSelection extends Component {
       chord.push(seventh);
     }
 
+    // setting the component's state so that the render function knows to update
     this.setState({
       modalNote: note,
       modalQuality: wordQuality,
@@ -66,7 +69,7 @@ class ChordSelection extends Component {
   toggleModal = () => this.setState({ showModal: !this.state.showModal });
 
   render() {
-    // setting up array of { note: , quality: }
+    // setting up array of { note: , quality: } before returning render details
     const scale = this.props.currentScale === 'maj' ? ['vii°', 'iii', 'vi', 'ii', 'V7', 'I', 'IV'] : ['ii°', 'V7', 'i', 'iv', '♭VII', '♭III', '♭VI'];
     const fifthsIntoScale = this.props.currentScale === 'maj' ? this.props.fifths.filter((el, i) => (i > 0 && i < 8)) : this.props.fifths.filter((el, i) => (i > 3 && i < 11));
     const notesAndQualities = fifthsIntoScale.map((el, i) => ({ note: el, quality: scale[i] }));
@@ -85,6 +88,7 @@ class ChordSelection extends Component {
           }}
         >
           {
+            // returning touchable options for each note in the scale
             notesAndQualities.map((el, i) => (
               <TouchableWithoutFeedback
                 key={i}
