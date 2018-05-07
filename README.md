@@ -6,17 +6,17 @@ The code is self-documenting and/or commented. Please view the following files/f
 
 - [src](fifths/src) : The source code
 	- [src/components](fifths/src/components): Code for the app pages and menu.
-		- [src/components/Menu.js](src/components/Menu.js): Code for the Sidebar Menu available from all screens.
+		- [src/components/Menu.js](fifths/src/components/Menu.js): Code for the Sidebar Menu available from all screens.
 			- Links to Circle of Fifths Page
 			- Links to Composition Page
 			- Links to individual Reference pages
-		- [src/components/References](src/components/References): Code for the instructional Reference pages.
-			- [src/components/References/index.js](src/components/References/index.js): 
+		- [src/components/References](fifths/src/components/References): Code for the instructional Reference pages.
+			- [src/components/References/index.js](fifths/src/components/References/index.js): 
 			Allows for swiping left/right to navigate between reference pages.
 			Code for organizing the reference pages for the table of contents (Part of the Sidebar Menu).
 			- One file per reference page.
-		- [src/components/CircleOfFifthsScreen](src/components/CircleOfFifthsScreen): Code for the interactive Circle of Fifths Page.
-		- [src/components/Composition.js](src/components/Composition.js): Code for the composition page.		
+		- [src/components/CircleOfFifthsScreen](fifths/src/components/CircleOfFifthsScreen): Code for the interactive Circle of Fifths Page.
+		- [src/components/Composition.js](fifths/src/components/Composition.js): Code for the composition page.		
 	- [src/static](fifths/src/static): Files containing constants that may be shared/referenced by a number of components.
 	- [src/selectors/keys.js](fifths/src/selectors/keys.js): Calculates fifth notes for given key as well as rotation angles for the Circle of Fifths Page. Selectors work with [reselect](https://github.com/reduxjs/reselect) which builds off of [redux](https://redux.js.org/).
 	- [src/actions](fifths/src/actions): Actions are a necessity of redux. Actions are dispatched to redux reducers which in turn, update the applications state. To read more about actions, take a look at the redux [docs](https://redux.js.org/).
