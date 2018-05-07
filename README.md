@@ -18,8 +18,9 @@ The code is self-documenting and/or commented. Please view the following files/f
 		- [src/components/CircleOfFifthsScreen](src/components/CircleOfFifthsScreen): Code for the interactive Circle of Fifths Page.
 		- [src/components/Composition.js](src/components/Composition.js): Code for the composition page.		
 	- [src/static](fifths/src/static): Files containing constants that may be shared/referenced by a number of components.
-	- [src/selectors/keys.js](fifths/src/selectors/keys.js): Converts between keys and rotation angles for the Circle of Fifths Page.
-	- [src/reducers](fifths/src/reducers): TODO: Aidan.
+	- [src/selectors/keys.js](fifths/src/selectors/keys.js): Calculates fifth notes for given key as well as rotation angles for the Circle of Fifths Page. Selectors work with [reselect](https://github.com/reduxjs/reselect) which builds off of [redux](https://redux.js.org/).
+	- [src/actions](fifths/src/actions): Actions are a necessity of redux. Actions are dispatched to redux reducers which in turn, update the applications state. To read more about actions, take a look at the redux [docs](https://redux.js.org/).
+	- [src/reducers](fifths/src/reducers): Reducers are also a necessary component of redux. Reducers are where the logic behind changing some of the persistent state in the circle of fifths page is held. To read more about reducers, take a look at the redux [docs](https://redux.js.org/).
 - [tests](fifths/__tests__) : Test cases for the algorithms.
 
 ## Music Theory Terms Quick Reference:
