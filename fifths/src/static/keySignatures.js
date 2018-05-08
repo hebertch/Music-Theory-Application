@@ -7,7 +7,7 @@ export const tonalGravity = [{ note: 'Cx' }, { note: 'Fx' },
   { note: 'B♯' }, { note: 'E♯' }, { note: 'A♯' }, { note: 'D♯' }, { note: 'G♯' }, { note: 'C♯' }, { note: 'F♯' },
   { note: 'B' }, { note: 'E' }, { note: 'A' }, { note: 'D' }, { note: 'G' }, { note: 'C' }, { note: 'F' },
   { note: 'B♭' }, { note: 'E♭' }, { note: 'A♭' }, { note: 'D♭' }, { note: 'G♭' }, { note: 'C♭' }, { note: 'F♭' },
-  { note: 'B♭♭' }, { note: 'E♭♭' }];
+  { note: 'B♭♭' }, { note: 'E♭♭' }, { note: 'A♭♭' }];
 
 export const tonalGravityMapping = [{ display: '', query: '' }];
 

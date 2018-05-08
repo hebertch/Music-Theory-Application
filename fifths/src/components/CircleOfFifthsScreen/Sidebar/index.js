@@ -40,7 +40,7 @@ const Sidebar = (props) => {
       <View style={{ backgroundColor: '#2a2a2a' }}>
         {
           // set up current scale notes with different styling
-          tonalGravity.filter((el, i) => (i >= startIndex && i <= endIndex)).map((el, i) => TouchableNote(el.note, props.changeKey, colors[i + 1]))
+          tonalGravity.filter((el, i) => (i >= startIndex && i <= endIndex)).map((el, i) => TouchableNote(el.note, props.changeKey, (props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4])))
         }
       </View>
       {

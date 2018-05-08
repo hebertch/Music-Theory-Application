@@ -60,6 +60,10 @@ const reducer = (state = {
           key = 'D';
           break;
         }
+        case 'A♭♭' : {
+          key = 'G';
+          break;
+        }
         default:
           break;
       }
