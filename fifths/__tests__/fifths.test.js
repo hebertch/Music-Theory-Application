@@ -1,13 +1,10 @@
 import { fifthsGenerator } from '../src/selectors/keys';
 
 // ♭ ♯
-// We have 25 selectable keys and each key needs to output a specific set of fifth notes
-// All of these keys will return 12 notes of fifths
-
-test('Key of C# should return fifths FxB#E#A#D#G#C#F#BEAD', () => {
-  const returnArray = ['Fx', 'B♯', 'E♯', 'A♯', 'D♯', 'G♯', 'C♯', 'F♯', 'B', 'E', 'A', 'D'];
-  expect(fifthsGenerator('C♯')).toEqual(returnArray);
-});
+// F# is the highest note that we need fifths for
+// Gb is the lowest note that we need fifths for
+// The below test cases make sure that we get the correct
+// output for all of the notes between and including F# and Gb
 
 test('Key of F# should return fifths B#E#A#D#G#C#F#BEADG', () => {
   const returnArray = ['B♯', 'E♯', 'A♯', 'D♯', 'G♯', 'C♯', 'F♯', 'B', 'E', 'A', 'D', 'G'];
@@ -71,6 +68,6 @@ test('Key of Db should return fifths GCFBbEbAbDbGbCbFbBbbEbb', () => {
 
 test('Key of Gb should return fifths CFBbEbAbDbGbCbFbBbbEbbAbb', () => {
   const returnArray = ['C', 'F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭', 'C♭', 'F♭', 'B♭♭', 'E♭♭', 'A♭♭'];
-  // expect(fifthsGenerator('G♭')).toEqual(returnArray);
+  expect(fifthsGenerator('G♭')).toEqual(returnArray);
 });
 
