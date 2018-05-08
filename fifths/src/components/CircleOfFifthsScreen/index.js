@@ -4,7 +4,6 @@ import { View, Text } from 'react-native';
 import CofContainer from './CofContainer';
 import Sidebar from './Sidebar';
 import Toggles from './Toggles';
-import ChordSelection from './ChordSelection';
 
 // This component contains the entire circle of fifths screen
 // flex and flexDirection are set up so that screen fits on all 
@@ -23,6 +22,7 @@ const CircleOfFifthsScreen = () => (
         flexDirection: 'row',
       }}
     >
+      <View style={{ flex:1 }} />
       <View
         style={{
           flex: 4,
@@ -39,20 +39,13 @@ const CircleOfFifthsScreen = () => (
         </View>
         <View
           style={{
-            flex: .75,
-          }}
-        >
-          <ChordSelection />
-        </View>
-        <View
-          style={{
             flexDirection: 'row',
             flex: .1,
           }}
         >
           <View
             style={{
-              flex: .25,
+              flex: .13,
             }}
           >
           </View>
