@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, TouchableWithoutFeedback, TouchableOpacity, ScrollView, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, TouchableWithoutFeedback, TouchableOpacity, ScrollView, Text, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { fifths } from '../../../selectors/keys';
@@ -9,6 +9,23 @@ import colors from '../../../static/colors';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 0.75,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 10,
+  },
+  chordTitle: {
+   fontSize: 32,
+   marginBottom: 10,
+   textAlign: 'center',
+   color: '#2a2a2a',
+   textDecorationLine: 'underline', 
+  },
+});
 
 class ChordSelection extends Component {
   constructor(props) {
@@ -98,8 +115,8 @@ class ChordSelection extends Component {
                 }}
               >
                 <View style={{ padding: 10 }}>
-                  <Text style={{ color: colors[i + 1] }} >{el.note}</Text>
-                  <Text style={{ color: colors[i + 1] }} >{el.quality}</Text>
+                  <Text style={{ color: (this.props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4]) }} >{el.note}</Text>
+                  <Text style={{ color: (this.props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4]) }} >{el.quality}</Text>
                 </View>
               </TouchableWithoutFeedback>
             ))
@@ -110,12 +127,57 @@ class ChordSelection extends Component {
           onSwipe={this.toggleModal}
           swipeDirection="up"
         >
-          <View style={{ flex: 0.5, backgroundColor: 'whitesmoke' }}>
-            <Text>Chord: {this.state.modalNote} {this.state.modalQuality}</Text>
-            <Text>Notes in chord: {this.state.modalChord}</Text>
-            <TouchableOpacity onPress={this.toggleModal}>
-              <Text>Hide me!</Text>
-            </TouchableOpacity>
+          <View style={styles.modalContainer}>
+            <View style={{ flex: .5, padding: 5 }}>
+              <TouchableOpacity onPress={this.toggleModal}>
+                <Text style={{ fontSize: 16, textAlign: 'right' }}>X</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ flex: 10, flexDirection: 'row', padding: 5 }}>
+              <View
+                style={{ backgroundColor: '#2a2a2a', flex: 2, borderRadius: 5 }}
+              >
+                {
+                  // returning touchable options for each note in the scale
+                  notesAndQualities.map((el, i) => (
+                    <TouchableWithoutFeedback
+                      key={i}
+                      style={{ textAlign: 'center' }}
+                      onPress={() => {
+                        this.setChord(el.note, el.quality);
+                      }}
+                    >
+                      <View style={{ padding: 10, backgroundColor: (el.note === this.state.modalNote ? 'white' : '#2a2a2a') }}>
+                        <Text
+                          style={{ 
+                            textShadowColor: 'black',
+                            textShadowOffset: {width: 1,height: 1},
+                            textShadowRadius: 3,
+                            textAlign: 'center',
+                            color: (el.note === this.state.modalNote ? '#2a2a2a' : (this.props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4]))
+                          }}
+                        >
+                          {el.note}
+                        </Text>
+                        <Text
+                          style={{ 
+                            textShadowColor: 'black',
+                            textShadowOffset: {width: 1,height: 1},
+                            textShadowRadius: 3,
+                            textAlign: 'center',
+                            color: (el.note === this.state.modalNote ? '#2a2a2a' : (this.props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4]))
+                          }}
+                        >{el.quality}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  ))
+                }
+              </View>
+              <View style={{ flex: 10, padding: 10, backgroundColor: 'white' }}>
+                <Text style={styles.chordTitle}>{this.state.modalNote} {this.state.modalQuality}</Text>
+                <Text style={{ textAlign: 'center', fontSize: 80, color: '#2a2a2a' }}>{this.state.modalChord}</Text>
+              </View>
+            </View>
           </View>
         </Modal>
       </View>
