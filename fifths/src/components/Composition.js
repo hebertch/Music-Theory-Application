@@ -124,7 +124,7 @@ const accidental_text = function(num_accidentals) {
     case 2: return double_sharp_text;
     case 3: return triple_sharp_text;
     }
-    console.assert(num_accidentals >= -3 && num_accidentals <= 3, "Too many sharps or flats.")
+    // console.assert(num_accidentals >= -3 && num_accidentals <= 3, "Too many sharps or flats.")
     return '';
 }
 // Convert back from text to number of accidentals
@@ -555,9 +555,8 @@ const cCompositionEditView = component({
 
     // Requirement 01: "User has the ability to create a few measures of a chord progression"
     add_chord_pressed: function() {
-	this.setState(function (state) {
-	    return {composition: state.composition.concat([this.selected_chord()])};
-	});
+    const composition = this.state.composition;
+    this.setState({composition: composition.concat([this.selected_chord()])});
     },
 
     // Update the state of the component when the user changes an option

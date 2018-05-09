@@ -25,6 +25,7 @@ export default class HarmonicFunctionReference extends Component {
             data={[{ key: '1. Movement “down" by step only' }, { key: '2. Avoid consecutive “up" movement' }]}
             renderItem={({item}) => <Text>{item.key}</Text>}
           />
+          <Text style={styles.paragraph}/>
         </View>
       </ ScrollView>
     );

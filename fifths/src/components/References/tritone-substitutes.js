@@ -26,7 +26,7 @@ const example1 =
       <Text>D7 (5 of 5) → G7 (5) → CMaj (1)</Text>
       </View>;
 const example2 = 
-      <View>
+      <View style={{ marginBottom: 40 }} >
       <Text>Ab7 (TtSub 5 of 5) → G7 (5) → CMaj (1)</Text>
       </View>;
 
