@@ -17,7 +17,7 @@ export default class MusicalGravityReference extends Component {
           <ScrollView style={styles.horizontalScroll} horizontal >
             <Text>B# -> E# -> A# -> D# -> G# -> C# -> F# -> B -> E -> A -> D -> G -> C -> F -> Bb -> Eb -> Ab -> Db -> Gb -> Cb -> Fb etc...</Text>
           </ ScrollView>
-          <Text style={styles.paragraph}/>
+          <View style={{ flex: 10 }} />
         </View>
       </ ScrollView>
     );
