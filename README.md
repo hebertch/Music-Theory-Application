@@ -3,6 +3,7 @@ Senior Capstone
 
 ## IMPORTANT: CODE DOCUMENTATION FOR GRADING
 The code is self-documenting and/or commented. Please view the following files/folders for grading purposes.
+**Note: Aidan was working from a [different repo](https://github.com/omalleya/fifths) for a period of time between the end of winter term and the middle of spring term. This was done because we found that the original source code setup was not working on android devices so this repo was a copy of the original code which, this time, did work on android devices. It took awhile to get that new source code merged into the main repository so a few of Aidan's commits are in the repo linked above.**
 
 - [src](fifths/src) : The source code
 	- [src/components](fifths/src/components): Code for the app pages and menu.
