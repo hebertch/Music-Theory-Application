@@ -7,10 +7,13 @@
     "slug": "fifths",
     "orientation": "portrait",
     "ios": {
-      "bundleIdentifier": "com.tritone.perfectfifth"
+      "bundleIdentifier": "com.tritone.perfectfifth",
+      "supportsTablet": true,
+      "icon": "./App-Icon-White.png"
     },
     "android": {
-      "package": "com.tritone.perfectfifth"
+      "package": "com.tritone.perfectfifth",
+      "icon": "./App-Icon.png"
     }
   }
 }
