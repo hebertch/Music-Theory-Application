@@ -55,7 +55,7 @@ const CircleOfFifthsScreen = () => (
               flex: .75,
             }}
           >
-            <Text>V</Text>
+            <Text style={{ fontSize: 20 }}>↓</Text>
           </View>
         </View>
       </View>
