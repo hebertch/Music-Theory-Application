@@ -25,7 +25,7 @@ export default class CircleOfFifthsReference extends Component {
           <Text style={styles.paragraph}> This diagram, read clockwise, shows the natural flow of notes in an endless sequence of Perfect Fifths, and is called “The Circle of Fifths.” It shows all 12 pitches used in modern tonal music, in their proper relationship to each other, as well as the natural flow of musical gravity. 
           </Text>
           <Text style={styles.paragraph}> Importantly, this musical gravity also works with chords, and not just with individual notes. A chord built on G will “want” to move to a chord built on C; a chord built on Eb will want to move to a chord built on Ab. This principle is the foundation of how chords move from one to another.  
-            <Text style={{ fontStyle: 'italic' }}>  C placed at the top of the circle because the key of C Major contains no sharps or flats. The 7 notes in these keys are BEADGCF.
+            <Text style={{ fontStyle: 'italic' }}>  C placed at the top of the circle because the key of C Major contains no sharps or flats. The 7 notes in this key are BEADGCF.
             </Text>
           </Text>
         </View>
