@@ -93,7 +93,7 @@ class Toggles extends Component {
     this.setState({
       modalNote: note,
       modalQuality: wordQuality,
-      modalChord: chord,
+      modalChord: chord.join(''),
     });
   }
 
@@ -190,7 +190,11 @@ class Toggles extends Component {
               </View>
               <View style={{ flex: 10, padding: 10, backgroundColor: 'white' }}>
                 <Text style={styles.chordTitle}>{this.state.modalNote} {this.state.modalQuality}</Text>
-                <Text style={{ textAlign: 'center', fontSize: 80, color: '#2a2a2a' }}>{this.state.modalChord}</Text>
+                <View style={{flexDirection: 'column'}}>
+                  {this.state.modalChord.split('').map((el, i) =>
+                    <Text key={el} style={{ textAlign: 'center', fontSize: 80, color: '#2a2a2a' }}>{el}</Text>
+                  )}
+                </View>
               </View>
             </View>
           </View>
