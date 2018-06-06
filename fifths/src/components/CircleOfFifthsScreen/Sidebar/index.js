@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ScrollView, TouchableWithoutFeedback, View, Text, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { tonalGravity } from '../../../static/keySignatures';
-import colors from '../../../static/colors';
+import { colors } from '../../../static/colors';
 import { changeKey } from '../../../actions/keys';
 import { getKeyObject } from '../../../selectors/keys';
 

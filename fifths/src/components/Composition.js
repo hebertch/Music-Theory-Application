@@ -3,7 +3,7 @@ import { Button, Platform, ScrollView, StyleSheet, Switch, Text, View, } from 'r
 import { SegmentedControls } from 'react-native-radio-buttons'
 import component from 'create-react-class';
 
-import colors from '../static/colors';
+import { colors } from '../static/colors';
 
 /// Analysis Algorithm
 // The 7 letters in circle of fifths order.

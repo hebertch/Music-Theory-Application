@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 
 import { getKeyObject, fifths, rotation } from '../../../selectors/keys';
 import rotateMappings from '../../../static/rotationMappings';
-import colors from '../../../static/colors';
+import { colors, colorArraySelect } from '../../../static/colors';
 import { changeKey } from '../../../actions/keys';
 import _distanceBetweenTwoPoints from '../../../util/geometry';
 import Circle from './Circle';
@@ -179,7 +179,7 @@ class CofContainer extends Component {
               <Circle
                 radius={radius}
                 innerRadius={radius / 10}
-                colors={colors}
+                colors={colorArraySelect(this.props.currentScale)}
               />
               { /* outer black ring */ }
               <Circle

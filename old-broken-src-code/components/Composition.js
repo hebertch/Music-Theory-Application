@@ -2,7 +2,7 @@ import { default as React, Component } from 'react';
 import { Button, Platform, StyleSheet, Switch, Text, View, } from 'react-native';
 import { SegmentedControls } from 'react-native-radio-buttons'
 
-import colors from '../static/colors';
+import { colors } from '../static/colors';
 
 /// Analysis Algorithm
 // The 7 letters in circle of fifths order.

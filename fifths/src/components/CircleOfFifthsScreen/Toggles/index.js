@@ -12,6 +12,7 @@ import CheckBox from 'react-native-modest-checkbox';
 import Modal from 'react-native-modal';
 
 import { fifths } from '../../../selectors/keys';
+import { colors } from '../../../static/colors';
 import { changeScale, toggleParallel, toggleRelative } from '../../../actions/keys';
 
 const styles = StyleSheet.create({
