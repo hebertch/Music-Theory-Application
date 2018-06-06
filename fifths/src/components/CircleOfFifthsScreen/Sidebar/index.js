@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ScrollView, TouchableWithoutFeedback, View, Text, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { tonalGravity } from '../../../static/keySignatures';
-import { colors } from '../../../static/colors';
+import { colorArraySelect } from '../../../static/colors';
 import { changeKey } from '../../../actions/keys';
 import { getKeyObject } from '../../../selectors/keys';
 
@@ -40,7 +40,7 @@ const Sidebar = (props) => {
       <View style={{ backgroundColor: '#2a2a2a' }}>
         {
           // set up current scale notes with different styling
-          tonalGravity.filter((el, i) => (i >= startIndex && i <= endIndex)).map((el, i) => TouchableNote(el.note, props.changeKey, (props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4])))
+          tonalGravity.filter((el, i) => (i >= startIndex && i <= endIndex)).map((el, i) => TouchableNote(el.note, props.changeKey, (props.currentScale === 'maj' ? colorArraySelect(props.currentScale)[i + 1] : colorArraySelect(props.currentScale)[i + 4])))
         }
       </View>
       {

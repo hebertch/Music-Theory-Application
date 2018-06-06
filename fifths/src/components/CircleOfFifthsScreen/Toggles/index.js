@@ -12,7 +12,7 @@ import CheckBox from 'react-native-modest-checkbox';
 import Modal from 'react-native-modal';
 
 import { fifths } from '../../../selectors/keys';
-import { colors } from '../../../static/colors';
+import { colorArraySelect } from '../../../static/colors';
 import { changeScale, toggleParallel, toggleRelative } from '../../../actions/keys';
 
 const styles = StyleSheet.create({
@@ -169,7 +169,7 @@ class Toggles extends Component {
                             textShadowOffset: {width: 1,height: 1},
                             textShadowRadius: 3,
                             textAlign: 'center',
-                            color: (el.note === this.state.modalNote ? '#2a2a2a' : (this.props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4]))
+                            color: (el.note === this.state.modalNote ? '#2a2a2a' : (this.props.currentScale === 'maj' ? colorArraySelect(this.props.currentScale)[i + 1] : colorArraySelect(this.props.currentScale)[i + 4]))
                           }}
                         >
                           {el.note}
@@ -180,7 +180,7 @@ class Toggles extends Component {
                             textShadowOffset: {width: 1,height: 1},
                             textShadowRadius: 3,
                             textAlign: 'center',
-                            color: (el.note === this.state.modalNote ? '#2a2a2a' : (this.props.currentScale === 'maj' ? colors[i + 1] : colors[i + 4]))
+                            color: (el.note === this.state.modalNote ? '#2a2a2a' : (this.props.currentScale === 'maj' ? colorArraySelect(this.props.currentScale)[i + 1] : colorArraySelect(this.props.currentScale)[i + 4]))
                           }}
                         >{el.quality}</Text>
                       </View>
