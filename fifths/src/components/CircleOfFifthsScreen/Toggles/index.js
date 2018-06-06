@@ -191,7 +191,7 @@ class Toggles extends Component {
               <View style={{ flex: 10, padding: 10, backgroundColor: 'white' }}>
                 <Text style={styles.chordTitle}>{this.state.modalNote} {this.state.modalQuality}</Text>
                 <View style={{flexDirection: 'column'}}>
-                  {this.state.modalChord.split('').map((el, i) =>
+                  {this.state.modalChord.split('').reverse().map((el, i) =>
                     <Text key={el} style={{ textAlign: 'center', fontSize: 80, color: '#2a2a2a' }}>{el}</Text>
                   )}
                 </View>
