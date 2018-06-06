@@ -56,12 +56,6 @@ const RootDrawer = DrawerNavigator({
 	screen: reference_stack('References', ReferencesContainer),
 	title: 'References'
     },
-    "    Circle of Fifths": {
-	screen: reference_stack('    Circle of Fifths', CircleOfFifthsReferenceContainer),
-	navigationOptions: {
-	    title: '    Circle of Fifths'
-	}
-    },
     "    The Perfect Fifth": {
 	screen: reference_stack("    The Perfect Fifth", PerfectFifthReferenceContainer),
 	navigationOptions: {
@@ -73,7 +67,13 @@ const RootDrawer = DrawerNavigator({
 	navigationOptions: {
 	    title: "    Musical Gravity"
 	}
-    },
+	},
+    "    Circle of Fifths": {
+	screen: reference_stack('    Circle of Fifths', CircleOfFifthsReferenceContainer),
+	navigationOptions: {
+		title: '    Circle of Fifths'
+	}
+	},
     "    Harmonic Function": {
 	screen: reference_stack("    Harmonic Function", HarmonicFunctionReferenceContainer),
 	navigationOptions: {
