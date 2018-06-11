@@ -11,9 +11,17 @@ import PropTypes from 'prop-types';
 import CheckBox from 'react-native-modest-checkbox';
 import Modal from 'react-native-modal';
 
+import { Accidental } from 'vexflow/src/accidental';
+import { Stave } from 'vexflow/src/stave';
+import { StaveNote } from 'vexflow/src/stavenote';
+import { Voice } from 'vexflow/src/voice';
+import { Formatter } from 'vexflow/src/formatter';
+import { ReactNativeSVGContext, NotoFontPack } from 'standalone-vexflow-context';
+
 import { fifths } from '../../../selectors/keys';
 import { colorArraySelect } from '../../../static/colors';
 import { changeScale, toggleParallel, toggleRelative } from '../../../actions/keys';
+import { tonalGravity } from '../../../static/keySignatures';
 
 const styles = StyleSheet.create({
   container: {
@@ -107,10 +115,36 @@ class Toggles extends Component {
     this.setState({ isMajor: value });
   };
 
+  runVexFlowCode(context, key, scale) {
+    const stave = new Stave(0, 0, 130);
+    stave.setContext(context);
+    stave.setClef('treble');
+    if (scale === 'maj') {
+      stave.setKeySignature(key.replace('♯', '#').replace('♭', 'b'));
+    } else {
+      const relative = tonalGravity[tonalGravity.findIndex((el) => el.note === key) + 3].note;
+      stave.setKeySignature(relative.replace('♯', '#').replace('♭', 'b'));
+    }
+    stave.draw();
+
+    const notes = [
+      new StaveNote({clef: "treble", keys: [`${key.charAt(0)}/4`], duration: "w" }),
+    ];
+
+    const voice = new Voice({num_beats: 4,  beat_value: 4});
+    voice.addTickables(notes);
+
+    const formatter = new Formatter().joinVoices([voice]).formatToStave([voice], stave);
+    voice.draw(context, stave);
+  }
+
   render() {
     const scale = this.props.currentScale === 'maj' ? ['vii°', 'iii', 'vi', 'ii', 'V7', 'I', 'IV'] : ['ii°', 'V7', 'i', 'iv', '♭VII', '♭III', '♭VI'];
     const fifthsIntoScale = this.props.currentScale === 'maj' ? this.props.fifths.filter((el, i) => (i > 0 && i < 8)) : this.props.fifths.filter((el, i) => (i > 3 && i < 11));
     const notesAndQualities = fifthsIntoScale.map((el, i) => ({ note: el, quality: scale[i] }));
+
+    const context = new ReactNativeSVGContext(NotoFontPack, { width: 300, height: 400 });
+    this.runVexFlowCode(context, this.props.currentKey, this.props.currentScale);
 
     return (
       <View style={styles.container}>
@@ -137,6 +171,7 @@ class Toggles extends Component {
             <Text style={styles.touchableText}>View Chords</Text>
           </View>
         </TouchableOpacity>
+        <View>{ context.render() }</View>
         <Modal
           isVisible={this.state.showModal}
           onSwipe={this.toggleModal}
@@ -191,7 +226,7 @@ class Toggles extends Component {
               <View style={{ flex: 10, padding: 10, backgroundColor: 'white' }}>
                 <Text style={styles.chordTitle}>{this.state.modalNote} {this.state.modalQuality}</Text>
                 <View style={{flexDirection: 'column'}}>
-                  {this.state.modalChord.split('').reverse().map((el, i) =>
+                  {this.state.modalChord && this.state.modalChord.match(/[A-G][♯♭]*/g).reverse().map((el, i) =>
                     <Text key={el} style={{ textAlign: 'center', fontSize: 80, color: '#2a2a2a' }}>{el}</Text>
                   )}
                 </View>
