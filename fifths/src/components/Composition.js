@@ -3,7 +3,7 @@ import { Button, Platform, ScrollView, StyleSheet, Switch, Text, View, } from 'r
 import { SegmentedControls } from 'react-native-radio-buttons'
 import component from 'create-react-class';
 
-import { colors } from '../static/colors';
+import { colorArraySelect } from '../static/colors';
 
 /// Analysis Algorithm
 // The 7 letters in circle of fifths order.
@@ -427,11 +427,11 @@ export const chord_analysis_substitution_text = function(key, chord_analysis) {
 /// End Analysis Algorithm
 
 // Match diatonic colors with the circle of fifths page.
-const fifth_position_color_idx = function(fifth_pos, key) {
+const fifth_position_color = function(fifth_pos, key) {
     var key_fifth_pos = fifth_position(key.root);
-    var color_idx = key_fifth_pos - fifth_pos + (key.quality === major ? -4 : -7);
-    color_idx = (color_idx + 144) % 12;
-    return color_idx;
+    var color_idx = key_fifth_pos - fifth_pos + 6;
+    color_idx = key.quality === major ? (144 - color_idx) % 12 : (144 + color_idx) % 12;
+    return colorArraySelect(key.quality === major ? 'maj' : 'min')[color_idx];
 }
 
 // Requirement 02: Analyze tonal gravity
@@ -460,7 +460,7 @@ const e_composition_chord = function(chord_analysis, previous_chord_analysis, ke
     // Use the rainbow colors from the CoF page if it has a diatonic function
     // Otherwise use white.
     var color = is_diatonic_or_substitute ?
-	colors[fifth_position_color_idx(fifth_pos, key)] :
+	fifth_position_color(fifth_pos, key) :
 	'white';
 
     // Add parentheses to the substitution text.
