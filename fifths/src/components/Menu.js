@@ -4,7 +4,7 @@ import { DrawerNavigator, StackNavigator } from 'react-navigation';
 import CircleOfFifthsScreen from './CircleOfFifthsScreen';
 import { 
     ReferencesContainer, CircleOfFifthsReferenceContainer, PerfectFifthReferenceContainer,
-    MusicalGravityReferenceContainer, HarmonicFunctionReferenceContainer, KeySignaturesReferenceContainer, DiatonicReferenceContainer, TonalGravityReferenceContainer, ParallelAndBorrowedReferenceContainer, EnharmonicEquivalentsReferenceContainer, ScaleDegreeReferenceContainer, DominantChordsReferenceContainer, SecondaryDominantsReferenceContainer, DiatonicSubstitutesReferenceContainer, TritoneSubstitutesReferenceContainer
+    MusicalGravityReferenceContainer, HarmonicFunctionReferenceContainer, KeySignaturesReferenceContainer, TonalGravityReferenceContainer, ParallelAndBorrowedReferenceContainer, EnharmonicEquivalentsReferenceContainer, ScaleDegreeReferenceContainer, DominantChordsReferenceContainer, SecondaryDominantsReferenceContainer, DiatonicSubstitutesReferenceContainer, TritoneSubstitutesReferenceContainer
 } from './References';
 import CompositionContainer from './Composition';
 
@@ -84,12 +84,6 @@ const RootDrawer = DrawerNavigator({
 	screen: reference_stack("Keys and Key Signatures", KeySignaturesReferenceContainer),
 	navigationOptions: {
 	    title: "        Keys and Key Signatures"
-	}
-    },
-    "Diatonic": {
-	screen: reference_stack("Diatonic", DiatonicReferenceContainer),
-	navigationOptions: {
-	    title: "        Diatonic"
 	}
     },
     "Tonal Gravity": {
