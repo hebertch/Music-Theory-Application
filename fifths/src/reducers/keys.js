@@ -33,15 +33,33 @@ const reducer = (state = {
           break;
         }
         case 'D♯' : {
-          key = 'E♭';
+          if (state.scale === 'maj')
+            key = 'E♭';
           break;
         }
         case 'G♯' : {
-          key = 'A♭';
+          if (state.scale === 'maj')
+            key = 'A♭';
           break;
         }
         case 'C♯' : {
-          key = 'D♭';
+          if (state.scale === 'maj')
+            key = 'D♭';
+          break;
+        }
+        case 'A♭' : {
+          if (state.scale === 'min')
+            key = 'G♯';
+          break;
+        }
+        case 'D♭' : {
+          if (state.scale === 'min')
+            key = 'C♯';
+          break;
+        }
+        case 'G♭' : {
+          if (state.scale === 'min')
+            key = 'F♯';
           break;
         }
         case 'C♭' : {

@@ -10,7 +10,6 @@ import PerfectFifthReference from './perfect-fifth';
 import MusicalGravityReference from './musical-gravity';
 import HarmonicFunctionReference from './harmonic-function';
 import KeySignaturesReference from './key-signatures';
-import DiatonicReference from './diatonic';
 import TonalGravityReference from './tonal-gravity';
 import ParallelAndBorrowedReference from './parallel-and-borrowed';
 import EnharmonicEquivalentsReference from './enharmonic-equivalents';
@@ -29,7 +28,6 @@ const References = (props) => (
     <MusicalGravityReference />
     <HarmonicFunctionReference />
     <KeySignaturesReference />
-    <DiatonicReference />
     <TonalGravityReference />
     <ParallelAndBorrowedReference />
     <EnharmonicEquivalentsReference />
@@ -68,39 +66,35 @@ export const KeySignaturesReferenceContainer = () => (
   <References index={4} />
 );
 
-export const DiatonicReferenceContainer = () => (
+export const TonalGravityReferenceContainer = () => (
   <References index={5} />
 );
 
-export const TonalGravityReferenceContainer = () => (
+export const ParallelAndBorrowedReferenceContainer = () => (
   <References index={6} />
 );
 
-export const ParallelAndBorrowedReferenceContainer = () => (
+export const EnharmonicEquivalentsReferenceContainer = () => (
   <References index={7} />
 );
 
-export const EnharmonicEquivalentsReferenceContainer = () => (
+export const ScaleDegreeReferenceContainer = () => (
   <References index={8} />
 );
 
-export const ScaleDegreeReferenceContainer = () => (
+export const DominantChordsReferenceContainer = () => (
   <References index={9} />
 );
 
-export const DominantChordsReferenceContainer = () => (
+export const SecondaryDominantsReferenceContainer = () => (
   <References index={10} />
 );
 
-export const SecondaryDominantsReferenceContainer = () => (
+export const TritoneSubstitutesReferenceContainer = () => (
   <References index={11} />
 );
 
-export const TritoneSubstitutesReferenceContainer = () => (
-  <References index={12} />
-);
-
 export const DiatonicSubstitutesReferenceContainer = () => (
-  <References index={13} />
+  <References index={12} />
 );
 

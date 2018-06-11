@@ -31,7 +31,7 @@ const Sidebar = (props) => {
       {
         backgroundColor: 'whitesmoke',
       }}
-      contentOffset={{ x: 0, y: 45 * startIndex }}
+      contentOffset={{ x: 0, y: 48 * startIndex }}
     >
       {
         // set up first part of non-scale notes
