@@ -2,7 +2,7 @@
   "expo": {
     "name": "Perfect Fifth",
     "icon": "./App-Icon.png",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "sdkVersion": "26.0.0",
     "slug": "fifths",
     "orientation": "portrait",
