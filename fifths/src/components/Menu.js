@@ -56,88 +56,88 @@ const RootDrawer = DrawerNavigator({
 	screen: reference_stack('References', ReferencesContainer),
 	title: 'References'
     },
-    "    The Perfect Fifth": {
+    "The Perfect Fifth": {
 	screen: reference_stack("    The Perfect Fifth", PerfectFifthReferenceContainer),
 	navigationOptions: {
-	    title: "    The Perfect Fifth"
+	    title: "        The Perfect Fifth"
 	}
     },
-    "    Musical Gravity": {
+    "Musical Gravity": {
 	screen: reference_stack("    Musical Gravity", MusicalGravityReferenceContainer),
 	navigationOptions: {
-	    title: "    Musical Gravity"
+	    title: "        Musical Gravity"
 	}
 	},
-    "    Circle of Fifths": {
+    "Circle of Fifths": {
 	screen: reference_stack('    Circle of Fifths', CircleOfFifthsReferenceContainer),
 	navigationOptions: {
-		title: '    Circle of Fifths'
+		title: '        Circle of Fifths'
 	}
 	},
-    "    Harmonic Function": {
+    "Harmonic Function": {
 	screen: reference_stack("    Harmonic Function", HarmonicFunctionReferenceContainer),
 	navigationOptions: {
-	    title: "    Harmonic Function"
+	    title: "        Harmonic Function"
 	}
     },
-    "    Keys and Key Signatures": {
+    "Keys and Key Signatures": {
 	screen: reference_stack("    Keys and Key Signatures", KeySignaturesReferenceContainer),
 	navigationOptions: {
-	    title: "    Keys and Key Signatures"
+	    title: "        Keys and Key Signatures"
 	}
     },
-    "    Diatonic": {
+    "Diatonic": {
 	screen: reference_stack("    Diatonic", DiatonicReferenceContainer),
 	navigationOptions: {
-	    title: "    Diatonic"
+	    title: "        Diatonic"
 	}
     },
-    "    Tonal Gravity": {
+    "Tonal Gravity": {
 	screen: reference_stack("    Tonal Gravity", TonalGravityReferenceContainer),
 	navigationOptions: {
-	    title: "    Tonal Gravity"
+	    title: "        Tonal Gravity"
 	}
     },
-    "    Parallel Keys and Borrowed Chords": {
+    "Parallel Keys and Borrowed Chords": {
 	screen: reference_stack("    Parallel Keys and Borrowed Chords", ParallelAndBorrowedReferenceContainer),
 	navigationOptions: {
-	    title: "    Parallel Keys and Borrowed Chords"
+	    title: "        Parallel Keys and Borrowed Chords"
 	}
     },
-    "    Enharmonic Equivalents": {
+    "Enharmonic Equivalents": {
 	screen: reference_stack("    Enharmonic Equivalents", EnharmonicEquivalentsReferenceContainer),
 	navigationOptions: {
-	    title: "    Enharmonic Equivalents"
+	    title: "        Enharmonic Equivalents"
 	}
     },
-    "    Scale Degree and Function": {
+    "Scale Degree and Function": {
 	screen: reference_stack("    Scale Degree and Function", ScaleDegreeReferenceContainer),
 	navigationOptions: {
-	    title: "    Scale Degree and Function"
+	    title: "        Scale Degree and Function"
 	}
     },
-    "    Dominant Chords": {
+    "Dominant Chords": {
 	screen: reference_stack("    Dominant Chords", DominantChordsReferenceContainer),
 	navigationOptions: {
-	    title: "    Dominant Chords"
+	    title: "        Dominant Chords"
 	}
     },
-    "    Secondary Dominants": {
+    "Secondary Dominants": {
 	screen: reference_stack("    Secondary Dominants", SecondaryDominantsReferenceContainer),
 	navigationOptions: {
-	    title: "    Secondary Dominants"
+	    title: "        Secondary Dominants"
 	}
     },
-    "    Tritone Substitutes": {
+    "Tritone Substitutes": {
 	screen: reference_stack("    Tritone Substitutes", TritoneSubstitutesReferenceContainer),
 	navigationOptions: {
-	    title: "    Tritone Substitutes"
+	    title: "        Tritone Substitutes"
 	}
     },
-    "    Diatonic Substitutes": {
+    "Diatonic Substitutes": {
 	screen: reference_stack("    Diatonic Substitutes", DiatonicSubstitutesReferenceContainer),
 	navigationOptions: {
-	    title: "    Diatonic Substitutes"
+	    title: "        Diatonic Substitutes"
 	}
     },
 });
