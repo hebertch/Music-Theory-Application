@@ -25,20 +25,11 @@ The code is self-documenting and/or commented. Please view the following files/f
 	- [src/reducers](fifths/src/reducers): Reducers are also a necessary component of redux. Reducers are where the logic behind changing some of the persistent state in the circle of fifths page is held. To read more about reducers, take a look at the redux [docs](https://redux.js.org/).
 - [tests](fifths/__tests__) : Test cases for the algorithms.
 
-## Music Theory Terms Quick Reference:
-- Tone: A-G with any number of # (sharps) or b (flats)
-- TODO (For Behn)
-	
-## Links of Interest to the Grader:
-- 12/01/17 [Design Doc](Documents/design)
-- 11/13/17 [Tech Reviews](Documents/tech-review)
-	- [hebertch](Documents/tech-review/hebertch)
-- 11/13/17 [Final Draft of Requirements](Documents/requirements/final-draft)
-- 10/27/17 [Rough Draft of Requirements](Documents/requirements/rough-draft)
-- 10/19/17 [Final Draft of Problem Statement](Documents/problem-statement/final-draft)
-  - [hebertch](Documents/problem-statement/hebertch)
-  - [omalleya](Documents/problem-statement/omalleya)
-  - [buckleka](Documents/problem-statement/buckleka)
+## Location of Notable Documents
+- Weekly Team Reports: Found in the Blog post sections of the [Final Report](Documents/final-report.pdf)
+- Poster: team045.pptx
+- Winter Final Progress Report Omitted due to Team-Sensitive nature of documents
+- Icons: [fifths](fifths)
 
 ## Directory Structure
 - [Documents](Documents): Documents handed in for the Capstone class.
