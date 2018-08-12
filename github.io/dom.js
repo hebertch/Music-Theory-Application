@@ -46,7 +46,7 @@ function table(rows, caption) {
 
 function button(name, f) {
     var b = e("button", name);
-    if (f) onclick(b, f);
+    if (f) b.onclick = f;
     return b;
 }
 
@@ -63,8 +63,8 @@ function iselect(options, value) {
     var elt = e("select");
     for (var i = 0; i < options.length; i++) {
 	var c = e("option", options[i]);
-	c.value = i;
-	if (value == i) c.selected = "selected";
+	c.value = options[i];
+	if (value == c.value) c.selected = "selected";
 	elt.appendChild(c);
     }
     return elt;

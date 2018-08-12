@@ -1,0 +1,44 @@
+{
+  "name": "fifths",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "jest": "^22.4.3",
+    "jest-expo": "^26.0.0",
+    "react-native-scripts": "1.11.1",
+    "react-test-renderer": "16.2.0"
+  },
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "scripts": {
+    "start": "react-native-scripts start",
+    "eject": "react-native-scripts eject",
+    "android": "react-native-scripts android",
+    "ios": "react-native-scripts ios",
+    "test": "jest ./__tests__"
+  },
+  "jest": {
+    "preset": "jest-expo"
+  },
+  "dependencies": {
+    "art": "^0.10.1",
+    "create-react-class": "^15.6.3",
+    "d3": "^4.13.0",
+    "d3-scale": "^2.0.0",
+    "d3-shape": "^1.2.0",
+    "expo": "^26.0.0",
+    "react": "16.3.0-alpha.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-26.0.0.tar.gz",
+    "react-native-modal": "^5.3.0",
+    "react-native-modest-checkbox": "^2.0.0",
+    "react-native-radio-buttons": "^1.0.0",
+    "react-native-simple-markdown": "^1.1.0",
+    "react-native-svg": "^6.3.1",
+    "react-native-swiper": "^1.5.13",
+    "react-navigation": "^1.5.8",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "reselect": "^3.0.1",
+    "standalone-vexflow-context": "^0.1.1",
+    "vexflow": "^1.2.84"
+  }
+}

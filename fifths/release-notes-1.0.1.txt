@@ -1,0 +1,6 @@
+version 1.0.1 release help notes
+
+*Need to remember to bump version number before builds
+*Android icon needs to be 512 x 512
+*Open application loader through xcode
+*need to increment version code for google play production update

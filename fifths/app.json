@@ -1,0 +1,20 @@
+{
+  "expo": {
+    "name": "Perfect Fifth",
+    "icon": "./App-Icon.png",
+    "version": "1.0.1",
+    "sdkVersion": "26.0.0",
+    "slug": "fifths",
+    "orientation": "portrait",
+    "ios": {
+      "bundleIdentifier": "com.tritone.perfectfifth",
+      "supportsTablet": true,
+      "icon": "./App-Icon-White.png"
+    },
+    "android": {
+      "package": "com.tritone.perfectfifth",
+      "icon": "./App-Icon.png",
+      "versionCode": 2
+    }
+  }
+}

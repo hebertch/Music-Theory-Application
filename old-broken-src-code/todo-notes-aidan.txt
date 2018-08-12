@@ -1,0 +1,41 @@
+Singular tasks
+  X MEDIUM Chord pop ups
+  X EASY Blue -> teal/gray color change
+  X EASY Colors consistent with sidebar
+  - MEDIUM Checkbox label issue and slow load
+  - MEDIUM Sidebar should show 7 notes at once
+    * height of sidebar and font-size/padding
+  - FINAL CHANGE make fifths repo main app-source-code
+    X PART 1 of this is to Combine Chris's changes
+    - Download onto phone and check checkboxes
+  X Fix colors for sidebar etc. by using static colors file
+  - Change root note color SEE NOTEBOOK
+  X Use gray color for circle text
+  X Fix parallel and relative keys
+  - CLICKABLE table of contents in menu
+  X Fix mappings for sidebar selection and rotate selection
+  X Don't go higher than f# maj don't go lower than gb minor
+    * ties into mappings
+
+  - 
+
+Lower importance
+  - Attempt to make white wedge with colored spokes coming out
+  - Sheet Music in chord selection
+
+
+Requirements to upload to app store:
+  Circle of Fifths:
+    - Above details
+  Composition:
+    - Substitutions
+    - Style change
+  Reference pages:
+    - schedule of tonal gravity
+    - secondary dominants
+    - tritone substitution
+    - clickable table of contents
+
+  Before expo:
+    - App store upload
+    -  Unit/User Tests
