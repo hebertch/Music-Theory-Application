@@ -15,6 +15,9 @@
       "package": "com.tritone.perfectfifth",
       "icon": "./App-Icon.png",
       "versionCode": 2
+    },
+    "splash": {
+      "image": "./splash.png"
     }
   }
 }
