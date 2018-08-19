@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, StyleSheet, Text, View } from 'react-native';
+import { AppRegistry, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import Menu from './src/components/Menu';
@@ -11,7 +11,10 @@ export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Menu />
+        <View style={{flex: 1}}>
+          <StatusBar barStyle="dark-content"/>
+          <Menu />
+        </View>
       </Provider>
     );
   }
